@@ -74,7 +74,7 @@ for project in sorted(os.listdir(defects4j_projects_path)):
         continue
     info = get_project_info(project)
     commit_id[project] = {}
-    for bug_id in xrange(1, int(info['number_of_bugs'])):
+    for bug_id in xrange(1, int(info['number_of_bugs']) + 1):
         eprint("%s %d/%s, %.2f%%" % (project, bug_id, info['number_of_bugs'], bug_id*100/float(info['number_of_bugs'])))
         tmp = tempfile.NamedTemporaryFile()
         try:
