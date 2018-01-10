@@ -1,5 +1,11 @@
-package fr.inria.spirals.features;
+package fr.inria.spirals.features.extractor;
 
+import fr.inria.spirals.features.Change;
+import fr.inria.spirals.features.ChangeAnalyze;
+import fr.inria.spirals.features.Changes;
+import fr.inria.spirals.features.DiffAnalyzer;
+import fr.inria.spirals.features.ElementAnalyzer;
+import fr.inria.spirals.features.ExtractorResults;
 import spoon.Launcher;
 import spoon.reflect.code.CtTry;
 import spoon.reflect.declaration.CtElement;
@@ -8,44 +14,46 @@ import spoon.reflect.visitor.CtScanner;
 
 import java.util.List;
 
-public class Extractor {
+public class DiffExtractor {
 
 	public static final String CSV_SEPARATOR = "\t";
 
 	private String oldSourcePath;
 	private String newSourcePath;
 	private String diffPath;
+	private String project;
+	private String bugId;
 
-	public Extractor(String oldSourcePath, String newSourcePath, String diffPath) {
+	public DiffExtractor(String oldSourcePath, String newSourcePath, String diffPath) {
 		this.oldSourcePath = oldSourcePath;
 		this.newSourcePath = newSourcePath;
 		this.diffPath = diffPath;
 	}
 
 	public ExtractorResults extract() {
-		DiffAnalyzer diffAnalyzer = new DiffAnalyzer();
-		Changes changes = diffAnalyzer.analyze(diffPath);
+		DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
+		Changes changes = diffAnalyzer.analyze();
 
-		Launcher spoon = null;
+		Launcher oldSpoon = null;
 		if (!changes.getChangedOldFiles().isEmpty()) {
-			spoon = initSpoon(oldSourcePath, changes.getChangedOldFiles());
+			oldSpoon = initSpoon(oldSourcePath, changes.getChangedOldFiles());
 		}
 
-		final ChangeAnalyze oldAnalyze = getChangeAnalyze(changes.getOldChanges(), spoon);
+		final ChangeAnalyze oldAnalyze = getChangeAnalyze(changes.getOldChanges(), oldSpoon);
 
+		Launcher newSpoon = null;
 		if (!changes.getChangedNewFiles().isEmpty()) {
-			spoon = initSpoon(newSourcePath, changes.getChangedNewFiles());
-		} else {
-			spoon = null;
+			newSpoon = initSpoon(newSourcePath, changes.getChangedNewFiles());
 		}
-		final ChangeAnalyze newAnalyze = getChangeAnalyze(changes.getNewChanges(), spoon);
+
+		final ChangeAnalyze newAnalyze = getChangeAnalyze(changes.getNewChanges(), newSpoon);
+
 		ExtractorResults extractorResults = new ExtractorResults(oldAnalyze, newAnalyze);
 		extractorResults.setNbFiles(diffAnalyzer.getNbFiles());
 		return extractorResults;
 	}
 
-	private ChangeAnalyze getChangeAnalyze(final List<Change> changes,
-			Launcher spoon) {
+	private ChangeAnalyze getChangeAnalyze(final List<Change> changes, Launcher spoon) {
 		final ChangeAnalyze analyze = new ChangeAnalyze();
 
 		for (int i = 0; i < changes.size(); i++) {
@@ -109,8 +117,23 @@ public class Extractor {
 			}
 			spoon.addInputResource(file);
 		}
-		//spoon.addInputResource(source);
 		spoon.buildModel();
 		return spoon;
+	}
+
+	public void setProject(String project) {
+		this.project = project;
+	}
+
+	public String getProject() {
+		return project;
+	}
+
+	public void setBugId(String bugId) {
+		this.bugId = bugId;
+	}
+
+	public String getBugId() {
+		return bugId;
 	}
 }

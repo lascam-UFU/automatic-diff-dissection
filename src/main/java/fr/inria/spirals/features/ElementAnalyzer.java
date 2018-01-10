@@ -81,6 +81,9 @@ public class ElementAnalyzer {
 					@Override
 					public void visitCtIf(CtIf e) {
 						output.incNbIf();
+						if (e.getCondition().toString().contains("null")) {
+							// null check
+						}
 						super.visitCtIf(e);
 					}
 

@@ -4,8 +4,10 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
-import fr.inria.spirals.features.Extractor;
+import fr.inria.spirals.features.extractor.AstExtractor;
+import fr.inria.spirals.features.extractor.DiffExtractor;
 import fr.inria.spirals.features.ExtractorResults;
+import fr.inria.spirals.features.extractor.PositionExtractor;
 
 import java.util.Iterator;
 
@@ -20,29 +22,73 @@ public class Main {
 	private static final String DIFF_PATCH = "diffPath";
 	private static final String PROJECT = "project";
 	private static final String BUG_ID = "bugID";
+	private static final String MODE = "MODE";
 
 
 	private static JSAP jsap = new JSAP();
 
-	public static void main(String[] args) {
-		try {
-			initJSAP();
-			JSAPResult arguments = parseArguments(args);
-			if (arguments == null) {
-				return;
-			}
-
-			Extractor extractor = new Extractor(
+	public static void main(String[] args) throws Exception {
+		initJSAP();
+		JSAPResult arguments = parseArguments(args);
+		if (arguments == null) {
+			return;
+		}
+		String mode = arguments.getString(MODE);
+		switch (mode.toLowerCase()) {
+		case "diff":
+			DiffExtractor extractor = new DiffExtractor(
 					arguments.getString(OLD_SOURCE_DIRECTORY),
 					arguments.getString(NEW_SOURCE_DIRECTORY),
 					arguments.getString(DIFF_PATCH));
+			extractor.setProject(arguments.getString(PROJECT));
+			extractor.setBugId(arguments.getString(BUG_ID));
 
 			ExtractorResults extractorResults = extractor.extract();
-			extractorResults.setProject(arguments.getString(PROJECT));
-			extractorResults.setBugId(arguments.getString(BUG_ID));
-			System.out.println(extractorResults.toCSV());
-		} catch (Exception e) {
-			e.printStackTrace();
+			if (extractorResults != null) {
+				extractorResults.setProject(arguments.getString(PROJECT));
+				extractorResults.setBugId(arguments.getString(BUG_ID));
+				System.out.println(extractorResults.toCSV());
+			}
+			break;
+		case "ast":
+			AstExtractor astExtractor = new AstExtractor(
+					arguments.getString(OLD_SOURCE_DIRECTORY),
+					arguments.getString(DIFF_PATCH));
+			astExtractor.setProject(arguments.getString(PROJECT));
+			astExtractor.setBugId(arguments.getString(BUG_ID));
+
+			astExtractor.extract();
+			break;
+		case "limit":
+			PositionExtractor limitExtractor = new PositionExtractor(
+					arguments.getString(OLD_SOURCE_DIRECTORY),
+					arguments.getString(NEW_SOURCE_DIRECTORY),
+					arguments.getString(DIFF_PATCH));
+			limitExtractor.setProject(arguments.getString(PROJECT));
+			limitExtractor.setBugId(arguments.getString(BUG_ID));
+
+			limitExtractor.getLimitOfPatch();
+			break;
+		case "spreading":
+			PositionExtractor spreadingExtractor = new PositionExtractor(
+					arguments.getString(OLD_SOURCE_DIRECTORY),
+					arguments.getString(NEW_SOURCE_DIRECTORY),
+					arguments.getString(DIFF_PATCH));
+			spreadingExtractor.setProject(arguments.getString(PROJECT));
+			spreadingExtractor.setBugId(arguments.getString(BUG_ID));
+
+			spreadingExtractor.spreading2();
+			break;
+		case "position":
+			PositionExtractor positionExtractor = new PositionExtractor(
+					arguments.getString(OLD_SOURCE_DIRECTORY),
+					arguments.getString(NEW_SOURCE_DIRECTORY),
+					arguments.getString(DIFF_PATCH));
+			positionExtractor.setProject(arguments.getString(PROJECT));
+			positionExtractor.setBugId(arguments.getString(BUG_ID));
+
+			positionExtractor.countAddRemoveModify();
+			break;
 		}
 		System.exit(0);
 	}
@@ -82,16 +128,16 @@ public class Main {
 		projectOpt.setHelp("The project name");
 		jsap.registerParameter(projectOpt);
 
-		FlaggedOption modeOpt = new FlaggedOption(BUG_ID);
-		modeOpt.setRequired(true);
-		modeOpt.setAllowMultipleDeclarations(false);
-		modeOpt.setLongFlag("id");
-		modeOpt.setShortFlag('i');
-		modeOpt.setUsageName("");
-		modeOpt.setDefault("normal");
-		modeOpt.setStringParser(JSAP.STRING_PARSER);
-		modeOpt.setHelp("The bug id of the defects4j dataset");
-		jsap.registerParameter(modeOpt);
+		FlaggedOption bugIdOpt = new FlaggedOption(BUG_ID);
+		bugIdOpt.setRequired(true);
+		bugIdOpt.setAllowMultipleDeclarations(false);
+		bugIdOpt.setLongFlag("id");
+		bugIdOpt.setShortFlag('i');
+		bugIdOpt.setUsageName("");
+		bugIdOpt.setDefault("normal");
+		bugIdOpt.setStringParser(JSAP.STRING_PARSER);
+		bugIdOpt.setHelp("The bug id of the defects4j dataset");
+		jsap.registerParameter(bugIdOpt);
 
 		FlaggedOption outputDirectoryOpt = new FlaggedOption(OUTPUT_DIRECTORY);
 		outputDirectoryOpt.setRequired(false);
@@ -133,5 +179,16 @@ public class Main {
 		diffPathOpt.setStringParser(JSAP.STRING_PARSER);
 		diffPathOpt.setHelp("The path to the diff.");
 		jsap.registerParameter(diffPathOpt);
+
+
+		FlaggedOption modeOpt = new FlaggedOption(MODE);
+		modeOpt.setRequired(true);
+		modeOpt.setAllowMultipleDeclarations(false);
+		modeOpt.setLongFlag("mode");
+		modeOpt.setShortFlag('m');
+		modeOpt.setUsageName("");
+		modeOpt.setStringParser(JSAP.STRING_PARSER);
+		modeOpt.setHelp("The extraction mode");
+		jsap.registerParameter(modeOpt);
 	}
 }

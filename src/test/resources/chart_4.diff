@@ -1,0 +1,8 @@
+diff --git a/projects/chart/chart_4/source/org/jfree/chart/plot/XYPlot.java b/projects_fix/chart/chart_4/source/org/jfree/chart/plot/XYPlot.java
+index ec26162..6536d1d 100644
+--- a/mnt/secondary/projects/chart/chart_4/source/org/jfree/chart/plot/XYPlot.java
++++ b/mnt/secondary/projects_fix/chart/chart_4/source/org/jfree/chart/plot/XYPlot.java
+@@ -4492,0 +4493 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable,
++                if (r != null) {
+@@ -4500,0 +4502 @@ public class XYPlot extends Plot implements ValueAxisPlot, Pannable,
++                }

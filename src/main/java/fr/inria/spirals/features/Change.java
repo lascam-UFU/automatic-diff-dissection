@@ -6,6 +6,7 @@ public class Change {
 	private String file;
 	private int endLine;
 	private int length;
+	private Change associateChange;
 
 	public Change(String type, String file, int line, int endLine, int length) {
 		this.type = type;
@@ -25,6 +26,16 @@ public class Change {
 		return file;
 	}
 
+	public String getClassName() {
+		String file = this.getFile();
+		int indexStartPackage = file.lastIndexOf("/org");
+		if (indexStartPackage == -1) {
+			indexStartPackage = file.lastIndexOf("/com");
+		}
+		file = file.substring(indexStartPackage + 1);
+		return file.substring(0, file.lastIndexOf(".")).replace("/", ".");
+	}
+
 	public int getEndLine() {
 		return endLine;
 	}
@@ -35,5 +46,27 @@ public class Change {
 
 	public int getLength() {
 		return length;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setAssociateChange(Change associateChange) {
+		this.associateChange = associateChange;
+	}
+
+	public Change getAssociateChange() {
+		return associateChange;
+	}
+
+	@Override
+	public String toString() {
+		return "Change{" +
+				"type='" + type + '\'' +
+				", line=" + line +
+				", endLine=" + endLine +
+				", length=" + length +
+				'}';
 	}
 }

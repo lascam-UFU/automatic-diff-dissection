@@ -1,6 +1,6 @@
 package fr.inria.spirals.features;
 
-import static fr.inria.spirals.features.Extractor.CSV_SEPARATOR;
+import static fr.inria.spirals.features.extractor.DiffExtractor.CSV_SEPARATOR;
 
 public class ChangeAnalyze {
 	private int nbVariable;
