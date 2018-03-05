@@ -105,14 +105,19 @@ public class DiffAnalyzer {
 						++pos;
 						break;
 					case '+':
-						output.get(fileName).add(hh.getNewStartLine() - 1 + pos, hunkLine.substring(1));
+						int index = hh.getNewStartLine() - 1 + pos;
+						output.get(fileName).add(index, hunkLine.substring(1));
 						++pos;
 						break;
 					case '-':
 						if (hh.getNewStartLine() == 0) {
 							output.get(fileName).clear();
 						} else {
-							output.get(fileName).remove(hh.getNewStartLine() - 1 + pos);
+							index = hh.getNewStartLine() - 1 + pos;
+							if (pos == 0 && hh.getNewLineCount() == 0) {
+								index++;
+							}
+							output.get(fileName).remove(index);
 						}
 					}
 				}

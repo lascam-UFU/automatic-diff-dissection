@@ -1,5 +1,6 @@
 package fr.inria.spirals.features.extractor;
 
+import fr.inria.spirals.features.ChangeAnalyze;
 import fr.inria.spirals.features.DiffAnalyzer;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;
@@ -9,6 +10,7 @@ import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
 import spoon.Launcher;
+import spoon.compiler.Environment;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.DefaultJavaPrettyPrinter;
 import spoon.support.compiler.VirtualFile;
@@ -31,7 +33,7 @@ public class AstExtractor {
 		this.diffPath = diffPath;
 	}
 
-	public void extract() {
+	public ChangeAnalyze extract() {
 		DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
 
 		Map<String, List<String>> originalFiles = diffAnalyzer.getOriginalFiles(oldSourcePath);
@@ -40,30 +42,35 @@ public class AstExtractor {
 		Launcher oldSpoon = initSpoon(originalFiles);
 		Launcher newSpoon = initSpoon(patchedFiles);
 
-		getAstDiff(oldSpoon, newSpoon);
+		return getAstDiff(oldSpoon, newSpoon);
 	}
 
 
 
-	private void getAstDiff(Launcher oldSpoon, Launcher newSpoon) {
+	private ChangeAnalyze getAstDiff(Launcher oldSpoon, Launcher newSpoon) {
 		AstComparator diff = new AstComparator();
 
 		Diff editScript = diff.compare(oldSpoon.getFactory().getModel().getRootPackage(), newSpoon.getFactory().getModel().getRootPackage());
-		for (int i = 0; i < editScript.getRootOperations().size(); i++) {
-			Operation operation = editScript.getRootOperations().get(i);
+		return getChangeAnalyze(editScript);
+	}
+
+	private ChangeAnalyze getChangeAnalyze(Diff editScript) {
+		final ChangeAnalyze analyze = new ChangeAnalyze();
+		for (int i = 0; i < editScript.getAllOperations().size(); i++) {
+			Operation operation = editScript.getAllOperations().get(i);
 			if (operation instanceof MoveOperation) {
+				operation.getSrcNode().putMetadata("isMoved", true);
 				operation.getDstNode().putMetadata("isMoved", true);
 			}
 		}
 
 		for (int i = 0; i < editScript.getRootOperations().size(); i++) {
 			Operation operation = editScript.getRootOperations().get(i);
+			CtElement srcNode = operation.getSrcNode();
 			if (operation instanceof InsertOperation || operation instanceof DeleteOperation ) {
-				CtElement dstNode = operation.getSrcNode();
 				System.out.println(operation.getClass().getSimpleName());
-				System.out.println(printElement(newSpoon, dstNode));
+				System.out.println(printElement(srcNode.getFactory().getEnvironment(), srcNode));
 			} else if(operation instanceof UpdateOperation) {
-				CtElement srcNode = operation.getSrcNode();
 				CtElement dstNode = operation.getDstNode();
 				System.out.println(operation.getClass().getSimpleName());
 				System.out.println(srcNode);
@@ -76,10 +83,11 @@ public class AstExtractor {
 			}
 		}
 
+		return analyze;
 	}
 
-	private String printElement(Launcher newSpoon, CtElement element) {
-		DefaultJavaPrettyPrinter print = new DefaultJavaPrettyPrinter(newSpoon.getEnvironment()) {
+	private String printElement(Environment env, CtElement element) {
+		DefaultJavaPrettyPrinter print = new DefaultJavaPrettyPrinter(env) {
 			@Override
 			public DefaultJavaPrettyPrinter scan(CtElement e) {
 				if (e != null && e.getMetadata("isMoved") == null) {

@@ -3,7 +3,7 @@ package fr.inria.spirals.features;
 import fr.inria.spirals.features.extractor.AstExtractor;
 import org.junit.Test;
 
-import static fr.inria.spirals.features.extractor.DiffExtractor.CSV_SEPARATOR;
+import static fr.inria.spirals.features.extractor.AstExtractor.CSV_SEPARATOR;
 
 public class AstExtractorTest {
 
@@ -17,35 +17,6 @@ public class AstExtractorTest {
 		extractor.extract();
 	}
 
-	@Test
-	public void chart18() {
-		AstExtractor extractor = new AstExtractor(
-				"/mnt/secondary/projects/chart/chart_18/source/",
-				AstExtractorTest.class.getResource("/chart_18.diff").getPath());
-		extractor.setBugId("18");
-		extractor.setProject("Chart");
-		extractor.extract();
-	}
-
-	@Test
-	public void closure24() {
-		AstExtractor extractor = new AstExtractor(
-				"/mnt/secondary/projects/closure/closure_24/src/",
-				AstExtractorTest.class.getResource("/closure_24.diff").getPath());
-		extractor.setBugId("24");
-		extractor.setProject("closure");
-		extractor.extract();
-	}
-
-	@Test
-	public void closure76() {
-		AstExtractor extractor = new AstExtractor(
-				"/mnt/secondary/projects/closure/closure_76/src/",
-				AstExtractorTest.class.getResource("/closure_76.diff").getPath());
-		extractor.setBugId("76");
-		extractor.setProject("closure");
-		extractor.extract();
-	}
 
 	@Test
 	public void chart1() {
@@ -111,5 +82,66 @@ public class AstExtractorTest {
 		extractor.extract();
 
 		System.out.println(sb.toString());
+	}
+
+	@Test
+	public void chart18() {
+		AstExtractor extractor = new AstExtractor(
+				"/mnt/secondary/",
+				AstExtractorTest.class.getResource("/chart_18.diff").getPath());
+		extractor.setBugId("18");
+		extractor.setProject("Chart");
+		extractor.extract();
+	}
+
+
+	@Test
+	public void closure24() {
+		AstExtractor extractor = new AstExtractor(
+				"/mnt/secondary/projects/closure/closure_24/src/",
+				AstExtractorTest.class.getResource("/closure_24.diff").getPath());
+		extractor.setBugId("24");
+		extractor.setProject("closure");
+		extractor.extract();
+	}
+
+	@Test
+	public void closure76() {
+		AstExtractor extractor = new AstExtractor(
+				"/mnt/secondary/projects/closure/closure_76/src/",
+				AstExtractorTest.class.getResource("/closure_76.diff").getPath());
+		extractor.setBugId("76");
+		extractor.setProject("closure");
+		extractor.extract();
+	}
+
+	@Test
+	public void math4() {
+		AstExtractor extractor = new AstExtractor(
+				"/mnt/secondary",
+				AstExtractorTest.class.getResource("/math_4.diff").getPath());
+		extractor.setBugId("4");
+		extractor.setProject("Math");
+		extractor.extract();
+	}
+
+	@Test
+	public void time12() {
+		AstExtractor extractor = new AstExtractor(
+				"/mnt/secondary",
+				AstExtractorTest.class.getResource("/time_12.diff").getPath());
+		extractor.setBugId("12");
+		extractor.setProject("Time");
+		extractor.extract();
+	}
+
+	@Test
+	public void time23() {
+		AstExtractor extractor = new AstExtractor(
+				"/mnt/secondary/",
+				AstExtractorTest.class.getResource("/time_23.diff").getPath());
+		extractor.setBugId("23");
+		extractor.setProject("Time");
+		extractor.extract();
 	}
 }
