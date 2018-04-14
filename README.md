@@ -6,7 +6,7 @@ This project extracts features from patches.
 
 ### Extract features from the defects4j dataset
 1. Clone [defects4j](https://github.com/rjust/defects4j)
-2. Checkout each bug following this architecture: `<project_id>/<project_id>_<bugid>/` (ex:`math/math-1/` the project name is in lower case)
+2. Checkout each bug following this architecture: `<project_id>/<project_id>_<bugid>/` (ex:`math/math_1/` the project name is in lower case)
 ```bash
 destination="<destination_folder>"
 for bug in $(seq 1 26); do defects4j checkout -p Chart -v ${bug}b -w ${destination}/chart/chart_${bug}; done    
