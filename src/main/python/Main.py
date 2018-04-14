@@ -39,22 +39,23 @@ defects4j info -p %s
 
 def create_diff(info, project, bug_id, output):
     path = os.path.join(project.lower(), "%s_%d" % (project.lower(), bug_id), getSource(info, bug_id))
-    cmd = """git diff %s %s > %s""" % \
+    cmd = """git diff -U0 %s %s > %s""" % \
           (os.path.join(defects4j_checkout_path, path),
            os.path.join(defects4j_fix_checkout_path, path),
            output)
     subprocess.call(cmd, shell=True)
 
-def get_project_features(info, project, bug_id, diff):
+def get_project_features(info, project, bug_id, diff, mode):
     path = os.path.join(project.lower(), "%s_%d" % (project.lower(), bug_id), getSource(info, bug_id))
     jar = os.path.join(root, "target", "patchclustering-0.1-SNAPSHOT-jar-with-dependencies.jar")
-    cmd = """java -jar %s -p %s -i %d -s %s -x %s -d %s""" % \
+    cmd = """java -jar %s -p %s -i %d -s %s -x %s -d %s -m %s""" % \
           (jar,
            project,
            bug_id,
            os.path.join(defects4j_checkout_path, path),
            os.path.join(defects4j_fix_checkout_path, path),
-           diff)
+           diff,
+           mode)
     return subprocess.check_output(cmd, shell=True).strip()
 
 def getSource(info, id):
@@ -66,6 +67,7 @@ def getSource(info, id):
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
+mode = sys.argv[1]
 commit_id = {}
 for project in sorted(os.listdir(defects4j_projects_path)):
     if project == 'lib':
@@ -79,6 +81,6 @@ for project in sorted(os.listdir(defects4j_projects_path)):
         tmp = tempfile.NamedTemporaryFile()
         try:
             create_diff(info, project, bug_id, tmp.name)
-            print(get_project_features(info, project, bug_id, tmp.name))
+            print(get_project_features(info, project, bug_id, tmp.name, mode))
         finally:
             tmp.close()
