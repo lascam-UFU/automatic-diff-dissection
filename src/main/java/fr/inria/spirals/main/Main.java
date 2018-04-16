@@ -16,85 +16,18 @@ import java.util.Iterator;
  */
 public class Main {
 
-	private static final String OUTPUT_DIRECTORY = "outputDirectory";
-	private static final String OLD_SOURCE_DIRECTORY = "oldSourceDirectory";
-	private static final String NEW_SOURCE_DIRECTORY = "newSourceDirectory";
-	private static final String DIFF_PATCH = "diffPath";
-	private static final String PROJECT = "project";
-	private static final String BUG_ID = "bugID";
-	private static final String MODE = "MODE";
+	private Config config;
 
-
-	private static JSAP jsap = new JSAP();
-
-	public static void main(String[] args) throws Exception {
-		initJSAP();
-		JSAPResult arguments = parseArguments(args);
+	public Main(String[] args) throws JSAPException {
+		JSAP jsap = this.initJSAP();
+		JSAPResult arguments = this.parseArguments(args, jsap);
 		if (arguments == null) {
 			return;
 		}
-		String mode = arguments.getString(MODE);
-		switch (mode.toLowerCase()) {
-		case "diff":
-			DiffExtractor extractor = new DiffExtractor(
-					arguments.getString(OLD_SOURCE_DIRECTORY),
-					arguments.getString(NEW_SOURCE_DIRECTORY),
-					arguments.getString(DIFF_PATCH));
-			extractor.setProject(arguments.getString(PROJECT));
-			extractor.setBugId(arguments.getString(BUG_ID));
-
-			ExtractorResults extractorResults = extractor.extract();
-			if (extractorResults != null) {
-				extractorResults.setProject(arguments.getString(PROJECT));
-				extractorResults.setBugId(arguments.getString(BUG_ID));
-				System.out.println(extractorResults.toCSV());
-			}
-			break;
-		case "ast":
-			AstExtractor astExtractor = new AstExtractor(
-					arguments.getString(OLD_SOURCE_DIRECTORY),
-					arguments.getString(DIFF_PATCH));
-			astExtractor.setProject(arguments.getString(PROJECT));
-			astExtractor.setBugId(arguments.getString(BUG_ID));
-
-			astExtractor.extract();
-			break;
-		case "limit":
-			PositionExtractor limitExtractor = new PositionExtractor(
-					arguments.getString(OLD_SOURCE_DIRECTORY),
-					arguments.getString(NEW_SOURCE_DIRECTORY),
-					arguments.getString(DIFF_PATCH));
-			limitExtractor.setProject(arguments.getString(PROJECT));
-			limitExtractor.setBugId(arguments.getString(BUG_ID));
-
-			limitExtractor.getLimitOfPatch();
-			break;
-		case "spreading":
-			PositionExtractor spreadingExtractor = new PositionExtractor(
-					arguments.getString(OLD_SOURCE_DIRECTORY),
-					arguments.getString(NEW_SOURCE_DIRECTORY),
-					arguments.getString(DIFF_PATCH));
-			spreadingExtractor.setProject(arguments.getString(PROJECT));
-			spreadingExtractor.setBugId(arguments.getString(BUG_ID));
-
-			spreadingExtractor.spreading2();
-			break;
-		case "position":
-			PositionExtractor positionExtractor = new PositionExtractor(
-					arguments.getString(OLD_SOURCE_DIRECTORY),
-					arguments.getString(NEW_SOURCE_DIRECTORY),
-					arguments.getString(DIFF_PATCH));
-			positionExtractor.setProject(arguments.getString(PROJECT));
-			positionExtractor.setBugId(arguments.getString(BUG_ID));
-
-			positionExtractor.countAddRemoveModify();
-			break;
-		}
-		System.exit(0);
+		this.initConfig(arguments);
 	}
 
-
-	private static void showUsage() {
+	private void showUsage(JSAP jsap) {
 		System.err.println();
 		System.err.println("Usage: java -jar patchclustering.jar");
 		System.err.println("                          " + jsap.getUsage());
@@ -102,23 +35,23 @@ public class Main {
 		System.err.println(jsap.getHelp());
 	}
 
-	private static JSAPResult parseArguments(String[] args) {
+	private JSAPResult parseArguments(String[] args, JSAP jsap) {
 		JSAPResult config = jsap.parse(args);
 		if (!config.success()) {
 			System.err.println();
-			for (Iterator<?> errs = config.getErrorMessageIterator(); errs
-					.hasNext(); ) {
+			for (Iterator<?> errs = config.getErrorMessageIterator(); errs.hasNext();) {
 				System.err.println("Error: " + errs.next());
 			}
-			showUsage();
+			this.showUsage(jsap);
 			return null;
 		}
-
 		return config;
 	}
 
-	private static void initJSAP() throws JSAPException {
-		FlaggedOption projectOpt = new FlaggedOption(PROJECT);
+	private JSAP initJSAP() throws JSAPException {
+		JSAP jsap = new JSAP();
+
+		FlaggedOption projectOpt = new FlaggedOption("project");
 		projectOpt.setRequired(true);
 		projectOpt.setAllowMultipleDeclarations(false);
 		projectOpt.setLongFlag("project");
@@ -128,7 +61,7 @@ public class Main {
 		projectOpt.setHelp("The project name");
 		jsap.registerParameter(projectOpt);
 
-		FlaggedOption bugIdOpt = new FlaggedOption(BUG_ID);
+		FlaggedOption bugIdOpt = new FlaggedOption("bugId");
 		bugIdOpt.setRequired(true);
 		bugIdOpt.setAllowMultipleDeclarations(false);
 		bugIdOpt.setLongFlag("id");
@@ -139,7 +72,7 @@ public class Main {
 		bugIdOpt.setHelp("The bug id of the defects4j dataset");
 		jsap.registerParameter(bugIdOpt);
 
-		FlaggedOption outputDirectoryOpt = new FlaggedOption(OUTPUT_DIRECTORY);
+		FlaggedOption outputDirectoryOpt = new FlaggedOption("outputDirectory");
 		outputDirectoryOpt.setRequired(false);
 		outputDirectoryOpt.setAllowMultipleDeclarations(false);
 		outputDirectoryOpt.setLongFlag("output");
@@ -149,7 +82,7 @@ public class Main {
 		outputDirectoryOpt.setHelp("The path to the evaluation output directory.");
 		//jsap.registerParameter(outputDirectoryOpt);
 
-		FlaggedOption sourceDirectoryOpt = new FlaggedOption(OLD_SOURCE_DIRECTORY);
+		FlaggedOption sourceDirectoryOpt = new FlaggedOption("buggySourceDirectory");
 		sourceDirectoryOpt.setRequired(true);
 		sourceDirectoryOpt.setAllowMultipleDeclarations(false);
 		sourceDirectoryOpt.setLongFlag("oldSource");
@@ -159,8 +92,7 @@ public class Main {
 		sourceDirectoryOpt.setHelp("The path to the old source directory of the project.");
 		jsap.registerParameter(sourceDirectoryOpt);
 
-
-		FlaggedOption newSourceDirectoryOpt = new FlaggedOption(NEW_SOURCE_DIRECTORY);
+		FlaggedOption newSourceDirectoryOpt = new FlaggedOption("fixedSourceDirectory");
 		newSourceDirectoryOpt.setRequired(true);
 		newSourceDirectoryOpt.setAllowMultipleDeclarations(false);
 		newSourceDirectoryOpt.setLongFlag("newSource");
@@ -170,7 +102,7 @@ public class Main {
 		newSourceDirectoryOpt.setHelp("The path to the new source directory of the project.");
 		jsap.registerParameter(newSourceDirectoryOpt);
 
-		FlaggedOption diffPathOpt = new FlaggedOption(DIFF_PATCH);
+		FlaggedOption diffPathOpt = new FlaggedOption("diffPath");
 		diffPathOpt.setRequired(true);
 		diffPathOpt.setAllowMultipleDeclarations(true);
 		diffPathOpt.setLongFlag("diff");
@@ -180,8 +112,7 @@ public class Main {
 		diffPathOpt.setHelp("The path to the diff.");
 		jsap.registerParameter(diffPathOpt);
 
-
-		FlaggedOption modeOpt = new FlaggedOption(MODE);
+		FlaggedOption modeOpt = new FlaggedOption("launcherMode");
 		modeOpt.setRequired(true);
 		modeOpt.setAllowMultipleDeclarations(false);
 		modeOpt.setLongFlag("mode");
@@ -190,5 +121,83 @@ public class Main {
 		modeOpt.setStringParser(JSAP.STRING_PARSER);
 		modeOpt.setHelp("The extraction mode");
 		jsap.registerParameter(modeOpt);
+
+		return jsap;
 	}
+
+	private void initConfig(JSAPResult arguments) {
+		this.config = Config.getInstance();
+		this.config.setProject(arguments.getString("project"));
+		this.config.setBugId(arguments.getString("bugId"));
+		this.config.setOutputDirectoryPath(arguments.getString("outputDirectory"));
+		this.config.setBuggySourceDirectoryPath(arguments.getString("buggySourceDirectory"));
+		this.config.setFixedSourceDirectoryPath(arguments.getString("fixedSourceDirectory"));
+		this.config.setDiffPath(arguments.getString("diffPath"));
+		this.config.setLauncherMode(arguments.getString("launcherMode"));
+	}
+
+	private void execute() {
+		switch (this.config.getLauncherMode().toLowerCase()) {
+			case "diff":
+				DiffExtractor extractor = new DiffExtractor(
+						this.config.getBuggySourceDirectoryPath(),
+						this.config.getFixedSourceDirectoryPath(),
+						this.config.getDiffPath());
+				extractor.setProject(this.config.getProject());
+				extractor.setBugId(this.config.getBugId());
+
+				ExtractorResults extractorResults = extractor.extract();
+				if (extractorResults != null) {
+					extractorResults.setProject(this.config.getProject());
+					extractorResults.setBugId(this.config.getBugId());
+					System.out.println(extractorResults.toCSV());
+				}
+				break;
+			case "ast":
+				AstExtractor astExtractor = new AstExtractor(
+						this.config.getBuggySourceDirectoryPath(),
+						this.config.getDiffPath());
+				astExtractor.setProject(this.config.getProject());
+				astExtractor.setBugId(this.config.getBugId());
+
+				astExtractor.extract();
+				break;
+			case "limit":
+				PositionExtractor limitExtractor = new PositionExtractor(
+						this.config.getBuggySourceDirectoryPath(),
+						this.config.getFixedSourceDirectoryPath(),
+						this.config.getDiffPath());
+				limitExtractor.setProject(this.config.getProject());
+				limitExtractor.setBugId(this.config.getBugId());
+
+				limitExtractor.getLimitOfPatch();
+				break;
+			case "spreading":
+				PositionExtractor spreadingExtractor = new PositionExtractor(
+						this.config.getBuggySourceDirectoryPath(),
+						this.config.getFixedSourceDirectoryPath(),
+						this.config.getDiffPath());
+				spreadingExtractor.setProject(this.config.getProject());
+				spreadingExtractor.setBugId(this.config.getBugId());
+
+				spreadingExtractor.spreading2();
+				break;
+			case "position":
+				PositionExtractor positionExtractor = new PositionExtractor(
+						this.config.getBuggySourceDirectoryPath(),
+						this.config.getFixedSourceDirectoryPath(),
+						this.config.getDiffPath());
+				positionExtractor.setProject(this.config.getProject());
+				positionExtractor.setBugId(this.config.getBugId());
+
+				positionExtractor.countAddRemoveModify();
+				break;
+		}
+	}
+
+	public static void main(String[] args) throws Exception {
+		Main m = new Main(args);
+		m.execute();
+	}
+
 }
