@@ -1,4 +1,4 @@
-# Patch Clustering
+# Patch Clustering [![Build Status](https://travis-ci.org/tdurieux/patch-clustering.svg?branch=master)](https://travis-ci.org/tdurieux/patch-clustering)
 
 This project extracts features from patches.
 
