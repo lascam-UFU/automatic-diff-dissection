@@ -4,9 +4,9 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
+import fr.inria.spirals.features.ExtractorResults;
 import fr.inria.spirals.features.extractor.AstExtractor;
 import fr.inria.spirals.features.extractor.DiffExtractor;
-import fr.inria.spirals.features.ExtractorResults;
 import fr.inria.spirals.features.extractor.PositionExtractor;
 
 import java.util.Iterator;

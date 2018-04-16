@@ -1,21 +1,7 @@
 package fr.inria.spirals.features.analyzer;
 
 import fr.inria.spirals.entities.ChangeAnalyze;
-import spoon.reflect.code.CtAssignment;
-import spoon.reflect.code.CtBinaryOperator;
-import spoon.reflect.code.CtCFlowBreak;
-import spoon.reflect.code.CtComment;
-import spoon.reflect.code.CtConstructorCall;
-import spoon.reflect.code.CtContinue;
-import spoon.reflect.code.CtIf;
-import spoon.reflect.code.CtInvocation;
-import spoon.reflect.code.CtLiteral;
-import spoon.reflect.code.CtLoop;
-import spoon.reflect.code.CtReturn;
-import spoon.reflect.code.CtThrow;
-import spoon.reflect.code.CtTry;
-import spoon.reflect.code.CtUnaryOperator;
-import spoon.reflect.code.CtVariableAccess;
+import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.declaration.CtVariable;
