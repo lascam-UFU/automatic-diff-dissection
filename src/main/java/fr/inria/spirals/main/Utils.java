@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Created by fermadeiral
+ */
 public class Utils {
 
     public static String getFullPath(String projectRoot, String fileName) {
