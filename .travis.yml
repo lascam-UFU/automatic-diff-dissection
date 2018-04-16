@@ -1,1 +1,5 @@
 language: java
+install:
+ - git clone https://github.com/SpoonLabs/gumtree-spoon-ast-diff.git
+ - cd gumtree-spoon-ast-diff
+ - mvn install -Dmaven.test.skip
