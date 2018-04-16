@@ -122,7 +122,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                fr.inria.spirals.main.Main
+                                fr.inria.spirals.main.Launcher
                             </mainClass>
                         </manifest>
                     </archive>

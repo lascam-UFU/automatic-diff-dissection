@@ -14,11 +14,11 @@ import java.util.Iterator;
 /**
  * Created by tdurieux
  */
-public class Main {
+public class Launcher {
 
 	private Config config;
 
-	public Main(String[] args) throws JSAPException {
+	public Launcher(String[] args) throws JSAPException {
 		JSAP jsap = this.initJSAP();
 		JSAPResult arguments = this.parseArguments(args, jsap);
 		if (arguments == null) {
@@ -196,8 +196,8 @@ public class Main {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Main m = new Main(args);
-		m.execute();
+		Launcher launcher = new Launcher(args);
+		launcher.execute();
 	}
 
 }
