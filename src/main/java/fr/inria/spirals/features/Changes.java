@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Created by tdurieux
+ */
 public class Changes {
 	List<Change> oldChanges = new ArrayList<>();
 	List<Change> newChanges = new ArrayList<>();

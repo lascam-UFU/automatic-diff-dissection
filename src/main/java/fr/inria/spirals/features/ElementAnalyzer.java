@@ -21,6 +21,9 @@ import spoon.reflect.declaration.CtVariable;
 import spoon.reflect.visitor.CtInheritanceScanner;
 import spoon.reflect.visitor.CtScanner;
 
+/**
+ * Created by tdurieux
+ */
 public class ElementAnalyzer {
 	private CtElement element;
 

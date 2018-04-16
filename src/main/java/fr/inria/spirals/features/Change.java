@@ -1,5 +1,8 @@
 package fr.inria.spirals.features;
 
+/**
+ * Created by tdurieux
+ */
 public class Change {
 
 	private String type;

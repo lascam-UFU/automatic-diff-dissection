@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * Created by tdurieux
+ */
 public class PositionExtractor {
 
 	public static final String CSV_SEPARATOR = "\t";

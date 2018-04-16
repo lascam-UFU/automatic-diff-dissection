@@ -19,6 +19,9 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by tdurieux
+ */
 public class AstExtractor {
 
 	public static final String CSV_SEPARATOR = "\t";

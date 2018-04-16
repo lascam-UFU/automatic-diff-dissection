@@ -3,6 +3,9 @@ package fr.inria.spirals.features;
 import fr.inria.spirals.features.extractor.PositionExtractor;
 import org.junit.Test;
 
+/**
+ * Created by tdurieux
+ */
 public class PositionExtractorTest {
 
 	@Test

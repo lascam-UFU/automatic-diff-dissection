@@ -12,7 +12,7 @@ import fr.inria.spirals.features.extractor.PositionExtractor;
 import java.util.Iterator;
 
 /**
- * The main class of the project
+ * Created by tdurieux
  */
 public class Main {
 

@@ -14,6 +14,9 @@ import spoon.reflect.visitor.CtScanner;
 
 import java.util.List;
 
+/**
+ * Created by tdurieux
+ */
 public class DiffExtractor {
 
 	public static final String CSV_SEPARATOR = "\t";

@@ -2,6 +2,9 @@ package fr.inria.spirals.features;
 
 import static fr.inria.spirals.features.extractor.DiffExtractor.CSV_SEPARATOR;
 
+/**
+ * Created by tdurieux
+ */
 public class ExtractorResults {
 	private ChangeAnalyze oldAnalyze;
 	private ChangeAnalyze newAnalyze;

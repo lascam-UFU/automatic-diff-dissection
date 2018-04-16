@@ -17,6 +17,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Created by tdurieux
+ */
 public class DiffAnalyzer {
 
 	private final Patch patch;
