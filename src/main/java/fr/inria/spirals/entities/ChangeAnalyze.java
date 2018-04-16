@@ -1,4 +1,4 @@
-package fr.inria.spirals.features;
+package fr.inria.spirals.entities;
 
 import fr.inria.spirals.main.Constants;
 

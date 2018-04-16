@@ -1,10 +1,10 @@
 package fr.inria.spirals.features.extractor;
 
-import fr.inria.spirals.features.Change;
-import fr.inria.spirals.features.ChangeAnalyze;
-import fr.inria.spirals.features.Changes;
-import fr.inria.spirals.features.DiffAnalyzer;
-import fr.inria.spirals.features.ElementAnalyzer;
+import fr.inria.spirals.entities.Change;
+import fr.inria.spirals.entities.ChangeAnalyze;
+import fr.inria.spirals.entities.Changes;
+import fr.inria.spirals.features.analyzer.DiffAnalyzer;
+import fr.inria.spirals.features.analyzer.ElementAnalyzer;
 import fr.inria.spirals.features.ExtractorResults;
 import spoon.Launcher;
 import spoon.reflect.code.CtTry;

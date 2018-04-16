@@ -1,5 +1,6 @@
 package fr.inria.spirals.features;
 
+import fr.inria.spirals.entities.ChangeAnalyze;
 import fr.inria.spirals.main.Constants;
 
 /**

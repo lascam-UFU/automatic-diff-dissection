@@ -1,5 +1,6 @@
-package fr.inria.spirals.features;
+package fr.inria.spirals.features.analyzer;
 
+import fr.inria.spirals.entities.ChangeAnalyze;
 import spoon.reflect.code.CtAssignment;
 import spoon.reflect.code.CtBinaryOperator;
 import spoon.reflect.code.CtCFlowBreak;

@@ -1,8 +1,8 @@
 package fr.inria.spirals.features.extractor;
 
-import fr.inria.spirals.features.Change;
-import fr.inria.spirals.features.Changes;
-import fr.inria.spirals.features.DiffAnalyzer;
+import fr.inria.spirals.entities.Change;
+import fr.inria.spirals.entities.Changes;
+import fr.inria.spirals.features.analyzer.DiffAnalyzer;
 import fr.inria.spirals.main.Constants;
 
 import java.io.BufferedReader;

@@ -1,4 +1,4 @@
-package fr.inria.spirals.features;
+package fr.inria.spirals.entities;
 
 import java.util.ArrayList;
 import java.util.HashSet;

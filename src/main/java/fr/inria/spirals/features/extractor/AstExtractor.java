@@ -1,7 +1,7 @@
 package fr.inria.spirals.features.extractor;
 
-import fr.inria.spirals.features.ChangeAnalyze;
-import fr.inria.spirals.features.DiffAnalyzer;
+import fr.inria.spirals.entities.ChangeAnalyze;
+import fr.inria.spirals.features.analyzer.DiffAnalyzer;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.DeleteOperation;
