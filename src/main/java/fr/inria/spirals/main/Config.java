@@ -13,7 +13,7 @@ public class Config {
     private String buggySourceDirectoryPath;
     private String fixedSourceDirectoryPath;
     private String diffPath;
-    private String launcherMode;
+    private LauncherMode launcherMode;
 
     private Config() {}
 
@@ -72,11 +72,11 @@ public class Config {
         this.diffPath = diffPath;
     }
 
-    public String getLauncherMode() {
+    public LauncherMode getLauncherMode() {
         return launcherMode;
     }
 
-    public void setLauncherMode(String launcherMode) {
+    public void setLauncherMode(LauncherMode launcherMode) {
         this.launcherMode = launcherMode;
     }
 

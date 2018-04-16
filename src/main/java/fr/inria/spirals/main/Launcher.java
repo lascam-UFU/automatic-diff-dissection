@@ -4,6 +4,7 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
 import fr.inria.spirals.features.ExtractorResults;
 import fr.inria.spirals.features.extractor.AstExtractor;
 import fr.inria.spirals.features.extractor.DiffExtractor;
@@ -112,13 +113,19 @@ public class Launcher {
 		diffPathOpt.setHelp("The path to the diff.");
 		jsap.registerParameter(diffPathOpt);
 
+		String launcherModeValues = "";
+		for (LauncherMode mode : LauncherMode.values()) {
+			launcherModeValues += mode.name()+";";
+		}
+		launcherModeValues = launcherModeValues.substring(0, launcherModeValues.length()-1);
+
 		FlaggedOption modeOpt = new FlaggedOption("launcherMode");
 		modeOpt.setRequired(true);
 		modeOpt.setAllowMultipleDeclarations(false);
 		modeOpt.setLongFlag("mode");
 		modeOpt.setShortFlag('m');
 		modeOpt.setUsageName("");
-		modeOpt.setStringParser(JSAP.STRING_PARSER);
+		modeOpt.setStringParser(EnumeratedStringParser.getParser(launcherModeValues));
 		modeOpt.setHelp("The extraction mode");
 		jsap.registerParameter(modeOpt);
 
@@ -133,12 +140,12 @@ public class Launcher {
 		this.config.setBuggySourceDirectoryPath(arguments.getString("buggySourceDirectory"));
 		this.config.setFixedSourceDirectoryPath(arguments.getString("fixedSourceDirectory"));
 		this.config.setDiffPath(arguments.getString("diffPath"));
-		this.config.setLauncherMode(arguments.getString("launcherMode"));
+		this.config.setLauncherMode(LauncherMode.valueOf(arguments.getString("launcherMode").toUpperCase()));
 	}
 
 	private void execute() {
-		switch (this.config.getLauncherMode().toLowerCase()) {
-			case "diff":
+		switch (this.config.getLauncherMode()) {
+			case DIFF:
 				DiffExtractor extractor = new DiffExtractor(
 						this.config.getBuggySourceDirectoryPath(),
 						this.config.getFixedSourceDirectoryPath(),
@@ -153,7 +160,7 @@ public class Launcher {
 					System.out.println(extractorResults.toCSV());
 				}
 				break;
-			case "ast":
+			case AST:
 				AstExtractor astExtractor = new AstExtractor(
 						this.config.getBuggySourceDirectoryPath(),
 						this.config.getDiffPath());
@@ -162,7 +169,7 @@ public class Launcher {
 
 				astExtractor.extract();
 				break;
-			case "limit":
+			case LIMIT:
 				PositionExtractor limitExtractor = new PositionExtractor(
 						this.config.getBuggySourceDirectoryPath(),
 						this.config.getFixedSourceDirectoryPath(),
@@ -172,7 +179,7 @@ public class Launcher {
 
 				limitExtractor.getLimitOfPatch();
 				break;
-			case "spreading":
+			case SPREADING:
 				PositionExtractor spreadingExtractor = new PositionExtractor(
 						this.config.getBuggySourceDirectoryPath(),
 						this.config.getFixedSourceDirectoryPath(),
@@ -182,7 +189,7 @@ public class Launcher {
 
 				spreadingExtractor.spreading2();
 				break;
-			case "position":
+			case POSITION:
 				PositionExtractor positionExtractor = new PositionExtractor(
 						this.config.getBuggySourceDirectoryPath(),
 						this.config.getFixedSourceDirectoryPath(),
