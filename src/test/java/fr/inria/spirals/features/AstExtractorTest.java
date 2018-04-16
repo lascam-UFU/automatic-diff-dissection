@@ -10,7 +10,7 @@ public class AstExtractorTest {
 
 	@Test
 	public void chart1() {
-		String buggySourcePath = PositionExtractorTest.class.getResource("/chart_1/buggy-version").getPath();
+		String buggySourcePath = AstExtractorTest.class.getResource("/chart_1/buggy-version").getPath();
 		String diffPath = AstExtractorTest.class.getResource("/chart_1/chart_1.diff").getPath();
 		AstExtractor extractor = new AstExtractor(buggySourcePath, diffPath);
 		extractor.setProject("Chart");

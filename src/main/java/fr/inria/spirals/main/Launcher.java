@@ -5,10 +5,11 @@ import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
+import fr.inria.spirals.entities.Metrics;
 import fr.inria.spirals.features.ExtractorResults;
 import fr.inria.spirals.features.extractor.AstExtractor;
 import fr.inria.spirals.features.extractor.DiffExtractor;
-import fr.inria.spirals.features.extractor.PositionExtractor;
+import fr.inria.spirals.features.extractor.MetricExtractor;
 
 import java.util.Iterator;
 
@@ -161,35 +162,16 @@ public class Launcher {
 
 				astExtractor.extract();
 				break;
-			case LIMIT:
-				PositionExtractor limitExtractor = new PositionExtractor(
+			case METRICS:
+				MetricExtractor metricsExtractor = new MetricExtractor(
 						this.config.getBuggySourceDirectoryPath(),
 						this.config.getFixedSourceDirectoryPath(),
 						this.config.getDiffPath());
-				limitExtractor.setProject(this.config.getProject());
-				limitExtractor.setBugId(this.config.getBugId());
+				metricsExtractor.setProject(this.config.getProject());
+				metricsExtractor.setBugId(this.config.getBugId());
 
-				limitExtractor.getLimitOfPatch();
-				break;
-			case SPREADING:
-				PositionExtractor spreadingExtractor = new PositionExtractor(
-						this.config.getBuggySourceDirectoryPath(),
-						this.config.getFixedSourceDirectoryPath(),
-						this.config.getDiffPath());
-				spreadingExtractor.setProject(this.config.getProject());
-				spreadingExtractor.setBugId(this.config.getBugId());
-
-				spreadingExtractor.spreading2();
-				break;
-			case POSITION:
-				PositionExtractor positionExtractor = new PositionExtractor(
-						this.config.getBuggySourceDirectoryPath(),
-						this.config.getFixedSourceDirectoryPath(),
-						this.config.getDiffPath());
-				positionExtractor.setProject(this.config.getProject());
-				positionExtractor.setBugId(this.config.getBugId());
-
-				positionExtractor.countAddRemoveModify();
+				Metrics metrics = metricsExtractor.extract();
+				System.out.println(metrics.toString());
 				break;
 		}
 	}
