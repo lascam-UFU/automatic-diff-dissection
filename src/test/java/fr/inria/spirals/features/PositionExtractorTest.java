@@ -19,6 +19,8 @@ public class PositionExtractorTest {
 		extractor.getLimitOfPatch();
 		extractor.nbChucks();
 		extractor.countAddRemoveModify();
+		extractor.spreading();
+		extractor.spreading2();
 	}
 
 	@Test

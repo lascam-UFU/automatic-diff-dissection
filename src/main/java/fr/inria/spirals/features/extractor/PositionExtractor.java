@@ -4,6 +4,7 @@ import fr.inria.spirals.entities.Change;
 import fr.inria.spirals.entities.Changes;
 import fr.inria.spirals.features.analyzer.DiffAnalyzer;
 import fr.inria.spirals.main.Constants;
+import fr.inria.spirals.main.Utils;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -420,7 +421,9 @@ public class PositionExtractor extends AbstractExtractor {
 			}
 		}
 
-		try (BufferedReader br = new BufferedReader(new FileReader(new File("/" + pathFile)))) {
+		pathFile = Utils.getFullPath(root, pathFile);
+
+		try (BufferedReader br = new BufferedReader(new FileReader(new File(pathFile)))) {
 			List<String> output = new ArrayList<>();
 			String line;
 			while ((line = br.readLine()) != null) {
