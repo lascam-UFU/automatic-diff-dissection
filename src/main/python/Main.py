@@ -48,7 +48,7 @@ def create_diff(info, project, bug_id, output):
 def get_project_features(info, project, bug_id, diff, mode):
     path = os.path.join(project.lower(), "%s_%d" % (project.lower(), bug_id), getSource(info, bug_id))
     jar = os.path.join(root, "target", "patchclustering-0.1-SNAPSHOT-jar-with-dependencies.jar")
-    cmd = """java -jar %s -p %s -i %d -s %s -x %s -d %s -m %s""" % \
+    cmd = """java -jar %s -p %s --bugId %d --buggySourceDirectory %s --fixedSourceDirectory %s --diff %s -m %s""" % \
           (jar,
            project,
            bug_id,
