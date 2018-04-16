@@ -1,0 +1,29 @@
+diff --git a/src/main/java/org/joda/time/DateTimeZone.java b/src/main/java/org/joda/time/DateTimeZone.java
+index 5d89e34..855cad0 100644
+--- a/src/main/java/org/joda/time/DateTimeZone.java
++++ b/src/main/java/org/joda/time/DateTimeZone.java
+@@ -563,0 +564,5 @@ public abstract class DateTimeZone implements Serializable {
++            map.put("WET", "WET");
++            map.put("CET", "CET");
++            map.put("MET", "CET");
++            map.put("ECT", "CET");
++            map.put("EET", "EET");
+@@ -572 +577 @@ public abstract class DateTimeZone implements Serializable {
+-            map.put("IET", "America/Indianapolis");
++            map.put("IET", "America/Indiana/Indianapolis");
+@@ -575 +580 @@ public abstract class DateTimeZone implements Serializable {
+-            map.put("AGT", "America/Buenos_Aires");
++            map.put("AGT", "America/Argentina/Buenos_Aires");
+@@ -577,2 +581,0 @@ public abstract class DateTimeZone implements Serializable {
+-            map.put("WET", "Europe/London");
+-            map.put("ECT", "Europe/Paris");
+@@ -581 +583,0 @@ public abstract class DateTimeZone implements Serializable {
+-            map.put("EET", "Europe/Bucharest");
+@@ -583 +584,0 @@ public abstract class DateTimeZone implements Serializable {
+-            map.put("MET", "Asia/Tehran");
+@@ -586 +587 @@ public abstract class DateTimeZone implements Serializable {
+-            map.put("IST", "Asia/Calcutta");
++            map.put("IST", "Asia/Kolkata");
+@@ -588 +589 @@ public abstract class DateTimeZone implements Serializable {
+-            map.put("VST", "Asia/Saigon");
++            map.put("VST", "Asia/Ho_Chi_Minh");

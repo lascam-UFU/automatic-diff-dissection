@@ -1,152 +1,112 @@
 package fr.inria.spirals.features;
 
 import fr.inria.spirals.features.extractor.PositionExtractor;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class PositionExtractorTest {
 
 	@Test
-	@Ignore
-	public void closure24() {
-		PositionExtractor extractor = new PositionExtractor(
-				"/mnt/secondary/projects/closure/closure_1/src/",
-				"/mnt/secondary/projects_fix/closure/closure_1/src/",
-				PositionExtractorTest.class.getResource("/closure_24.diff").getPath());
-		extractor.setBugId("24");
-		extractor.setProject("Closure");
-		extractor.getLimitOfPatch();
-
-		extractor.nbChucks();
-
-		extractor.countAddRemoveModify();
-
-		extractor.spreading();
-	}
-
-	@Test
-	@Ignore
-	public void math4() {
-		PositionExtractor extractor = new PositionExtractor(
-				"/mnt/secondary/projects/math/math_4/src/main/java/",
-				"/mnt/secondary/projects_fix/math/math_4/src/main/java/",
-				PositionExtractorTest.class.getResource("/math_4.diff").getPath());
-		extractor.setBugId("4");
-		extractor.setProject("Math");
-		extractor.getLimitOfPatch();
-
-		extractor.nbChucks();
-
-		extractor.countAddRemoveModify();
-
-		extractor.spreading();
-	}
-
-	@Test
-	@Ignore
-	public void time12() {
-		PositionExtractor extractor = new PositionExtractor(
-				"/mnt/secondary/projects/time/time_12/src/main/java/",
-				"/mnt/secondary/projects_fix/time/time_12/src/main/java/",
-				PositionExtractorTest.class.getResource("/time_12.diff").getPath());
-		extractor.setBugId("12");
-		extractor.setProject("Time");
-		extractor.getLimitOfPatch();
-
-		extractor.nbChucks();
-
-		extractor.countAddRemoveModify();
-
-		extractor.spreading();
-	}
-
-	@Test
-	@Ignore
-	public void time23() {
-		PositionExtractor extractor = new PositionExtractor(
-				"/mnt/secondary/projects/time/time_23/src/main/java/",
-				"/mnt/secondary/projects_fix/time/time_23/src/main/java/",
-				PositionExtractorTest.class.getResource("/time_23.diff").getPath());
-		extractor.setBugId("23");
-		extractor.setProject("Time");
-		extractor.getLimitOfPatch();
-
-		extractor.nbChucks();
-
-		extractor.countAddRemoveModify();
-
-		extractor.spreading2();
-	}
-
-
-	@Test
-	@Ignore
 	public void chart1() {
-		PositionExtractor extractor = new PositionExtractor(
-				"/mnt/secondary/projects/chart/chart_1/source/",
-				"/mnt/secondary/projects_fix/chart/chart_1/source/",
-				PositionExtractorTest.class.getResource("/chart_1.diff").getPath());
+		String buggySourcePath = PositionExtractorTest.class.getResource("/chart_1/buggy-version").getPath();
+		String fixedSourcePath = PositionExtractorTest.class.getResource("/chart_1/fixed-version").getPath();
+		String diffPath = PositionExtractorTest.class.getResource("/chart_1/chart_1.diff").getPath();
+		PositionExtractor extractor = new PositionExtractor(buggySourcePath, fixedSourcePath, diffPath);
+		extractor.setProject("Chart");
 		extractor.setBugId("1");
-		extractor.setProject("Chart");
 		extractor.getLimitOfPatch();
-
 		extractor.nbChucks();
-
 		extractor.countAddRemoveModify();
 	}
 
 	@Test
-	@Ignore
 	public void chart4() {
-		PositionExtractor extractor = new PositionExtractor(
-				"/mnt/secondary/projects/chart/chart_4/source/",
-				"/mnt/secondary/projects_fix/chart/chart_4/source/",
-				PositionExtractorTest.class.getResource("/chart_4.diff").getPath());
+		String buggySourcePath = PositionExtractorTest.class.getResource("/chart_4/buggy-version").getPath();
+		String fixedSourcePath = PositionExtractorTest.class.getResource("/chart_4/fixed-version").getPath();
+		String diffPath = PositionExtractorTest.class.getResource("/chart_4/chart_4.diff").getPath();
+		PositionExtractor extractor = new PositionExtractor(buggySourcePath, fixedSourcePath, diffPath);
+		extractor.setProject("Chart");
 		extractor.setBugId("4");
-		extractor.setProject("Chart");
-
 		extractor.getLimitOfPatch();
-
 		extractor.nbChucks();
-
 		extractor.countAddRemoveModify();
-		extractor.spreading2();
 	}
 
-
 	@Test
-	@Ignore
 	public void chart18() {
-		PositionExtractor extractor = new PositionExtractor(
-				"/mnt/secondary/projects/chart/chart_18/source/",
-				"/mnt/secondary/projects_fix/chart/chart_18/source/",
-				PositionExtractorTest.class.getResource("/chart_18.diff").getPath());
-		extractor.setBugId("18");
+		String buggySourcePath = PositionExtractorTest.class.getResource("/chart_18/buggy-version").getPath();
+		String fixedSourcePath = PositionExtractorTest.class.getResource("/chart_18/fixed-version").getPath();
+		String diffPath = PositionExtractorTest.class.getResource("/chart_18/chart_18.diff").getPath();
+		PositionExtractor extractor = new PositionExtractor(buggySourcePath, fixedSourcePath, diffPath);
 		extractor.setProject("Chart");
-
+		extractor.setBugId("18");
 		extractor.getLimitOfPatch();
-
 		extractor.nbChucks();
-
 		extractor.countAddRemoveModify();
-		extractor.spreading2();
 	}
 
 	@Test
-	@Ignore
-	public void closure76() {
-		PositionExtractor extractor = new PositionExtractor(
-				"/mnt/secondary/projects/closure/closure_76/src/",
-				"/mnt/secondary/projects_fix/closure/closure_76/src/",
-				PositionExtractorTest.class.getResource("/closure_76.diff").getPath());
-		extractor.setBugId("76");
+	public void closure24() {
+		String buggySourcePath = PositionExtractorTest.class.getResource("/closure_24/buggy-version").getPath();
+		String fixedSourcePath = PositionExtractorTest.class.getResource("/closure_24/fixed-version").getPath();
+		String diffPath = PositionExtractorTest.class.getResource("/closure_24/closure_24.diff").getPath();
+		PositionExtractor extractor = new PositionExtractor(buggySourcePath, fixedSourcePath, diffPath);
 		extractor.setProject("Closure");
-
+		extractor.setBugId("24");
 		extractor.getLimitOfPatch();
-
 		extractor.nbChucks();
-
 		extractor.countAddRemoveModify();
-		extractor.spreading2();
 	}
+
+	@Test
+	public void closure76() {
+		String buggySourcePath = PositionExtractorTest.class.getResource("/closure_76/buggy-version").getPath();
+		String fixedSourcePath = PositionExtractorTest.class.getResource("/closure_76/fixed-version").getPath();
+		String diffPath = PositionExtractorTest.class.getResource("/closure_76/closure_76.diff").getPath();
+		PositionExtractor extractor = new PositionExtractor(buggySourcePath, fixedSourcePath, diffPath);
+		extractor.setProject("Closure");
+		extractor.setBugId("76");
+		extractor.getLimitOfPatch();
+		extractor.nbChucks();
+		extractor.countAddRemoveModify();
+	}
+
+	@Test
+	public void math4() {
+		String buggySourcePath = PositionExtractorTest.class.getResource("/math_4/buggy-version").getPath();
+		String fixedSourcePath = PositionExtractorTest.class.getResource("/math_4/fixed-version").getPath();
+		String diffPath = PositionExtractorTest.class.getResource("/math_4/math_4.diff").getPath();
+		PositionExtractor extractor = new PositionExtractor(buggySourcePath, fixedSourcePath, diffPath);
+		extractor.setProject("Math");
+		extractor.setBugId("4");
+		extractor.getLimitOfPatch();
+		extractor.nbChucks();
+		extractor.countAddRemoveModify();
+	}
+
+	@Test
+	public void time12() {
+		String buggySourcePath = PositionExtractorTest.class.getResource("/time_12/buggy-version").getPath();
+		String fixedSourcePath = PositionExtractorTest.class.getResource("/time_12/fixed-version").getPath();
+		String diffPath = PositionExtractorTest.class.getResource("/time_12/time_12.diff").getPath();
+		PositionExtractor extractor = new PositionExtractor(buggySourcePath, fixedSourcePath, diffPath);
+		extractor.setProject("Time");
+		extractor.setBugId("12");
+		extractor.getLimitOfPatch();
+		extractor.nbChucks();
+		extractor.countAddRemoveModify();
+	}
+
+	@Test
+	public void time23() {
+		String buggySourcePath = PositionExtractorTest.class.getResource("/time_23/buggy-version").getPath();
+		String fixedSourcePath = PositionExtractorTest.class.getResource("/time_23/fixed-version").getPath();
+		String diffPath = PositionExtractorTest.class.getResource("/time_23/time_23.diff").getPath();
+		PositionExtractor extractor = new PositionExtractor(buggySourcePath, fixedSourcePath, diffPath);
+		extractor.setProject("Time");
+		extractor.setBugId("23");
+		extractor.getLimitOfPatch();
+		extractor.nbChucks();
+		extractor.countAddRemoveModify();
+	}
+
 }
