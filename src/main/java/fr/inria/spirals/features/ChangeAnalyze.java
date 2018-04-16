@@ -1,6 +1,6 @@
 package fr.inria.spirals.features;
 
-import static fr.inria.spirals.features.extractor.DiffExtractor.CSV_SEPARATOR;
+import fr.inria.spirals.main.Constants;
 
 /**
  * Created by tdurieux
@@ -252,25 +252,25 @@ public class ChangeAnalyze {
 	
 	public String toCSV() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(getNbVariable()).append(CSV_SEPARATOR);
-		sb.append(getNbVariableAccess()).append(CSV_SEPARATOR);
-		sb.append(getNbInvocation()).append(CSV_SEPARATOR);
-		sb.append(getNbExternalCall()).append(CSV_SEPARATOR);
-		sb.append(getNbIf()).append(CSV_SEPARATOR);
-		sb.append(getNbLoop()).append(CSV_SEPARATOR);
-		sb.append(getNbType()).append(CSV_SEPARATOR);
-		sb.append(getNbComment()).append(CSV_SEPARATOR);
-		sb.append(getNbAssignment()).append(CSV_SEPARATOR);
-		sb.append(getNbBinary()).append(CSV_SEPARATOR);
-		sb.append(getNbUnary()).append(CSV_SEPARATOR);
-		sb.append(getNbConstructorCall()).append(CSV_SEPARATOR);
-		sb.append(getNbTry()).append(CSV_SEPARATOR);
-		sb.append(getNbLiteral()).append(CSV_SEPARATOR);
+		sb.append(getNbVariable()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbVariableAccess()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbInvocation()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbExternalCall()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbIf()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbLoop()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbType()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbComment()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbAssignment()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbBinary()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbUnary()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbConstructorCall()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbTry()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbLiteral()).append(Constants.CSV_SEPARATOR);
 
-		sb.append(getNbThrow()).append(CSV_SEPARATOR);
-		sb.append(getNbReturn()).append(CSV_SEPARATOR);
-		sb.append(getNbBreak()).append(CSV_SEPARATOR);
-		sb.append(getNbContinue()).append(CSV_SEPARATOR);
+		sb.append(getNbThrow()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbReturn()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbBreak()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNbContinue()).append(Constants.CSV_SEPARATOR);
 
 		return sb.toString();
 	}

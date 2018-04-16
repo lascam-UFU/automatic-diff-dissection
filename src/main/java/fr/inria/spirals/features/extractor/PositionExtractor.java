@@ -3,6 +3,7 @@ package fr.inria.spirals.features.extractor;
 import fr.inria.spirals.features.Change;
 import fr.inria.spirals.features.Changes;
 import fr.inria.spirals.features.DiffAnalyzer;
+import fr.inria.spirals.main.Constants;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,20 +19,10 @@ import java.util.Set;
 /**
  * Created by tdurieux
  */
-public class PositionExtractor {
-
-	public static final String CSV_SEPARATOR = "\t";
-
-	private String oldSourcePath;
-	private String newSourcePath;
-	private String diffPath;
-	private String project;
-	private String bugId;
+public class PositionExtractor extends AbstractExtractor {
 
 	public PositionExtractor(String oldSourcePath, String newSourcePath, String diffPath) {
-		this.oldSourcePath = oldSourcePath;
-		this.newSourcePath = newSourcePath;
-		this.diffPath = diffPath;
+		super(oldSourcePath, newSourcePath, diffPath);
 	}
 
 	public void extract() {
@@ -94,23 +85,23 @@ public class PositionExtractor {
 			int[] newfileLimits = newLimits.get(file);
 			int[] oldfileLimits = oldLimits.get(file);
 
-			sb.append(project).append(CSV_SEPARATOR);
-			sb.append(bugId).append(CSV_SEPARATOR);
-			sb.append(file).append(CSV_SEPARATOR);
+			sb.append(project).append(Constants.CSV_SEPARATOR);
+			sb.append(bugId).append(Constants.CSV_SEPARATOR);
+			sb.append(file).append(Constants.CSV_SEPARATOR);
 
 			if (newfileLimits != null) {
-				sb.append(newfileLimits[0]).append(CSV_SEPARATOR);
-				sb.append(newfileLimits[1]).append(CSV_SEPARATOR);
+				sb.append(newfileLimits[0]).append(Constants.CSV_SEPARATOR);
+				sb.append(newfileLimits[1]).append(Constants.CSV_SEPARATOR);
 			} else {
-				sb.append(-1).append(CSV_SEPARATOR);
-				sb.append(-1).append(CSV_SEPARATOR);
+				sb.append(-1).append(Constants.CSV_SEPARATOR);
+				sb.append(-1).append(Constants.CSV_SEPARATOR);
 			}
 			if (oldfileLimits != null) {
-				sb.append(oldfileLimits[0]).append(CSV_SEPARATOR);
-				sb.append(oldfileLimits[1]).append(CSV_SEPARATOR);
+				sb.append(oldfileLimits[0]).append(Constants.CSV_SEPARATOR);
+				sb.append(oldfileLimits[1]).append(Constants.CSV_SEPARATOR);
 			} else {
-				sb.append(-1).append(CSV_SEPARATOR);
-				sb.append(-1).append(CSV_SEPARATOR);
+				sb.append(-1).append(Constants.CSV_SEPARATOR);
+				sb.append(-1).append(Constants.CSV_SEPARATOR);
 			}
 
 			sb.append("\n");
@@ -218,23 +209,23 @@ public class PositionExtractor {
 
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(project).append(CSV_SEPARATOR);
-		sb.append(bugId).append(CSV_SEPARATOR);
+		sb.append(project).append(Constants.CSV_SEPARATOR);
+		sb.append(bugId).append(Constants.CSV_SEPARATOR);
 
 
-		sb.append(nbChucks()).append(CSV_SEPARATOR);
+		sb.append(nbChucks()).append(Constants.CSV_SEPARATOR);
 
 
-		sb.append(nbAdded).append(CSV_SEPARATOR);
-		sb.append(nbRemoved).append(CSV_SEPARATOR);
-		sb.append(nbModified).append(CSV_SEPARATOR);
+		sb.append(nbAdded).append(Constants.CSV_SEPARATOR);
+		sb.append(nbRemoved).append(Constants.CSV_SEPARATOR);
+		sb.append(nbModified).append(Constants.CSV_SEPARATOR);
 
 
-		sb.append(patchAddLines).append(CSV_SEPARATOR);
-		sb.append(patchRemLines).append(CSV_SEPARATOR);
-		sb.append(patchModLines).append(CSV_SEPARATOR);
+		sb.append(patchAddLines).append(Constants.CSV_SEPARATOR);
+		sb.append(patchRemLines).append(Constants.CSV_SEPARATOR);
+		sb.append(patchModLines).append(Constants.CSV_SEPARATOR);
 
-		sb.append(patchModLines + patchAddLines + patchRemLines).append(CSV_SEPARATOR);
+		sb.append(patchModLines + patchAddLines + patchRemLines).append(Constants.CSV_SEPARATOR);
 
 		System.out.println(sb);
 	}
@@ -262,12 +253,12 @@ public class PositionExtractor {
 			int lastUntouchedline = 0;
 			int lastTrimUntouchedLine = 0;
 
-			sb.append(project).append(CSV_SEPARATOR);
-			sb.append(bugId).append(CSV_SEPARATOR);
-			sb.append(file).append(CSV_SEPARATOR);
+			sb.append(project).append(Constants.CSV_SEPARATOR);
+			sb.append(bugId).append(Constants.CSV_SEPARATOR);
+			sb.append(file).append(Constants.CSV_SEPARATOR);
 
-			List<String> newFileContent = getFileContent(file, changes.getNewChanges(), this.newSourcePath);
-			List<String> oldFileContent = getFileContent(file, changes.getOldChanges(), this.oldSourcePath);
+			List<String> newFileContent = getFileContent(file, changes.getNewChanges(), this.fixedSourcePath);
+			List<String> oldFileContent = getFileContent(file, changes.getOldChanges(), this.buggySourcePath);
 
 			int lineDiff = 0;
 			boolean first = false;
@@ -307,8 +298,8 @@ public class PositionExtractor {
 					}
 				}
 			}
-			sb.append(lastUntouchedline).append(CSV_SEPARATOR);
-			sb.append(lastTrimUntouchedLine).append(CSV_SEPARATOR);
+			sb.append(lastUntouchedline).append(Constants.CSV_SEPARATOR);
+			sb.append(lastTrimUntouchedLine).append(Constants.CSV_SEPARATOR);
 			sb.append("\n");
 		}
 		System.out.println(sb);
@@ -357,12 +348,12 @@ public class PositionExtractor {
 			int[] newfileLimits = newLimits.get(file);
 			int[] oldfileLimits = oldLimits.get(file);
 
-			sb.append(project).append(CSV_SEPARATOR);
-			sb.append(bugId).append(CSV_SEPARATOR);
-			sb.append(file).append(CSV_SEPARATOR);
+			sb.append(project).append(Constants.CSV_SEPARATOR);
+			sb.append(bugId).append(Constants.CSV_SEPARATOR);
+			sb.append(file).append(Constants.CSV_SEPARATOR);
 
 			if (newfileLimits != null) {
-				List<String> fileContent = getFileContent(file, changes.getNewChanges(), this.newSourcePath);
+				List<String> fileContent = getFileContent(file, changes.getNewChanges(), this.fixedSourcePath);
 
 				int line = newfileLimits[0];
 				int endLine = newfileLimits[1];
@@ -380,14 +371,14 @@ public class PositionExtractor {
 						}
 					}
 				}
-				sb.append(untouchedLine).append(CSV_SEPARATOR);
-				sb.append(trimUntouchedLine).append(CSV_SEPARATOR);
+				sb.append(untouchedLine).append(Constants.CSV_SEPARATOR);
+				sb.append(trimUntouchedLine).append(Constants.CSV_SEPARATOR);
 			} else {
-				sb.append(-1).append(CSV_SEPARATOR);
+				sb.append(-1).append(Constants.CSV_SEPARATOR);
 			}
 
 			if (oldfileLimits != null) {
-				List<String> fileContent = getFileContent(file, changes.getOldChanges(), this.oldSourcePath);
+				List<String> fileContent = getFileContent(file, changes.getOldChanges(), this.buggySourcePath);
 
 				int line = oldfileLimits[0];
 				int endLine = oldfileLimits[1];
@@ -405,10 +396,10 @@ public class PositionExtractor {
 						}
 					}
 				}
-				sb.append(untouchedLine).append(CSV_SEPARATOR);
-				sb.append(trimUntouchedLine).append(CSV_SEPARATOR);
+				sb.append(untouchedLine).append(Constants.CSV_SEPARATOR);
+				sb.append(trimUntouchedLine).append(Constants.CSV_SEPARATOR);
 			} else {
-				sb.append(-1).append(CSV_SEPARATOR);
+				sb.append(-1).append(Constants.CSV_SEPARATOR);
 			}
 			sb.append("\n");
 		}
@@ -544,19 +535,4 @@ public class PositionExtractor {
 		}
 	}
 
-	public void setProject(String project) {
-		this.project = project;
-	}
-
-	public String getProject() {
-		return project;
-	}
-
-	public void setBugId(String bugId) {
-		this.bugId = bugId;
-	}
-
-	public String getBugId() {
-		return bugId;
-	}
 }

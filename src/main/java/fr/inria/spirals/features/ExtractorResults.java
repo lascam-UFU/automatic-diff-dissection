@@ -1,6 +1,6 @@
 package fr.inria.spirals.features;
 
-import static fr.inria.spirals.features.extractor.DiffExtractor.CSV_SEPARATOR;
+import fr.inria.spirals.main.Constants;
 
 /**
  * Created by tdurieux
@@ -51,13 +51,13 @@ public class ExtractorResults {
 
 	public String toCSV() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(project).append(CSV_SEPARATOR);
-		sb.append(bugId).append(CSV_SEPARATOR);
-		sb.append(nbFiles).append(CSV_SEPARATOR);
+		sb.append(project).append(Constants.CSV_SEPARATOR);
+		sb.append(bugId).append(Constants.CSV_SEPARATOR);
+		sb.append(nbFiles).append(Constants.CSV_SEPARATOR);
 		// nb removed lines
-		sb.append(getOldAnalyze().getNbChange()).append(CSV_SEPARATOR);
+		sb.append(getOldAnalyze().getNbChange()).append(Constants.CSV_SEPARATOR);
 		// nb added lines
-		sb.append(getNewAnalyze().getNbChange()).append(CSV_SEPARATOR);
+		sb.append(getNewAnalyze().getNbChange()).append(Constants.CSV_SEPARATOR);
 
 		sb.append(getOldAnalyze().toCSV());
 		sb.append(getNewAnalyze().toCSV());

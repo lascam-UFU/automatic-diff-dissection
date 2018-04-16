@@ -17,20 +17,10 @@ import java.util.List;
 /**
  * Created by tdurieux
  */
-public class DiffExtractor {
-
-	public static final String CSV_SEPARATOR = "\t";
-
-	private String oldSourcePath;
-	private String newSourcePath;
-	private String diffPath;
-	private String project;
-	private String bugId;
+public class DiffExtractor extends AbstractExtractor {
 
 	public DiffExtractor(String oldSourcePath, String newSourcePath, String diffPath) {
-		this.oldSourcePath = oldSourcePath;
-		this.newSourcePath = newSourcePath;
-		this.diffPath = diffPath;
+		super(oldSourcePath, newSourcePath, diffPath);
 	}
 
 	public ExtractorResults extract() {
@@ -39,14 +29,14 @@ public class DiffExtractor {
 
 		Launcher oldSpoon = null;
 		if (!changes.getChangedOldFiles().isEmpty()) {
-			oldSpoon = initSpoon(oldSourcePath, changes.getChangedOldFiles());
+			oldSpoon = initSpoon(buggySourcePath, changes.getChangedOldFiles());
 		}
 
 		final ChangeAnalyze oldAnalyze = getChangeAnalyze(changes.getOldChanges(), oldSpoon);
 
 		Launcher newSpoon = null;
 		if (!changes.getChangedNewFiles().isEmpty()) {
-			newSpoon = initSpoon(newSourcePath, changes.getChangedNewFiles());
+			newSpoon = initSpoon(fixedSourcePath, changes.getChangedNewFiles());
 		}
 
 		final ChangeAnalyze newAnalyze = getChangeAnalyze(changes.getNewChanges(), newSpoon);
@@ -124,19 +114,4 @@ public class DiffExtractor {
 		return spoon;
 	}
 
-	public void setProject(String project) {
-		this.project = project;
-	}
-
-	public String getProject() {
-		return project;
-	}
-
-	public void setBugId(String bugId) {
-		this.bugId = bugId;
-	}
-
-	public String getBugId() {
-		return bugId;
-	}
 }

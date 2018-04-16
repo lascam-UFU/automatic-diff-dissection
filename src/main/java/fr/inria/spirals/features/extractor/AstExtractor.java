@@ -22,25 +22,17 @@ import java.util.Map;
 /**
  * Created by tdurieux
  */
-public class AstExtractor {
-
-	public static final String CSV_SEPARATOR = "\t";
-
-	private String oldSourcePath;
-	private String diffPath;
-	private String project;
-	private String bugId;
+public class AstExtractor extends AbstractExtractor {
 
 	public AstExtractor(String oldSourcePath, String diffPath) {
-		this.oldSourcePath = oldSourcePath;
-		this.diffPath = diffPath;
+		super(oldSourcePath, diffPath);
 	}
 
 	public ChangeAnalyze extract() {
 		DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
 
-		Map<String, List<String>> originalFiles = diffAnalyzer.getOriginalFiles(oldSourcePath);
-		Map<String, List<String>> patchedFiles = diffAnalyzer.getPatchedFiles(oldSourcePath);
+		Map<String, List<String>> originalFiles = diffAnalyzer.getOriginalFiles(buggySourcePath);
+		Map<String, List<String>> patchedFiles = diffAnalyzer.getPatchedFiles(buggySourcePath);
 
 		Launcher oldSpoon = initSpoon(originalFiles);
 		Launcher newSpoon = initSpoon(patchedFiles);
@@ -117,19 +109,4 @@ public class AstExtractor {
 		return spoon;
 	}
 
-	public void setProject(String project) {
-		this.project = project;
-	}
-
-	public String getProject() {
-		return project;
-	}
-
-	public void setBugId(String bugId) {
-		this.bugId = bugId;
-	}
-
-	public String getBugId() {
-		return bugId;
-	}
 }
