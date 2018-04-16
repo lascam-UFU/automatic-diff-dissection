@@ -23,15 +23,16 @@ public class Launcher {
 		JSAP jsap = this.initJSAP();
 		JSAPResult arguments = this.parseArguments(args, jsap);
 		if (arguments == null) {
-			return;
+			System.exit(-1);
 		}
 		this.initConfig(arguments);
 	}
 
 	private void showUsage(JSAP jsap) {
 		System.err.println();
-		System.err.println("Usage: java -jar patchclustering.jar");
-		System.err.println("                          " + jsap.getUsage());
+		System.err.println("Usage: java -jar patchclustering.jar <options>");
+		System.err.println();
+		System.err.println("Options:");
 		System.err.println();
 		System.err.println(jsap.getHelp());
 	}
@@ -59,7 +60,7 @@ public class Launcher {
 		opt.setAllowMultipleDeclarations(false);
 		opt.setUsageName("math,lang,time,chart,closure");
 		opt.setStringParser(JSAP.STRING_PARSER);
-		opt.setHelp("The project name");
+		opt.setHelp("The name of the project.");
 		jsap.registerParameter(opt);
 
 		opt = new FlaggedOption("bugId");
@@ -67,10 +68,8 @@ public class Launcher {
 		opt.setLongFlag("bugId");
 		opt.setRequired(true);
 		opt.setAllowMultipleDeclarations(false);
-		opt.setUsageName("");
-		opt.setDefault("normal");
 		opt.setStringParser(JSAP.STRING_PARSER);
-		opt.setHelp("The bug id of the defects4j dataset");
+		opt.setHelp("The bug id.");
 		jsap.registerParameter(opt);
 
 		opt = new FlaggedOption("outputDirectory");
@@ -78,36 +77,32 @@ public class Launcher {
 		opt.setLongFlag("output");
 		opt.setRequired(false);
 		opt.setAllowMultipleDeclarations(false);
-		opt.setUsageName("");
 		opt.setStringParser(JSAP.STRING_PARSER);
-		opt.setHelp("The path to the evaluation output directory.");
-		//jsap.registerParameter(opt);
+		opt.setHelp("The path to output the results.");
+		jsap.registerParameter(opt);
 
 		opt = new FlaggedOption("buggySourceDirectory");
 		opt.setLongFlag("buggySourceDirectory");
 		opt.setRequired(true);
 		opt.setAllowMultipleDeclarations(false);
-		opt.setUsageName("");
 		opt.setStringParser(JSAP.STRING_PARSER);
-		opt.setHelp("The path to the old source directory of the project.");
+		opt.setHelp("The path to the buggy source code directory of the project.");
 		jsap.registerParameter(opt);
 
 		opt = new FlaggedOption("fixedSourceDirectory");
 		opt.setLongFlag("fixedSourceDirectory");
 		opt.setRequired(true);
 		opt.setAllowMultipleDeclarations(false);
-		opt.setUsageName("");
 		opt.setStringParser(JSAP.STRING_PARSER);
-		opt.setHelp("The path to the new source directory of the project.");
+		opt.setHelp("The path to the fixed source code directory of the project.");
 		jsap.registerParameter(opt);
 
 		opt = new FlaggedOption("diffPath");
 		opt.setLongFlag("diff");
 		opt.setRequired(true);
 		opt.setAllowMultipleDeclarations(true);
-		opt.setUsageName("");
 		opt.setStringParser(JSAP.STRING_PARSER);
-		opt.setHelp("The path to the diff.");
+		opt.setHelp("The path to the diff file.");
 		jsap.registerParameter(opt);
 
 		String launcherModeValues = "";
@@ -121,9 +116,9 @@ public class Launcher {
 		opt.setLongFlag("launcherMode");
 		opt.setRequired(true);
 		opt.setAllowMultipleDeclarations(false);
-		opt.setUsageName("");
+		opt.setUsageName(launcherModeValues);
 		opt.setStringParser(EnumeratedStringParser.getParser(launcherModeValues));
-		opt.setHelp("The extraction mode");
+		opt.setHelp("The launcher mode.");
 		jsap.registerParameter(opt);
 
 		return jsap;
