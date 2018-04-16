@@ -2,6 +2,7 @@ package fr.inria.spirals.features.analyzer;
 
 import fr.inria.spirals.entities.Change;
 import fr.inria.spirals.entities.Changes;
+import fr.inria.spirals.main.Utils;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.jgit.diff.EditList;
 import org.eclipse.jgit.diff.RawText;
@@ -9,9 +10,7 @@ import org.eclipse.jgit.patch.FileHeader;
 import org.eclipse.jgit.patch.HunkHeader;
 import org.eclipse.jgit.patch.Patch;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
@@ -71,19 +70,17 @@ public class DiffAnalyzer {
 			if (!fileName.endsWith(".java")) {
 				continue;
 			}
-			fileName = getFullPath(projectRoot, fileName);
-			output.put(fileName, fileToLines(fileName));
+			fileName = Utils.getFullPath(projectRoot, fileName);
+			output.put(fileName, Utils.fileToLines(fileName));
 		}
 		return output;
 	}
-
-
 
 	public Map<String, List<String>> getPatchedFiles(String projectRoot) {
 		Map<String, List<String>> output = getOriginalFiles(projectRoot);
 		for (int i = 0; i < patch.getFiles().size(); i++) {
 			FileHeader fileHeader = patch.getFiles().get(i);
-			String fileName = getFullPath(projectRoot, fileHeader.getOldPath().trim());
+			String fileName = Utils.getFullPath(projectRoot, fileHeader.getOldPath().trim());
 			if (!output.containsKey(fileName)) {
 				continue;
 			}
@@ -127,32 +124,8 @@ public class DiffAnalyzer {
 		return output;
 	}
 
-	private String getFullPath(String projectRoot, String fileName) {
-		if (!fileName.startsWith("/")) {
-			fileName = "/" + fileName;
-		}
-		if (!fileName.contains(projectRoot)) {
-			fileName = projectRoot + fileName;
-		}
-		return fileName;
-	}
-
-	// Helper method for get the file content
-	private List<String> fileToLines(String filename) {
-		List<String> lines = new LinkedList<String>();
-		String line = "";
-		try {
-			BufferedReader in = new BufferedReader(new FileReader(filename));
-			while ((line = in.readLine()) != null) {
-				lines.add(line);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return lines;
-	}
-
 	public int getNbFiles() {
 		return nbFiles;
 	}
+
 }
