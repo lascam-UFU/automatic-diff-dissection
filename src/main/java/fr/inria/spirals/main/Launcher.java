@@ -52,66 +52,63 @@ public class Launcher {
 	private JSAP initJSAP() throws JSAPException {
 		JSAP jsap = new JSAP();
 
-		FlaggedOption projectOpt = new FlaggedOption("project");
-		projectOpt.setRequired(true);
-		projectOpt.setAllowMultipleDeclarations(false);
-		projectOpt.setLongFlag("project");
-		projectOpt.setShortFlag('p');
-		projectOpt.setUsageName("math,lang,time,chart,closure");
-		projectOpt.setStringParser(JSAP.STRING_PARSER);
-		projectOpt.setHelp("The project name");
-		jsap.registerParameter(projectOpt);
+		FlaggedOption opt = new FlaggedOption("project");
+		opt.setShortFlag('p');
+		opt.setLongFlag("project");
+		opt.setRequired(true);
+		opt.setAllowMultipleDeclarations(false);
+		opt.setUsageName("math,lang,time,chart,closure");
+		opt.setStringParser(JSAP.STRING_PARSER);
+		opt.setHelp("The project name");
+		jsap.registerParameter(opt);
 
-		FlaggedOption bugIdOpt = new FlaggedOption("bugId");
-		bugIdOpt.setRequired(true);
-		bugIdOpt.setAllowMultipleDeclarations(false);
-		bugIdOpt.setLongFlag("id");
-		bugIdOpt.setShortFlag('i');
-		bugIdOpt.setUsageName("");
-		bugIdOpt.setDefault("normal");
-		bugIdOpt.setStringParser(JSAP.STRING_PARSER);
-		bugIdOpt.setHelp("The bug id of the defects4j dataset");
-		jsap.registerParameter(bugIdOpt);
+		opt = new FlaggedOption("bugId");
+		opt.setShortFlag('b');
+		opt.setLongFlag("bugId");
+		opt.setRequired(true);
+		opt.setAllowMultipleDeclarations(false);
+		opt.setUsageName("");
+		opt.setDefault("normal");
+		opt.setStringParser(JSAP.STRING_PARSER);
+		opt.setHelp("The bug id of the defects4j dataset");
+		jsap.registerParameter(opt);
 
-		FlaggedOption outputDirectoryOpt = new FlaggedOption("outputDirectory");
-		outputDirectoryOpt.setRequired(false);
-		outputDirectoryOpt.setAllowMultipleDeclarations(false);
-		outputDirectoryOpt.setLongFlag("output");
-		outputDirectoryOpt.setShortFlag('o');
-		outputDirectoryOpt.setUsageName("");
-		outputDirectoryOpt.setStringParser(JSAP.STRING_PARSER);
-		outputDirectoryOpt.setHelp("The path to the evaluation output directory.");
-		//jsap.registerParameter(outputDirectoryOpt);
+		opt = new FlaggedOption("outputDirectory");
+		opt.setShortFlag('o');
+		opt.setLongFlag("output");
+		opt.setRequired(false);
+		opt.setAllowMultipleDeclarations(false);
+		opt.setUsageName("");
+		opt.setStringParser(JSAP.STRING_PARSER);
+		opt.setHelp("The path to the evaluation output directory.");
+		//jsap.registerParameter(opt);
 
-		FlaggedOption sourceDirectoryOpt = new FlaggedOption("buggySourceDirectory");
-		sourceDirectoryOpt.setRequired(true);
-		sourceDirectoryOpt.setAllowMultipleDeclarations(false);
-		sourceDirectoryOpt.setLongFlag("oldSource");
-		sourceDirectoryOpt.setShortFlag('s');
-		sourceDirectoryOpt.setUsageName("");
-		sourceDirectoryOpt.setStringParser(JSAP.STRING_PARSER);
-		sourceDirectoryOpt.setHelp("The path to the old source directory of the project.");
-		jsap.registerParameter(sourceDirectoryOpt);
+		opt = new FlaggedOption("buggySourceDirectory");
+		opt.setLongFlag("buggySourceDirectory");
+		opt.setRequired(true);
+		opt.setAllowMultipleDeclarations(false);
+		opt.setUsageName("");
+		opt.setStringParser(JSAP.STRING_PARSER);
+		opt.setHelp("The path to the old source directory of the project.");
+		jsap.registerParameter(opt);
 
-		FlaggedOption newSourceDirectoryOpt = new FlaggedOption("fixedSourceDirectory");
-		newSourceDirectoryOpt.setRequired(true);
-		newSourceDirectoryOpt.setAllowMultipleDeclarations(false);
-		newSourceDirectoryOpt.setLongFlag("newSource");
-		newSourceDirectoryOpt.setShortFlag('x');
-		newSourceDirectoryOpt.setUsageName("");
-		newSourceDirectoryOpt.setStringParser(JSAP.STRING_PARSER);
-		newSourceDirectoryOpt.setHelp("The path to the new source directory of the project.");
-		jsap.registerParameter(newSourceDirectoryOpt);
+		opt = new FlaggedOption("fixedSourceDirectory");
+		opt.setLongFlag("fixedSourceDirectory");
+		opt.setRequired(true);
+		opt.setAllowMultipleDeclarations(false);
+		opt.setUsageName("");
+		opt.setStringParser(JSAP.STRING_PARSER);
+		opt.setHelp("The path to the new source directory of the project.");
+		jsap.registerParameter(opt);
 
-		FlaggedOption diffPathOpt = new FlaggedOption("diffPath");
-		diffPathOpt.setRequired(true);
-		diffPathOpt.setAllowMultipleDeclarations(true);
-		diffPathOpt.setLongFlag("diff");
-		diffPathOpt.setShortFlag('d');
-		diffPathOpt.setUsageName("");
-		diffPathOpt.setStringParser(JSAP.STRING_PARSER);
-		diffPathOpt.setHelp("The path to the diff.");
-		jsap.registerParameter(diffPathOpt);
+		opt = new FlaggedOption("diffPath");
+		opt.setLongFlag("diff");
+		opt.setRequired(true);
+		opt.setAllowMultipleDeclarations(true);
+		opt.setUsageName("");
+		opt.setStringParser(JSAP.STRING_PARSER);
+		opt.setHelp("The path to the diff.");
+		jsap.registerParameter(opt);
 
 		String launcherModeValues = "";
 		for (LauncherMode mode : LauncherMode.values()) {
@@ -119,15 +116,15 @@ public class Launcher {
 		}
 		launcherModeValues = launcherModeValues.substring(0, launcherModeValues.length()-1);
 
-		FlaggedOption modeOpt = new FlaggedOption("launcherMode");
-		modeOpt.setRequired(true);
-		modeOpt.setAllowMultipleDeclarations(false);
-		modeOpt.setLongFlag("mode");
-		modeOpt.setShortFlag('m');
-		modeOpt.setUsageName("");
-		modeOpt.setStringParser(EnumeratedStringParser.getParser(launcherModeValues));
-		modeOpt.setHelp("The extraction mode");
-		jsap.registerParameter(modeOpt);
+		opt = new FlaggedOption("launcherMode");
+		opt.setShortFlag('m');
+		opt.setLongFlag("launcherMode");
+		opt.setRequired(true);
+		opt.setAllowMultipleDeclarations(false);
+		opt.setUsageName("");
+		opt.setStringParser(EnumeratedStringParser.getParser(launcherModeValues));
+		opt.setHelp("The extraction mode");
+		jsap.registerParameter(opt);
 
 		return jsap;
 	}
