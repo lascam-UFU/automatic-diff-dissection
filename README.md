@@ -1,4 +1,4 @@
-# Patch Clustering [![Build Status](https://travis-ci.org/tdurieux/patch-clustering.svg?branch=master)](https://travis-ci.org/tdurieux/patch-clustering)
+# Patch Clustering [![Build Status](https://travis-ci.org/tdurieux/patch-clustering.svg?branch=master)](https://travis-ci.org/tdurieux/patch-clustering) [![Coverage Status](https://coveralls.io/repos/github/tdurieux/patch-clustering/badge.svg?branch=master)](https://coveralls.io/github/tdurieux/patch-clustering?branch=master)
 
 This project extracts features from patches.
 
