@@ -1,7 +1,7 @@
 package fr.inria.spirals.features.extractor;
 
 import fr.inria.spirals.entities.Change;
-import fr.inria.spirals.entities.ChangeAnalyze;
+import fr.inria.spirals.entities.RepairActions;
 import fr.inria.spirals.entities.Changes;
 import fr.inria.spirals.features.ExtractorResults;
 import fr.inria.spirals.features.analyzer.DiffAnalyzer;
@@ -32,35 +32,35 @@ public class DiffExtractor extends AbstractExtractor {
 			oldSpoon = initSpoon(buggySourcePath, changes.getChangedOldFiles());
 		}
 
-		final ChangeAnalyze oldAnalyze = getChangeAnalyze(changes.getOldChanges(), oldSpoon);
+		final RepairActions oldRepairActions = getRepairActions(changes.getOldChanges(), oldSpoon);
 
 		Launcher newSpoon = null;
 		if (!changes.getChangedNewFiles().isEmpty()) {
 			newSpoon = initSpoon(fixedSourcePath, changes.getChangedNewFiles());
 		}
 
-		final ChangeAnalyze newAnalyze = getChangeAnalyze(changes.getNewChanges(), newSpoon);
+		final RepairActions newRepairActions = getRepairActions(changes.getNewChanges(), newSpoon);
 
-		ExtractorResults extractorResults = new ExtractorResults(oldAnalyze, newAnalyze);
+		ExtractorResults extractorResults = new ExtractorResults(oldRepairActions, newRepairActions);
 		extractorResults.setNbFiles(diffAnalyzer.getNbFiles());
 		return extractorResults;
 	}
 
-	private ChangeAnalyze getChangeAnalyze(final List<Change> changes, Launcher spoon) {
-		final ChangeAnalyze analyze = new ChangeAnalyze();
+	private RepairActions getRepairActions(final List<Change> changes, Launcher spoon) {
+		final RepairActions repairActions = new RepairActions();
 
 		for (int i = 0; i < changes.size(); i++) {
 			Change change = changes.get(i);
-			analyze.incNbChange(change.getLength());
+			repairActions.incNbChange(change.getLength());
 			if (spoon != null) {
-				getChangeAnalyze(change, spoon, analyze);
+				getRepairActions(change, spoon, repairActions);
 			}
 		}
-		return analyze;
+		return repairActions;
 	}
 
-	private void getChangeAnalyze(final Change change, Launcher spoon,
-			final ChangeAnalyze analyze) {
+	private void getRepairActions(final Change change, Launcher spoon,
+			final RepairActions repairActions) {
 		spoon.getModel().getRootPackage().accept(new CtScanner() {
 			@Override
 			public void scan(CtElement e) {
@@ -77,10 +77,10 @@ public class DiffExtractor extends AbstractExtractor {
 						int elementLine = e.getPosition().getLine();
 						int endLine = e.getPosition().getEndLine();
 						if (e instanceof CtTry && elementLine >= change.getLine() && elementLine <= change.getEndLine()) {
-							analyze.incNbTry();
+							repairActions.incNbTry();
 						}
 						if (elementLine >= change.getLine() && endLine <= change.getEndLine()) {
-							new ElementAnalyzer(e).analyze(analyze);
+							new ElementAnalyzer(e).analyze(repairActions);
 						} else if ((elementLine <= change.getLine() && endLine >= change.getEndLine()) ||
 								elementLine >= change.getLine() && elementLine < change.getEndLine() && endLine >= change.getEndLine()) {
 							super.scan(e);

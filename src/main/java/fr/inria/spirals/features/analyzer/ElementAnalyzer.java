@@ -1,6 +1,6 @@
 package fr.inria.spirals.features.analyzer;
 
-import fr.inria.spirals.entities.ChangeAnalyze;
+import fr.inria.spirals.entities.RepairActions;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtType;
@@ -18,7 +18,7 @@ public class ElementAnalyzer {
 		this.element = element;
 	}
 
-	public ChangeAnalyze analyze(final ChangeAnalyze output) {
+	public RepairActions analyze(final RepairActions output) {
 		element.accept(new CtScanner() {
 			@Override
 			protected void enter(CtElement e) {

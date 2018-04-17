@@ -5,7 +5,7 @@ import fr.inria.spirals.main.Constants;
 /**
  * Created by tdurieux
  */
-public class ChangeAnalyze {
+public class RepairActions {
 	private int nbVariable;
 	private int nbVariableAccess;
 	private int nbInvocation;

@@ -1,29 +1,29 @@
 package fr.inria.spirals.features;
 
-import fr.inria.spirals.entities.ChangeAnalyze;
+import fr.inria.spirals.entities.RepairActions;
 import fr.inria.spirals.main.Constants;
 
 /**
  * Created by tdurieux
  */
 public class ExtractorResults {
-	private ChangeAnalyze oldAnalyze;
-	private ChangeAnalyze newAnalyze;
+	private RepairActions oldRepairActions;
+	private RepairActions newRepairActions;
 	private int nbFiles;
 	private String project;
 	private String bugId;
 
-	public ExtractorResults(ChangeAnalyze oldAnalyze, ChangeAnalyze newAnalyze) {
-		this.oldAnalyze = oldAnalyze;
-		this.newAnalyze = newAnalyze;
+	public ExtractorResults(RepairActions oldRepairActions, RepairActions newRepairActions) {
+		this.oldRepairActions = oldRepairActions;
+		this.newRepairActions = newRepairActions;
 	}
 
-	public ChangeAnalyze getNewAnalyze() {
-		return newAnalyze;
+	public RepairActions getNewRepairActions() {
+		return newRepairActions;
 	}
 
-	public ChangeAnalyze getOldAnalyze() {
-		return oldAnalyze;
+	public RepairActions getOldRepairActions() {
+		return oldRepairActions;
 	}
 
 	public int getNbFiles() {
@@ -56,12 +56,12 @@ public class ExtractorResults {
 		sb.append(bugId).append(Constants.CSV_SEPARATOR);
 		sb.append(nbFiles).append(Constants.CSV_SEPARATOR);
 		// nb removed lines
-		sb.append(getOldAnalyze().getNbChange()).append(Constants.CSV_SEPARATOR);
+		sb.append(getOldRepairActions().getNbChange()).append(Constants.CSV_SEPARATOR);
 		// nb added lines
-		sb.append(getNewAnalyze().getNbChange()).append(Constants.CSV_SEPARATOR);
+		sb.append(getNewRepairActions().getNbChange()).append(Constants.CSV_SEPARATOR);
 
-		sb.append(getOldAnalyze().toCSV());
-		sb.append(getNewAnalyze().toCSV());
+		sb.append(getOldRepairActions().toCSV());
+		sb.append(getNewRepairActions().toCSV());
 		return sb.toString();
 	}
 }

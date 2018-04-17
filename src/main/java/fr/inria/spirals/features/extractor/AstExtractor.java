@@ -1,6 +1,6 @@
 package fr.inria.spirals.features.extractor;
 
-import fr.inria.spirals.entities.ChangeAnalyze;
+import fr.inria.spirals.entities.RepairActions;
 import fr.inria.spirals.features.analyzer.DiffAnalyzer;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;
@@ -24,7 +24,7 @@ public class AstExtractor extends AbstractExtractor {
 		super(oldSourcePath, diffPath);
 	}
 
-	public ChangeAnalyze extract() {
+	public RepairActions extract() {
 		DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
 
 		Map<String, List<String>> originalFiles = diffAnalyzer.getOriginalFiles(buggySourcePath);
@@ -38,15 +38,15 @@ public class AstExtractor extends AbstractExtractor {
 
 
 
-	private ChangeAnalyze getAstDiff(Launcher oldSpoon, Launcher newSpoon) {
+	private RepairActions getAstDiff(Launcher oldSpoon, Launcher newSpoon) {
 		AstComparator diff = new AstComparator();
 
 		Diff editScript = diff.compare(oldSpoon.getFactory().getModel().getRootPackage(), newSpoon.getFactory().getModel().getRootPackage());
-		return getChangeAnalyze(editScript);
+		return getRepairActions(editScript);
 	}
 
-	private ChangeAnalyze getChangeAnalyze(Diff editScript) {
-		final ChangeAnalyze analyze = new ChangeAnalyze();
+	private RepairActions getRepairActions(Diff editScript) {
+		final RepairActions repairActions = new RepairActions();
 		for (int i = 0; i < editScript.getAllOperations().size(); i++) {
 			Operation operation = editScript.getAllOperations().get(i);
 			if (operation instanceof MoveOperation) {
@@ -74,7 +74,7 @@ public class AstExtractor extends AbstractExtractor {
 			}
 		}
 
-		return analyze;
+		return repairActions;
 	}
 
 	private String printElement(Environment env, CtElement element) {
