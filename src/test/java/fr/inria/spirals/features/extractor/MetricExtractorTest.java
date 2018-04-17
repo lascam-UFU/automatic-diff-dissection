@@ -1,7 +1,6 @@
-package fr.inria.spirals.features;
+package fr.inria.spirals.features.extractor;
 
 import fr.inria.spirals.entities.Metrics;
-import fr.inria.spirals.features.extractor.MetricExtractor;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

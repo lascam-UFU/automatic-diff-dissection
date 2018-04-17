@@ -1,6 +1,5 @@
-package fr.inria.spirals.features;
+package fr.inria.spirals.features.extractor;
 
-import fr.inria.spirals.features.extractor.AstExtractor;
 import org.junit.Test;
 
 /**
