@@ -1,7 +1,5 @@
 package fr.inria.spirals.features.analyzer;
 
-import fr.inria.spirals.entities.Change;
-import fr.inria.spirals.entities.Changes;
 import fr.inria.spirals.main.Utils;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.jgit.diff.EditList;
@@ -12,7 +10,10 @@ import org.eclipse.jgit.patch.Patch;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tdurieux

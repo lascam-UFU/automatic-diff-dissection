@@ -1,15 +1,18 @@
 package fr.inria.spirals.features.extractor;
 
-import fr.inria.spirals.entities.Change;
-import fr.inria.spirals.entities.Changes;
 import fr.inria.spirals.entities.Metrics;
+import fr.inria.spirals.features.analyzer.Change;
+import fr.inria.spirals.features.analyzer.Changes;
 import fr.inria.spirals.features.analyzer.DiffAnalyzer;
 import fr.inria.spirals.main.Utils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by tdurieux

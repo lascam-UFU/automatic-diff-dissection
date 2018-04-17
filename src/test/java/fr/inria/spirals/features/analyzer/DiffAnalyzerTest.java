@@ -1,6 +1,5 @@
 package fr.inria.spirals.features.analyzer;
 
-import fr.inria.spirals.entities.Changes;
 import org.junit.Test;
 
 import java.util.*;

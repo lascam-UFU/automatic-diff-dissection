@@ -1,6 +1,5 @@
 package fr.inria.spirals.features.extractor;
 
-import fr.inria.spirals.entities.RepairActions;
 import fr.inria.spirals.main.Config;
 import org.junit.Test;
 
