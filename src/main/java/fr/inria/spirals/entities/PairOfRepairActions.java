@@ -1,6 +1,5 @@
 package fr.inria.spirals.entities;
 
-import fr.inria.spirals.entities.RepairActions;
 import fr.inria.spirals.main.Config;
 import fr.inria.spirals.main.Constants;
 
