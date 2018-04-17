@@ -143,13 +143,9 @@ public class Launcher {
                         this.config.getBuggySourceDirectoryPath(),
                         this.config.getFixedSourceDirectoryPath(),
                         this.config.getDiffPath());
-                extractor.setProject(this.config.getProject());
-                extractor.setBugId(this.config.getBugId());
 
                 ExtractorResults extractorResults = extractor.extract();
                 if (extractorResults != null) {
-                    extractorResults.setProject(this.config.getProject());
-                    extractorResults.setBugId(this.config.getBugId());
                     System.out.println(extractorResults.toCSV());
                 }
                 break;
@@ -157,8 +153,6 @@ public class Launcher {
                 AstExtractor astExtractor = new AstExtractor(
                         this.config.getBuggySourceDirectoryPath(),
                         this.config.getDiffPath());
-                astExtractor.setProject(this.config.getProject());
-                astExtractor.setBugId(this.config.getBugId());
 
                 astExtractor.extract();
                 break;
@@ -167,8 +161,6 @@ public class Launcher {
                         this.config.getBuggySourceDirectoryPath(),
                         this.config.getFixedSourceDirectoryPath(),
                         this.config.getDiffPath());
-                metricsExtractor.setProject(this.config.getProject());
-                metricsExtractor.setBugId(this.config.getBugId());
 
                 Metrics metrics = metricsExtractor.extract();
                 System.out.println(metrics.toString());
