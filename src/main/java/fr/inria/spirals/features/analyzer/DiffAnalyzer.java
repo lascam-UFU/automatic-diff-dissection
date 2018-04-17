@@ -19,113 +19,113 @@ import java.util.*;
  */
 public class DiffAnalyzer {
 
-	private final Patch patch;
-	private int nbFiles;
+    private final Patch patch;
+    private int nbFiles;
 
-	public DiffAnalyzer(String diffPath) {
-		this.patch = new Patch();
-		try {
-			patch.parse(new FileInputStream(diffPath));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+    public DiffAnalyzer(String diffPath) {
+        this.patch = new Patch();
+        try {
+            patch.parse(new FileInputStream(diffPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public Changes analyze() {
-		Changes changes = new Changes();
-		this.nbFiles = patch.getFiles().size();
-		for (int i = 0; i < nbFiles; i++) {
-			FileHeader fileHeader = patch.getFiles().get(i);
-			List<? extends HunkHeader> hunks = fileHeader.getHunks();
-			for (int j = 0; j < hunks.size(); j++) {
-				HunkHeader hunkHeader = hunks.get(j);
-				EditList edits = hunkHeader.toEditList();
-				for (int k = 0; k < edits.size(); k++) {
-					Edit edit = edits.get(k);
-					Change oldChange = new Change(edit.getType().name(),
-							fileHeader.getOldPath().trim(),
-							edit.getBeginA() + 1, edit.getEndA(),
-							edit.getLengthA());
-					Change newChange = new Change(edit.getType().name(),
-							fileHeader.getNewPath().trim(),
-							edit.getBeginB() + 1, edit.getEndB(),
-							edit.getLengthB());
+    public Changes analyze() {
+        Changes changes = new Changes();
+        this.nbFiles = patch.getFiles().size();
+        for (int i = 0; i < nbFiles; i++) {
+            FileHeader fileHeader = patch.getFiles().get(i);
+            List<? extends HunkHeader> hunks = fileHeader.getHunks();
+            for (int j = 0; j < hunks.size(); j++) {
+                HunkHeader hunkHeader = hunks.get(j);
+                EditList edits = hunkHeader.toEditList();
+                for (int k = 0; k < edits.size(); k++) {
+                    Edit edit = edits.get(k);
+                    Change oldChange = new Change(edit.getType().name(),
+                            fileHeader.getOldPath().trim(),
+                            edit.getBeginA() + 1, edit.getEndA(),
+                            edit.getLengthA());
+                    Change newChange = new Change(edit.getType().name(),
+                            fileHeader.getNewPath().trim(),
+                            edit.getBeginB() + 1, edit.getEndB(),
+                            edit.getLengthB());
 
-					newChange.setAssociateChange(oldChange);
-					oldChange.setAssociateChange(newChange);
+                    newChange.setAssociateChange(oldChange);
+                    oldChange.setAssociateChange(newChange);
 
-					changes.addOldChange(oldChange);
-					changes.addNewChange(newChange);
-				}
-			}
-		}
-		return changes;
-	}
+                    changes.addOldChange(oldChange);
+                    changes.addNewChange(newChange);
+                }
+            }
+        }
+        return changes;
+    }
 
-	public Map<String, List<String>> getOriginalFiles(String projectRoot) {
-		Map<String, List<String>> output = new HashMap<>(patch.getFiles().size());
-		for (int i = 0; i < patch.getFiles().size(); i++) {
-			FileHeader fileHeader = patch.getFiles().get(i);
-			String fileName = fileHeader.getOldPath().trim();
-			if (!fileName.endsWith(".java")) {
-				continue;
-			}
-			fileName = Utils.getFullPath(projectRoot, fileName);
-			output.put(fileName, Utils.fileToLines(fileName));
-		}
-		return output;
-	}
+    public Map<String, List<String>> getOriginalFiles(String projectRoot) {
+        Map<String, List<String>> output = new HashMap<>(patch.getFiles().size());
+        for (int i = 0; i < patch.getFiles().size(); i++) {
+            FileHeader fileHeader = patch.getFiles().get(i);
+            String fileName = fileHeader.getOldPath().trim();
+            if (!fileName.endsWith(".java")) {
+                continue;
+            }
+            fileName = Utils.getFullPath(projectRoot, fileName);
+            output.put(fileName, Utils.fileToLines(fileName));
+        }
+        return output;
+    }
 
-	public Map<String, List<String>> getPatchedFiles(String projectRoot) {
-		Map<String, List<String>> output = getOriginalFiles(projectRoot);
-		for (int i = 0; i < patch.getFiles().size(); i++) {
-			FileHeader fileHeader = patch.getFiles().get(i);
-			String fileName = Utils.getFullPath(projectRoot, fileHeader.getOldPath().trim());
-			if (!output.containsKey(fileName)) {
-				continue;
-			}
-			for (HunkHeader hh : fileHeader.getHunks()) {
-				byte[] b = new byte[hh.getEndOffset() - hh.getStartOffset()];
-				System.arraycopy(hh.getBuffer(), hh.getStartOffset(), b, 0, b.length);
-				RawText hrt = new RawText(b);
-				List<String> hunkLines = new ArrayList(hrt.size());
+    public Map<String, List<String>> getPatchedFiles(String projectRoot) {
+        Map<String, List<String>> output = getOriginalFiles(projectRoot);
+        for (int i = 0; i < patch.getFiles().size(); i++) {
+            FileHeader fileHeader = patch.getFiles().get(i);
+            String fileName = Utils.getFullPath(projectRoot, fileHeader.getOldPath().trim());
+            if (!output.containsKey(fileName)) {
+                continue;
+            }
+            for (HunkHeader hh : fileHeader.getHunks()) {
+                byte[] b = new byte[hh.getEndOffset() - hh.getStartOffset()];
+                System.arraycopy(hh.getBuffer(), hh.getStartOffset(), b, 0, b.length);
+                RawText hrt = new RawText(b);
+                List<String> hunkLines = new ArrayList(hrt.size());
 
 
-				for(int pos = 0; pos < hrt.size(); ++pos) {
-					hunkLines.add(hrt.getString(pos));
-				}
+                for(int pos = 0; pos < hrt.size(); ++pos) {
+                    hunkLines.add(hrt.getString(pos));
+                }
 
-				int pos = 0;
-				for(int j = 1; j < hunkLines.size(); ++j) {
-					String hunkLine = hunkLines.get(j);
-					switch(hunkLine.charAt(0)) {
-					case ' ':
-						++pos;
-						break;
-					case '+':
-						int index = hh.getNewStartLine() - 1 + pos;
-						output.get(fileName).add(index, hunkLine.substring(1));
-						++pos;
-						break;
-					case '-':
-						if (hh.getNewStartLine() == 0) {
-							output.get(fileName).clear();
-						} else {
-							index = hh.getNewStartLine() - 1 + pos;
-							if (pos == 0 && hh.getNewLineCount() == 0) {
-								index++;
-							}
-							output.get(fileName).remove(index);
-						}
-					}
-				}
-			}
-		}
-		return output;
-	}
+                int pos = 0;
+                for(int j = 1; j < hunkLines.size(); ++j) {
+                    String hunkLine = hunkLines.get(j);
+                    switch(hunkLine.charAt(0)) {
+                        case ' ':
+                            ++pos;
+                            break;
+                        case '+':
+                            int index = hh.getNewStartLine() - 1 + pos;
+                            output.get(fileName).add(index, hunkLine.substring(1));
+                            ++pos;
+                            break;
+                        case '-':
+                            if (hh.getNewStartLine() == 0) {
+                                output.get(fileName).clear();
+                            } else {
+                                index = hh.getNewStartLine() - 1 + pos;
+                                if (pos == 0 && hh.getNewLineCount() == 0) {
+                                    index++;
+                                }
+                                output.get(fileName).remove(index);
+                            }
+                    }
+                }
+            }
+        }
+        return output;
+    }
 
-	public int getNbFiles() {
-		return nbFiles;
-	}
+    public int getNbFiles() {
+        return nbFiles;
+    }
 
 }

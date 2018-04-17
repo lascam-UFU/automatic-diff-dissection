@@ -5,71 +5,72 @@ package fr.inria.spirals.entities;
  */
 public class Change {
 
-	private String type;
-	private String file;
-	private int endLine;
-	private int length;
-	private Change associateChange;
+    private String type;
+    private String file;
+    private int endLine;
+    private int length;
+    private Change associateChange;
 
-	public Change(String type, String file, int line, int endLine, int length) {
-		this.type = type;
-		this.file = file;
-		this.line = line;
-		this.endLine = endLine;
-		this.length = length;
-	}
+    public Change(String type, String file, int line, int endLine, int length) {
+        this.type = type;
+        this.file = file;
+        this.line = line;
+        this.endLine = endLine;
+        this.length = length;
+    }
 
-	private int line;
+    private int line;
 
-	public int getLine() {
-		return line;
-	}
+    public int getLine() {
+        return line;
+    }
 
-	public String getFile() {
-		return file;
-	}
+    public String getFile() {
+        return file;
+    }
 
-	public String getClassName() {
-		String file = this.getFile();
-		int indexStartPackage = file.lastIndexOf("/org");
-		if (indexStartPackage == -1) {
-			indexStartPackage = file.lastIndexOf("/com");
-		}
-		file = file.substring(indexStartPackage + 1);
-		return file.substring(0, file.lastIndexOf(".")).replace("/", ".");
-	}
+    public String getClassName() {
+        String file = this.getFile();
+        int indexStartPackage = file.lastIndexOf("/org");
+        if (indexStartPackage == -1) {
+            indexStartPackage = file.lastIndexOf("/com");
+        }
+        file = file.substring(indexStartPackage + 1);
+        return file.substring(0, file.lastIndexOf(".")).replace("/", ".");
+    }
 
-	public int getEndLine() {
-		return endLine;
-	}
+    public int getEndLine() {
+        return endLine;
+    }
 
-	public void setEndLine(int endLine) {
-		this.endLine = endLine;
-	}
+    public void setEndLine(int endLine) {
+        this.endLine = endLine;
+    }
 
-	public int getLength() {
-		return length;
-	}
+    public int getLength() {
+        return length;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setAssociateChange(Change associateChange) {
-		this.associateChange = associateChange;
-	}
+    public void setAssociateChange(Change associateChange) {
+        this.associateChange = associateChange;
+    }
 
-	public Change getAssociateChange() {
-		return associateChange;
-	}
+    public Change getAssociateChange() {
+        return associateChange;
+    }
 
-	@Override
-	public String toString() {
-		return "Change{" +
-				"type='" + type + '\'' +
-				", line=" + line +
-				", endLine=" + endLine +
-				", length=" + length +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "Change{" +
+                "type='" + type + '\'' +
+                ", line=" + line +
+                ", endLine=" + endLine +
+                ", length=" + length +
+                '}';
+    }
+
 }
