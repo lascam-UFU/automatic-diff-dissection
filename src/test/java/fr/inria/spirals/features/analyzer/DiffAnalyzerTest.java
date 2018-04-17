@@ -1,5 +1,8 @@
 package fr.inria.spirals.features.analyzer;
 
+import fr.inria.spirals.entities.Change;
+import fr.inria.spirals.entities.Changes;
+import org.eclipse.jgit.diff.Edit;
 import org.junit.Test;
 
 import java.util.*;
@@ -11,6 +14,17 @@ import static org.junit.Assert.assertTrue;
  * Created by fermadeiral
  */
 public class DiffAnalyzerTest {
+
+    @Test
+    public void testMethodAnalyze() {
+        String diffPath = DiffAnalyzerTest.class.getResource("/closure_24/closure_24.diff").getPath();
+
+        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
+        Changes changes = diffAnalyzer.analyze();
+
+        assertEquals(1, diffAnalyzer.getNbFiles());
+        assertEquals(4, changes.getCombinedChanges().size());
+    }
 
     @Test
     public void testMethodGetOriginalFilesToReturnOneFile() {

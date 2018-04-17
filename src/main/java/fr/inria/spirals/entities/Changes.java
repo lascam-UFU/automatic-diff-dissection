@@ -1,5 +1,7 @@
 package fr.inria.spirals.entities;
 
+import org.eclipse.jgit.diff.Edit;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,6 +46,21 @@ public class Changes {
             files.add(change.getFile());
         }
         return new ArrayList<>(files);
+    }
+
+    public List<Change> getCombinedChanges() {
+        List<Change> combinedChanges = new ArrayList<>();
+        for (Change change : this.getNewChanges()) {
+            if (change.getType() == Edit.Type.INSERT.name() || change.getType() == Edit.Type.REPLACE.name()) {
+                combinedChanges.add(change);
+            }
+        }
+        for (Change change : this.getOldChanges()) {
+            if (change.getType() == Edit.Type.DELETE.name()) {
+                combinedChanges.add(change);
+            }
+        }
+        return combinedChanges;
     }
 
 }
