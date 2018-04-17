@@ -1,4 +1,4 @@
-package fr.inria.spirals.features;
+package fr.inria.spirals.entities;
 
 import fr.inria.spirals.entities.RepairActions;
 import fr.inria.spirals.main.Config;
@@ -7,11 +7,11 @@ import fr.inria.spirals.main.Constants;
 /**
  * Created by tdurieux
  */
-public class ExtractorResults {
+public class PairOfRepairActions {
     private RepairActions oldRepairActions;
     private RepairActions newRepairActions;
 
-    public ExtractorResults(RepairActions oldRepairActions, RepairActions newRepairActions) {
+    public PairOfRepairActions(RepairActions oldRepairActions, RepairActions newRepairActions) {
         this.oldRepairActions = oldRepairActions;
         this.newRepairActions = newRepairActions;
     }

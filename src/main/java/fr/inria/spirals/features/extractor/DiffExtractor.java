@@ -3,7 +3,7 @@ package fr.inria.spirals.features.extractor;
 import fr.inria.spirals.entities.Change;
 import fr.inria.spirals.entities.RepairActions;
 import fr.inria.spirals.entities.Changes;
-import fr.inria.spirals.features.ExtractorResults;
+import fr.inria.spirals.entities.PairOfRepairActions;
 import fr.inria.spirals.features.analyzer.DiffAnalyzer;
 import fr.inria.spirals.features.analyzer.ElementAnalyzer;
 import spoon.Launcher;
@@ -23,7 +23,7 @@ public class DiffExtractor extends AbstractExtractor {
         super(oldSourcePath, newSourcePath, diffPath);
     }
 
-    public ExtractorResults extract() {
+    public PairOfRepairActions extract() {
         DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
         Changes changes = diffAnalyzer.analyze();
 
@@ -41,8 +41,8 @@ public class DiffExtractor extends AbstractExtractor {
 
         final RepairActions newRepairActions = getRepairActions(changes.getNewChanges(), newSpoon);
 
-        ExtractorResults extractorResults = new ExtractorResults(oldRepairActions, newRepairActions);
-        return extractorResults;
+        PairOfRepairActions pairOfRepairActions = new PairOfRepairActions(oldRepairActions, newRepairActions);
+        return pairOfRepairActions;
     }
 
     private RepairActions getRepairActions(final List<Change> changes, Launcher spoon) {
