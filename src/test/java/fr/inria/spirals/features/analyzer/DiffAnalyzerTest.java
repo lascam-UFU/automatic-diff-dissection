@@ -1,8 +1,6 @@
 package fr.inria.spirals.features.analyzer;
 
-import fr.inria.spirals.entities.Change;
 import fr.inria.spirals.entities.Changes;
-import org.eclipse.jgit.diff.Edit;
 import org.junit.Test;
 
 import java.util.*;

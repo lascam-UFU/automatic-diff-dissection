@@ -6,9 +6,7 @@ import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
 import fr.inria.spirals.entities.Metrics;
-import fr.inria.spirals.entities.PairOfRepairActions;
 import fr.inria.spirals.features.extractor.AstExtractor;
-import fr.inria.spirals.features.extractor.DiffExtractor;
 import fr.inria.spirals.features.extractor.MetricExtractor;
 
 import java.util.Iterator;
@@ -138,17 +136,6 @@ public class Launcher {
 
     private void execute() {
         switch (this.config.getLauncherMode()) {
-            case DIFF:
-                DiffExtractor extractor = new DiffExtractor(
-                        this.config.getBuggySourceDirectoryPath(),
-                        this.config.getFixedSourceDirectoryPath(),
-                        this.config.getDiffPath());
-
-                PairOfRepairActions pairOfRepairActions = extractor.extract();
-                if (pairOfRepairActions != null) {
-                    System.out.println(pairOfRepairActions.toCSV());
-                }
-                break;
             case AST:
                 AstExtractor astExtractor = new AstExtractor(
                         this.config.getBuggySourceDirectoryPath(),

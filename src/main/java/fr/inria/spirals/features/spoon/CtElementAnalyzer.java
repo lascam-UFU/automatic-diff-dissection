@@ -1,4 +1,4 @@
-package fr.inria.spirals.features.analyzer;
+package fr.inria.spirals.features.spoon;
 
 import fr.inria.spirals.entities.RepairActions;
 import spoon.reflect.code.*;
@@ -11,10 +11,11 @@ import spoon.reflect.visitor.CtScanner;
 /**
  * Created by tdurieux
  */
-public class ElementAnalyzer {
+public class CtElementAnalyzer {
+
     private CtElement element;
 
-    public ElementAnalyzer(CtElement element) {
+    public CtElementAnalyzer(CtElement element) {
         this.element = element;
     }
 
@@ -103,8 +104,7 @@ public class ElementAnalyzer {
 
                     @Override
                     public void visitCtTry(CtTry e) {
-                        // handled in Explorer
-                        // output.incNbTry();
+                        output.incNbTry();
                         super.visitCtTry(e);
                     }
 
