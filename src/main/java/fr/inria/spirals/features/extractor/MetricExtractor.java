@@ -23,7 +23,11 @@ public class MetricExtractor extends AbstractExtractor {
     public Metrics extract() {
         Metrics metrics = new Metrics();
 
-        Changes changes = getChanges();
+        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
+
+        Changes changes = diffAnalyzer.analyze();
+
+        metrics.setNbFiles(diffAnalyzer.getNbFiles());
 
         Metrics patchSize = this.getPatchSize(changes);
         metrics.setAddedLines(patchSize.getAddedLines());
@@ -38,11 +42,6 @@ public class MetricExtractor extends AbstractExtractor {
         metrics.setSpreadingCodeOnly(spreading.getSpreadingCodeOnly());
 
         return metrics;
-    }
-
-    private Changes getChanges() {
-        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
-        return diffAnalyzer.analyze();
     }
 
     /**

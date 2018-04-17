@@ -42,7 +42,6 @@ public class DiffExtractor extends AbstractExtractor {
         final RepairActions newRepairActions = getRepairActions(changes.getNewChanges(), newSpoon);
 
         ExtractorResults extractorResults = new ExtractorResults(oldRepairActions, newRepairActions);
-        extractorResults.setNbFiles(diffAnalyzer.getNbFiles());
         return extractorResults;
     }
 

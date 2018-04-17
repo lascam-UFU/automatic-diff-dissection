@@ -7,6 +7,7 @@ import fr.inria.spirals.main.Constants;
  */
 public class Metrics {
 
+    private int nbFiles;
     private int addedLines;
     private int removedLines;
     private int modifiedLines;
@@ -16,6 +17,7 @@ public class Metrics {
     private int spreadingCodeOnly;
 
     public Metrics() {
+        this.nbFiles = 0;
         this.addedLines = 0;
         this.removedLines = 0;
         this.modifiedLines = 0;
@@ -23,6 +25,14 @@ public class Metrics {
         this.nbChunks = 0;
         this.spreadingAllLines = 0;
         this.spreadingCodeOnly = 0;
+    }
+
+    public int getNbFiles() {
+        return nbFiles;
+    }
+
+    public void setNbFiles(int nbFiles) {
+        this.nbFiles = nbFiles;
     }
 
     public int getAddedLines() {
@@ -83,6 +93,8 @@ public class Metrics {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
+
+        sb.append("Files: "+this.nbFiles).append(Constants.CSV_SEPARATOR);
 
         sb.append("Added Lines: "+this.addedLines).append(Constants.CSV_SEPARATOR);
         sb.append("Removed Lines: "+this.removedLines).append(Constants.CSV_SEPARATOR);

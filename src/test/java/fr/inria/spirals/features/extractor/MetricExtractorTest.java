@@ -21,6 +21,7 @@ public class MetricExtractorTest {
         extractor.setBugId("1");
         Metrics metrics = extractor.extract();
         assertNotNull(metrics);
+        assertEquals(1, metrics.getNbFiles());
         assertEquals(0, metrics.getAddedLines());
         assertEquals(0, metrics.getRemovedLines());
         assertEquals(1, metrics.getModifiedLines());
@@ -40,6 +41,7 @@ public class MetricExtractorTest {
         extractor.setBugId("4");
         Metrics metrics = extractor.extract();
         assertNotNull(metrics);
+        assertEquals(1, metrics.getNbFiles());
         assertEquals(2, metrics.getAddedLines());
         assertEquals(0, metrics.getRemovedLines());
         assertEquals(0, metrics.getModifiedLines());
@@ -59,6 +61,7 @@ public class MetricExtractorTest {
         extractor.setBugId("18");
         Metrics metrics = extractor.extract();
         assertNotNull(metrics);
+        assertEquals(2, metrics.getNbFiles());
         assertEquals(10, metrics.getAddedLines());
         assertEquals(2, metrics.getRemovedLines());
         assertEquals(1, metrics.getModifiedLines());
@@ -78,6 +81,7 @@ public class MetricExtractorTest {
         extractor.setBugId("24");
         Metrics metrics = extractor.extract();
         assertNotNull(metrics);
+        assertEquals(1, metrics.getNbFiles());
         assertEquals(2, metrics.getAddedLines());
         assertEquals(1, metrics.getRemovedLines());
         assertEquals(2, metrics.getModifiedLines());
@@ -97,6 +101,7 @@ public class MetricExtractorTest {
         extractor.setBugId("76");
         Metrics metrics = extractor.extract();
         assertNotNull(metrics);
+        assertEquals(1, metrics.getNbFiles());
         assertEquals(37, metrics.getAddedLines());
         assertEquals(6, metrics.getRemovedLines());
         assertEquals(0, metrics.getModifiedLines());
@@ -116,6 +121,7 @@ public class MetricExtractorTest {
         extractor.setBugId("4");
         Metrics metrics = extractor.extract();
         assertNotNull(metrics);
+        assertEquals(2, metrics.getNbFiles());
         assertEquals(6, metrics.getAddedLines());
         assertEquals(0, metrics.getRemovedLines());
         assertEquals(0, metrics.getModifiedLines());
@@ -135,6 +141,7 @@ public class MetricExtractorTest {
         extractor.setBugId("12");
         Metrics metrics = extractor.extract();
         assertNotNull(metrics);
+        assertEquals(2, metrics.getNbFiles());
         assertEquals(12, metrics.getAddedLines());
         assertEquals(0, metrics.getRemovedLines());
         assertEquals(2, metrics.getModifiedLines());
@@ -154,6 +161,7 @@ public class MetricExtractorTest {
         extractor.setBugId("23");
         Metrics metrics = extractor.extract();
         assertNotNull(metrics);
+        assertEquals(1, metrics.getNbFiles());
         assertEquals(5, metrics.getAddedLines());
         assertEquals(4, metrics.getRemovedLines());
         assertEquals(4, metrics.getModifiedLines());

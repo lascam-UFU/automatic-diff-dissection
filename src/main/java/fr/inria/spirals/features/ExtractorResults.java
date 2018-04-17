@@ -9,7 +9,6 @@ import fr.inria.spirals.main.Constants;
 public class ExtractorResults {
     private RepairActions oldRepairActions;
     private RepairActions newRepairActions;
-    private int nbFiles;
     private String project;
     private String bugId;
 
@@ -24,14 +23,6 @@ public class ExtractorResults {
 
     public RepairActions getOldRepairActions() {
         return oldRepairActions;
-    }
-
-    public int getNbFiles() {
-        return nbFiles;
-    }
-
-    public void setNbFiles(int nbFiles) {
-        this.nbFiles = nbFiles;
     }
 
     public String getProject() {
@@ -54,7 +45,6 @@ public class ExtractorResults {
         StringBuilder sb = new StringBuilder();
         sb.append(project).append(Constants.CSV_SEPARATOR);
         sb.append(bugId).append(Constants.CSV_SEPARATOR);
-        sb.append(nbFiles).append(Constants.CSV_SEPARATOR);
         // nb removed lines
         sb.append(getOldRepairActions().getNbChange()).append(Constants.CSV_SEPARATOR);
         // nb added lines
