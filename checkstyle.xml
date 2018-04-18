@@ -27,9 +27,6 @@
     <!-- See http://checkstyle.sf.net/config_blocks.html -->
     <module name="LeftCurly" />
     <module name="RightCurly" />
-    <module name="NeedBraces">
-      <property name="allowSingleLineStatement" value="true"/>
-    </module>
 
     <!-- Checks for class design                         -->
     <!-- See http://checkstyle.sf.net/config_design.html -->
