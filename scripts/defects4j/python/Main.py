@@ -17,7 +17,7 @@ defects4j_fix_checkout_path = config.get('path', 'fix_checkout')
 output_path = config.get('path', 'output')
 
 def parse_project_info(project, value):
-    path = os.path.join(root, 'src', 'main', 'python', 'data', project.lower() + '.json' )
+    path = os.path.join(root, 'scripts', 'defects4j', 'python', 'data', project.lower() + '.json' )
     with open(path) as data_file:
         project_info = json.load(data_file)
         for line in value.splitlines():
