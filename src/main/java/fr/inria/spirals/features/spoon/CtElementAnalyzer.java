@@ -8,8 +8,6 @@ import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.CtInheritanceScanner;
 import spoon.reflect.visitor.CtScanner;
 
-import java.lang.annotation.Annotation;
-
 /**
  * Created by tdurieux
  */
