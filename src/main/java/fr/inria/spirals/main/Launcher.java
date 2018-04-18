@@ -52,17 +52,7 @@ public class Launcher {
     private JSAP initJSAP() throws JSAPException {
         JSAP jsap = new JSAP();
 
-        FlaggedOption opt = new FlaggedOption("project");
-        opt.setShortFlag('p');
-        opt.setLongFlag("project");
-        opt.setRequired(true);
-        opt.setAllowMultipleDeclarations(false);
-        opt.setUsageName("math,lang,time,chart,closure");
-        opt.setStringParser(JSAP.STRING_PARSER);
-        opt.setHelp("The name of the project.");
-        jsap.registerParameter(opt);
-
-        opt = new FlaggedOption("bugId");
+        FlaggedOption opt = new FlaggedOption("bugId");
         opt.setShortFlag('b');
         opt.setLongFlag("bugId");
         opt.setRequired(true);
@@ -125,7 +115,6 @@ public class Launcher {
 
     private void initConfig(JSAPResult arguments) {
         this.config = Config.getInstance();
-        this.config.setProject(arguments.getString("project"));
         this.config.setBugId(arguments.getString("bugId"));
         this.config.setOutputDirectoryPath(arguments.getString("outputDirectory"));
         this.config.setBuggySourceDirectoryPath(arguments.getString("buggySourceDirectory"));

@@ -7,7 +7,6 @@ public class Config {
 
     private static Config INSTANCE;
 
-    private String project;
     private String bugId;
     private String outputDirectoryPath;
     private String buggySourceDirectoryPath;
@@ -22,14 +21,6 @@ public class Config {
             INSTANCE = new Config();
         }
         return INSTANCE;
-    }
-
-    public String getProject() {
-        return project;
-    }
-
-    public void setProject(String project) {
-        this.project = project;
     }
 
     public String getBugId() {
