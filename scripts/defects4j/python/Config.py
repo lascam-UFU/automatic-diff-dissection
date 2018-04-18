@@ -14,7 +14,7 @@ config.set('path', 'fix_checkout', os.path.expanduser("~/projects_fix"))
 
 
 
-path_config_file = os.path.join(config.get('path', 'root'), 'config.cfg')
+path_config_file = os.path.join(config.get('path', 'root'), 'scripts', 'defects4j', 'config.cfg')
 
 if os.path.isfile(path_config_file):
     with open(path_config_file, 'r') as configfile:
