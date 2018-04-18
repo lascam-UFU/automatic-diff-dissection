@@ -1,206 +1,157 @@
 package fr.inria.spirals.entities;
 
-import fr.inria.spirals.main.Constants;
-
 /**
  * Created by tdurieux
  */
-public class RepairActions {
-    private int nbVariable;
-    private int nbVariableAccess;
-    private int nbInvocation;
-    private int nbIf;
-    private int nbLoop;
-    private int nbType;
-    private int nbComment;
-    private int nbAssignment;
-    private int nbBinary;
-    private int nbUnary;
-    private int nbConstructorCall;
-    private int nbTry;
-    private int nbExternalCall;
-    private int nbReturn;
-    private int nbContinue;
-    private int nbBreak;
-    private int nbLiteral;
-    private int nbThrow;
-    private int nbChange;
+public class RepairActions extends Metric {
+    @MetricAnnotation(key = "assignAdd", name = "Assignment addition")
+    private int assignAdd = 0;
 
-    public int getNbVariable() {
-        return nbVariable;
-    }
+    @MetricAnnotation(key = "assignRem", name = "Assignment removal")
+    private int assignRem = 0;
 
-    public void incNbVariable() {
-        nbVariable++;
-    }
+    @MetricAnnotation(key = "assignExpChange", name = "Assignment expression modification")
+    private int assignExpChange = 0;
 
-    public int getNbVariableAccess() {
-        return nbVariableAccess;
-    }
+    @MetricAnnotation(key = "condBranIfAdd", name = "Conditional (if) branch addition")
+    private int condBranIfAdd = 0;
 
-    public void incNbVariableAccess() {
-        nbVariableAccess++;
-    }
+    @MetricAnnotation(key = "condBranIfElseAdd", name = "Conditional (if-else) branches addition")
+    private int condBranIfElseAdd = 0;
 
-    public int getNbInvocation() {
-        return nbInvocation;
-    }
+    @MetricAnnotation(key = "condBranElseAdd", name = "Conditional (else) branch addition")
+    private int condBranElseAdd = 0;
 
-    public void incNbInvocation() {
-        nbInvocation++;
-    }
+    @MetricAnnotation(key = "condBranCaseAdd", name = "Conditional (case in switch) branch addition")
+    private int condBranCaseAdd = 0;
 
-    public int getNbIf() {
-        return nbIf;
-    }
+    @MetricAnnotation(key = "condBranRem", name = "Conditional (if or else) branch removal")
+    private int condBranRem = 0;
 
-    public void incNbIf() {
-        nbIf++;
-    }
+    @MetricAnnotation(key = "condExpExpand", name = "Conditional expression expansion")
+    private int condExpExpand = 0;
 
-    public int getNbLoop() {
-        return nbLoop;
-    }
+    @MetricAnnotation(key = "condExpRed", name = "Conditional expression reduction")
+    private int condExpRed = 0;
 
-    public void incNbLoop() {
-        nbLoop++;
-    }
+    @MetricAnnotation(key = "condExpMod", name = "Conditional expression modification")
+    private int condExpMod = 0;
 
-    public int getNbType() {
-        return nbType;
-    }
+    @MetricAnnotation(key = "loopAdd", name = "Loop addition")
+    private int loopAdd = 0;
 
-    public void incNbType() {
-        nbType++;
-    }
+    @MetricAnnotation(key = "loopRem", name = "Loop removal")
+    private int loopRem = 0;
 
-    public int getNbComment() {
-        return nbComment;
-    }
+    @MetricAnnotation(key = "loopCondChange", name = "Loop conditional expression modification")
+    private int loopCondChange = 0;
 
-    public void incNbComment() {
-        nbComment++;
-    }
+    @MetricAnnotation(key = "loopInitChange", name = "Loop initialization field modification")
+    private int loopInitChange = 0;
 
-    public int getNbAssignment() {
-        return nbAssignment;
-    }
+    @MetricAnnotation(key = "mcAdd", name = "Method call addition")
+    private int mcAdd = 0;
 
-    public void incNbAssignment() {
-        nbAssignment++;
-    }
+    @MetricAnnotation(key = "mcRem", name = "Method call removal")
+    private int mcRem = 0;
 
-    public int getNbBinary() {
-        return nbBinary;
-    }
+    @MetricAnnotation(key = "mcRepl", name = "Method call replacement")
+    private int mcRepl = 0;
 
-    public void incNbBinary() {
-        nbBinary++;
-    }
+    // TODO
+    @MetricAnnotation(key = "mcMove", name = "Method call moving")
+    private int mcMove = 0;
 
-    public int getNbUnary() {
-        return nbUnary;
-    }
+    @MetricAnnotation(key = "mcParAdd", name = "Method call parameter addition")
+    private int mcParAdd = 0;
 
-    public void incNbUnary() {
-        nbUnary++;
-    }
+    @MetricAnnotation(key = "mcParRem", name = "Method call parameter removal")
+    private int mcParRem = 0;
 
-    public int getNbConstructorCall() {
-        return nbConstructorCall;
-    }
+    @MetricAnnotation(key = "mcParSwap", name = "Method call parameter value swapping")
+    private int mcParSwap = 0;
 
-    public void incNbConstructorCall() {
-        nbConstructorCall++;
-    }
+    @MetricAnnotation(key = "mcParValChange", name = "Method call parameter value modification")
+    private int mcParValChange = 0;
 
-    public int getNbTry() {
-        return nbTry;
-    }
+    @MetricAnnotation(key = "mdAdd", name = "Method definition addition")
+    private int mdAdd = 0;
 
-    public void incNbTry() {
-        nbTry++;
-    }
+    @MetricAnnotation(key = "mdRem", name = "Method definition removal")
+    private int mdRem = 0;
 
-    public int getNbExternalCall() {
-        return nbExternalCall;
-    }
+    @MetricAnnotation(key = "mdRen", name = "Method definition renaming")
+    private int mdRen = 0;
 
-    public void incNbExternalCall() {
-        nbExternalCall++;
-    }
+    @MetricAnnotation(key = "mdParAdd", name = "Parameter addition in method definition")
+    private int mdParAdd = 0;
 
-    public int getNbReturn() {
-        return nbReturn;
-    }
+    @MetricAnnotation(key = "mdParRem", name = "Parameter removal from method definition")
+    private int mdParRem = 0;
 
-    public void incNbReturn() {
-        nbReturn++;
-    }
+    @MetricAnnotation(key = "mdParTyChange", name = "Parameter type modification in method definition")
+    private int mdParTyChange = 0;
 
-    public int getNbContinue() {
-        return nbContinue;
-    }
+    @MetricAnnotation(key = "mdRetTyChange", name = "Method return type modification")
+    private int mdRetTyChange = 0;
 
-    public void incNbContinue() {
-        nbContinue++;
-    }
+    @MetricAnnotation(key = "mdModChange", name = "Method modifier change")
+    private int mdModChange = 0;
 
-    public int getNbBreak() {
-        return nbBreak;
-    }
+    @MetricAnnotation(key = "mdOverride", name = "Method overriding addition or removal")
+    private int mdOverride = 0;
 
-    public void incNbBreak() {
-        nbBreak++;
-    }
+    @MetricAnnotation(key = "objInstAdd", name = "Object instantiation addition")
+    private int objInstAdd = 0;
 
-    public int getNbLiteral() {
-        return nbLiteral;
-    }
+    @MetricAnnotation(key = "objInstRem", name = "Object instantiation removal")
+    private int objInstRem = 0;
 
-    public void incNbLiteral() {
-        this.nbLiteral++;
-    }
+    @MetricAnnotation(key = "objInstMod", name = "Object instantiation modification")
+    private int objInstMod = 0;
 
-    public int getNbThrow() {
-        return nbThrow;
-    }
+    @MetricAnnotation(key = "exTryCatchAdd", name = "undefined")
+    private int exTryCatchAdd = 0;
 
-    public void incNbThrow() {
-        this.nbThrow ++;
-    }
+    @MetricAnnotation(key = "exTryCatchRem", name = "undefined")
+    private int exTryCatchRem = 0;
 
-    public int getNbChange() {
-        return nbChange;
-    }
+    @MetricAnnotation(key = "exThrowsAdd", name = "undefined")
+    private int exThrowsAdd = 0;
 
-    public void incNbChange(int length) {
-        this.nbChange += length;
-    }
+    @MetricAnnotation(key = "exThrowsRem", name = "undefined")
+    private int exThrowsRem = 0;
 
-    public String toCSV() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getNbVariable()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbVariableAccess()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbInvocation()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbExternalCall()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbIf()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbLoop()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbType()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbComment()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbAssignment()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbBinary()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbUnary()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbConstructorCall()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbTry()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbLiteral()).append(Constants.CSV_SEPARATOR);
+    @MetricAnnotation(key = "retBranchAdd", name = "Return statement addition")
+    private int retBranchAdd = 0;
 
-        sb.append(getNbThrow()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbReturn()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbBreak()).append(Constants.CSV_SEPARATOR);
-        sb.append(getNbContinue()).append(Constants.CSV_SEPARATOR);
+    @MetricAnnotation(key = "retRem", name = "Return statement removal")
+    private int retRem = 0;
 
-        return sb.toString();
-    }
+    @MetricAnnotation(key = "retExpChange", name = "Return expression modification")
+    private int retExpChange = 0;
 
+    @MetricAnnotation(key = "varAdd", name = "Variable addition")
+    private int varAdd = 0;
+
+    @MetricAnnotation(key = "varRem", name = "Variable removal")
+    private int varRem = 0;
+
+    @MetricAnnotation(key = "varTyChange", name = "Variable type change")
+    private int varTyChange = 0;
+
+    @MetricAnnotation(key = "varModChange", name = "Variable modifier change")
+    private int varModChange = 0;
+
+    @MetricAnnotation(key = "varReplVar", name = "Variable replacement by another variable")
+    private int varReplVar = 0;
+
+    @MetricAnnotation(key = "varReplMc", name = "Variable replacement by method call")
+    private int varReplMc = 0;
+
+    @MetricAnnotation(key = "tyAdd", name = "Type addition")
+    private int tyAdd = 0;
+
+    @MetricAnnotation(key = "tyImpInterf", name = "Type implemented interface modification")
+    private int tyImpInterf = 0;
 }

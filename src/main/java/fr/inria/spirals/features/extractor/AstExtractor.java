@@ -44,6 +44,13 @@ public class AstExtractor extends AbstractExtractor {
             if (operation instanceof MoveOperation) {
                 operation.getSrcNode().putMetadata("isMoved", true);
                 operation.getDstNode().putMetadata("isMoved", true);
+            } else {
+                if (operation.getSrcNode() != null) {
+                    operation.getSrcNode().putMetadata("new", true);
+                }
+                if (operation.getDstNode() != null) {
+                    operation.getDstNode().putMetadata("new", true);
+                }
             }
         }
 
@@ -51,22 +58,26 @@ public class AstExtractor extends AbstractExtractor {
             Operation operation = editScript.getRootOperations().get(i);
             CtElement srcNode = operation.getSrcNode();
             if (operation instanceof InsertOperation || operation instanceof DeleteOperation) {
-                this.getRepairActions(srcNode, repairActions);
+                this.getRepairActions(srcNode, repairActions, operation instanceof DeleteOperation?
+                        CtElementAnalyzer.ACTION_TYPE.DELETE:
+                        CtElementAnalyzer.ACTION_TYPE.ADD);
                 SpoonHelper.printInsertOrDeleteOperation(srcNode.getFactory().getEnvironment(), srcNode, operation);
             } else {
                 if (operation instanceof UpdateOperation) {
                     CtElement dstNode = operation.getDstNode();
-                    this.getRepairActions(srcNode, repairActions);
+                    this.getRepairActions(srcNode, repairActions, CtElementAnalyzer.ACTION_TYPE.UPDATE);
                     SpoonHelper.printUpdateOperation(srcNode, dstNode, (UpdateOperation) operation);
                 }
             }
         }
 
+        System.out.println(repairActions);
         return repairActions;
     }
 
-    private void getRepairActions(CtElement e, final RepairActions repairActions) {
-        new CtElementAnalyzer(e).analyze(repairActions);
+    private void getRepairActions(CtElement e, final RepairActions repairActions, CtElementAnalyzer.ACTION_TYPE actionType) {
+        RepairActions analyze = new CtElementAnalyzer(e).analyze(repairActions, actionType);
+        System.out.println(analyze.toCSV());
     }
 
 }

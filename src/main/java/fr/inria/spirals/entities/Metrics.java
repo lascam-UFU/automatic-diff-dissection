@@ -5,7 +5,7 @@ import fr.inria.spirals.main.Constants;
 /**
  * Created by fermadeiral
  */
-public class Metrics {
+public class Metrics extends Metric {
 
     private int nbFiles;
     private int addedLines;
