@@ -76,7 +76,7 @@ public class AstExtractor extends AbstractExtractor {
     }
 
     private void getRepairActions(CtElement e, final RepairActions repairActions, CtElementAnalyzer.ACTION_TYPE actionType) {
-       new CtElementAnalyzer(e).analyze(repairActions, actionType);
+        new CtElementAnalyzer(e).analyze(repairActions, actionType);
     }
 
 }
