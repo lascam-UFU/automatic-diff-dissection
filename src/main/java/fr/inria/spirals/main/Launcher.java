@@ -6,7 +6,7 @@ import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
 import fr.inria.spirals.entities.Metrics;
-import fr.inria.spirals.features.extractor.AstExtractor;
+import fr.inria.spirals.features.detector.AstExtractor;
 import fr.inria.spirals.features.extractor.MetricExtractor;
 
 import java.util.Iterator;

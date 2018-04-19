@@ -1,4 +1,4 @@
-package fr.inria.spirals.features.analyzer;
+package fr.inria.spirals.features.diffanalyzer;
 
 import fr.inria.spirals.main.Config;
 import fr.inria.spirals.utils.TestUtils;
@@ -12,16 +12,16 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by fermadeiral
  */
-public class DiffAnalyzerTest {
+public class JGitBasedDiffAnalyzerTest {
 
     @Test
     public void testMethodAnalyze() {
         TestUtils.setupConfig("Closure 24");
 
-        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(Config.getInstance().getDiffPath());
-        Changes changes = diffAnalyzer.analyze();
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
+        Changes changes = jgitDiffAnalyzer.analyze();
 
-        assertEquals(1, diffAnalyzer.getNbFiles());
+        assertEquals(1, jgitDiffAnalyzer.getNbFiles());
         assertEquals(4, changes.getCombinedChanges().size());
     }
 
@@ -33,8 +33,8 @@ public class DiffAnalyzerTest {
         List<String> expectedBuggyFilePaths = new ArrayList<>(
                 Arrays.asList(buggySourcePath+"/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java"));
 
-        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(Config.getInstance().getDiffPath());
-        Map<String, List<String>> buggyFiles = diffAnalyzer.getOriginalFiles(buggySourcePath);
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
+        Map<String, List<String>> buggyFiles = jgitDiffAnalyzer.getOriginalFiles(buggySourcePath);
 
         List<String> actualBuggyFilePaths = new ArrayList<>();
         Iterator<String> ite = buggyFiles.keySet().iterator();
@@ -55,8 +55,8 @@ public class DiffAnalyzerTest {
                 Arrays.asList(buggySourcePath+"/source/org/jfree/data/DefaultKeyedValues.java",
                         buggySourcePath+"/source/org/jfree/data/DefaultKeyedValues2D.java"));
 
-        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(Config.getInstance().getDiffPath());
-        Map<String, List<String>> buggyFiles = diffAnalyzer.getOriginalFiles(buggySourcePath);
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
+        Map<String, List<String>> buggyFiles = jgitDiffAnalyzer.getOriginalFiles(buggySourcePath);
 
         List<String> actualBuggyFilePaths = new ArrayList<>();
         Iterator<String> ite = buggyFiles.keySet().iterator();

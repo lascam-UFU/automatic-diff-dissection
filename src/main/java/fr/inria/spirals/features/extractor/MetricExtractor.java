@@ -1,9 +1,9 @@
 package fr.inria.spirals.features.extractor;
 
 import fr.inria.spirals.entities.Metrics;
-import fr.inria.spirals.features.analyzer.Change;
-import fr.inria.spirals.features.analyzer.Changes;
-import fr.inria.spirals.features.analyzer.DiffAnalyzer;
+import fr.inria.spirals.features.diffanalyzer.Change;
+import fr.inria.spirals.features.diffanalyzer.Changes;
+import fr.inria.spirals.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import fr.inria.spirals.main.Config;
 import fr.inria.spirals.main.Utils;
 
@@ -27,11 +27,11 @@ public class MetricExtractor {
     }
 
     public Metrics extract() {
-        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(Config.getInstance().getDiffPath());
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
 
-        Changes changes = diffAnalyzer.analyze();
+        Changes changes = jgitDiffAnalyzer.analyze();
 
-        this.metrics.setMetric("nbFiles", diffAnalyzer.getNbFiles());
+        this.metrics.setMetric("nbFiles", jgitDiffAnalyzer.getNbFiles());
 
         this.computePatchSize(changes);
 

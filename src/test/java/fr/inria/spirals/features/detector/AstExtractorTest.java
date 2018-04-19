@@ -1,4 +1,4 @@
-package fr.inria.spirals.features.extractor;
+package fr.inria.spirals.features.detector;
 
 /**
  * Created by tdurieux

@@ -1,6 +1,6 @@
-package fr.inria.spirals.features.extractor;
+package fr.inria.spirals.features.detector;
 
-import fr.inria.spirals.features.analyzer.DiffAnalyzer;
+import fr.inria.spirals.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import fr.inria.spirals.features.detector.spoon.SpoonHelper;
 import fr.inria.spirals.main.Config;
 import gumtree.spoon.AstComparator;
@@ -28,10 +28,10 @@ public class AstExtractor {
         System.setProperty("gumtree.match.gt.minh", "2");
         System.setProperty("gumtree.match.bu.sim", "0.30");
 
-        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(Config.getInstance().getDiffPath());
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
 
-        Map<String, List<String>> originalFiles = diffAnalyzer.getOriginalFiles(Config.getInstance().getBuggySourceDirectoryPath());
-        Map<String, List<String>> patchedFiles = diffAnalyzer.getPatchedFiles(Config.getInstance().getBuggySourceDirectoryPath());
+        Map<String, List<String>> originalFiles = jgitDiffAnalyzer.getOriginalFiles(Config.getInstance().getBuggySourceDirectoryPath());
+        Map<String, List<String>> patchedFiles = jgitDiffAnalyzer.getPatchedFiles(Config.getInstance().getBuggySourceDirectoryPath());
 
         Launcher oldSpoon = SpoonHelper.initSpoon(originalFiles);
         Launcher newSpoon = SpoonHelper.initSpoon(patchedFiles);

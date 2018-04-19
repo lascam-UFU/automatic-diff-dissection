@@ -1,4 +1,4 @@
-package fr.inria.spirals.features.analyzer;
+package fr.inria.spirals.features.diffanalyzer;
 
 import fr.inria.spirals.main.Utils;
 import org.eclipse.jgit.diff.Edit;
@@ -18,12 +18,12 @@ import java.util.Map;
 /**
  * Created by tdurieux
  */
-public class DiffAnalyzer {
+public class JGitBasedDiffAnalyzer {
 
     private final Patch patch;
     private int nbFiles;
 
-    public DiffAnalyzer(String diffPath) {
+    public JGitBasedDiffAnalyzer(String diffPath) {
         this.patch = new Patch();
         try {
             patch.parse(new FileInputStream(diffPath));

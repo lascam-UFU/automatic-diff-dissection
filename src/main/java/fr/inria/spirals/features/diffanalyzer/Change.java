@@ -1,4 +1,4 @@
-package fr.inria.spirals.features.analyzer;
+package fr.inria.spirals.features.diffanalyzer;
 
 /**
  * Created by tdurieux
