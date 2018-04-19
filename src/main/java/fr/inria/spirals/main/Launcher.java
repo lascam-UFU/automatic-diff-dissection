@@ -6,6 +6,10 @@ import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
 import fr.inria.spirals.entities.Metrics;
+import fr.inria.spirals.entities.RepairActions;
+import fr.inria.spirals.entities.RepairPatterns;
+import fr.inria.spirals.features.detector.repairactions.RepairActionDetector;
+import fr.inria.spirals.features.detector.repairpatterns.RepairPatternDetector;
 import fr.inria.spirals.features.extractor.MetricExtractor;
 
 import java.util.Iterator;
@@ -124,15 +128,45 @@ public class Launcher {
 
     private void execute() {
         switch (this.config.getLauncherMode()) {
-            case AST:
+            case REPAIR_PATTERNS:
+                RepairPatterns repairPatterns = this.detectRepairPatterns();
+                System.out.println(repairPatterns.toCSV(true, true));
+                break;
+            case REPAIR_ACTIONS:
+                RepairActions repairActions = this.detectRepairActions();
+                System.out.println(repairActions.toCSV(true, true));
                 break;
             case METRICS:
-                MetricExtractor metricsExtractor = new MetricExtractor();
-
-                Metrics metrics = metricsExtractor.extract();
-                System.out.println(metrics.toString());
+                Metrics metrics = this.extractMetrics();
+                System.out.println(metrics.toCSV(true, true));
+                break;
+            case ALL:
+                repairPatterns = this.detectRepairPatterns();
+                repairActions = this.detectRepairActions();
+                metrics = this.extractMetrics();
+                System.out.print(repairPatterns.toCSV(true, false));
+                System.out.print(repairActions.toCSV(true, false));
+                System.out.println(metrics.toCSV(true, false));
+                System.out.print(repairPatterns.toCSV(false, true));
+                System.out.print(repairActions.toCSV(false, true));
+                System.out.println(metrics.toCSV(false, true));
                 break;
         }
+    }
+
+    private RepairPatterns detectRepairPatterns() {
+        RepairPatternDetector repairPatternDetector = new RepairPatternDetector();
+        return repairPatternDetector.detect();
+    }
+
+    private RepairActions detectRepairActions() {
+        RepairActionDetector repairActionDetector = new RepairActionDetector();
+        return repairActionDetector.detect();
+    }
+
+    private Metrics extractMetrics() {
+        MetricExtractor metricExtractor = new MetricExtractor();
+        return metricExtractor.extract();
     }
 
     public static void main(String[] args) throws Exception {

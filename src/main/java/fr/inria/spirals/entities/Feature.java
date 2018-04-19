@@ -53,16 +53,22 @@ public abstract class Feature {
         return output;
     }
 
-    public String toCSV() {
+    public String toCSV(boolean printHeader, boolean printValues) {
         StringBuilder output = new StringBuilder();
-        for (String featureName: getFeatureNames()) {
-            output.append(featureName + Constants.CSV_SEPARATOR);
+        if (printHeader) {
+            for (String featureName : getFeatureNames()) {
+                output.append(featureName + Constants.CSV_SEPARATOR);
+            }
         }
-        for (String featureName: getFeatureNames()) {
-            int counter = getFeatureCounter(featureName);
-            output.append(counter + Constants.CSV_SEPARATOR);
+        if (printHeader && printValues) {
+            output.append(Constants.LINE_BREAK);
         }
-        output.append(Constants.LINE_BREAK);
+        if (printValues) {
+            for (String featureName : getFeatureNames()) {
+                int counter = getFeatureCounter(featureName);
+                output.append(counter + Constants.CSV_SEPARATOR);
+            }
+        }
         return output.toString();
     }
 
@@ -72,7 +78,7 @@ public abstract class Feature {
         for (String featureName: getFeatureNames()) {
             int counter = getFeatureCounter(featureName);
             if (counter != 0) {
-                output.append(featureName + " " + counter + Constants.LINE_BREAK);
+                output.append(featureName + ": " + counter + Constants.LINE_BREAK);
             }
         }
         return output.toString();
