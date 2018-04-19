@@ -56,13 +56,13 @@ public class MissingNullCheckPattern {
         for (_ex_.S();_bool_.S();_ex_.S()) {}
     }
 
-    @MetricAnnotation(key = "missNullCheckP")
+    @MetricAnnotation(key = "missNullCheckN")
     public void notNull() {
         if (_col_.S() != null)
             _body_.S();
     }
 
-    @MetricAnnotation(key = "missNullCheckN")
+    @MetricAnnotation(key = "missNullCheckP")
     public void isNull() {
         if (_col_.S() == null)
             _body_.S();
