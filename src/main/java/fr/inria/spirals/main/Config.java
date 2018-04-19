@@ -7,12 +7,12 @@ public class Config {
 
     private static Config INSTANCE;
 
+    private LauncherMode launcherMode;
     private String bugId;
-    private String outputDirectoryPath;
     private String buggySourceDirectoryPath;
     private String fixedSourceDirectoryPath;
     private String diffPath;
-    private LauncherMode launcherMode;
+    private String outputDirectoryPath;
 
     private Config() {}
 
@@ -23,20 +23,20 @@ public class Config {
         return INSTANCE;
     }
 
+    public LauncherMode getLauncherMode() {
+        return launcherMode;
+    }
+
+    public void setLauncherMode(LauncherMode launcherMode) {
+        this.launcherMode = launcherMode;
+    }
+
     public String getBugId() {
         return bugId;
     }
 
     public void setBugId(String bugId) {
         this.bugId = bugId;
-    }
-
-    public String getOutputDirectoryPath() {
-        return outputDirectoryPath;
-    }
-
-    public void setOutputDirectoryPath(String outputDirectoryPath) {
-        this.outputDirectoryPath = outputDirectoryPath;
     }
 
     public String getBuggySourceDirectoryPath() {
@@ -63,12 +63,12 @@ public class Config {
         this.diffPath = diffPath;
     }
 
-    public LauncherMode getLauncherMode() {
-        return launcherMode;
+    public String getOutputDirectoryPath() {
+        return outputDirectoryPath;
     }
 
-    public void setLauncherMode(LauncherMode launcherMode) {
-        this.launcherMode = launcherMode;
+    public void setOutputDirectoryPath(String outputDirectoryPath) {
+        this.outputDirectoryPath = outputDirectoryPath;
     }
 
 }
