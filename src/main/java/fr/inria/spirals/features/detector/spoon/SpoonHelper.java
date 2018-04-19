@@ -1,5 +1,6 @@
 package fr.inria.spirals.features.detector.spoon;
 
+import fr.inria.spirals.main.Constants;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.Operation;
@@ -25,7 +26,7 @@ public class SpoonHelper {
         spoon.getEnvironment().setAutoImports(true);
         spoon.getEnvironment().setCommentEnabled(false);
         for (String path : files.keySet()) {
-            VirtualFile virtualFile = new VirtualFile(String.join("\n", files.get(path)), new File(path).getName());
+            VirtualFile virtualFile = new VirtualFile(String.join(Constants.LINE_BREAK, files.get(path)), new File(path).getName());
             spoon.getModelBuilder().addInputSource(virtualFile);
         }
         spoon.buildModel();
@@ -49,7 +50,7 @@ public class SpoonHelper {
         };
         print.scan(element);
         System.out.println(operation.getClass().getSimpleName());
-        System.out.println(print.getResult()+"\n");
+        System.out.println(print.getResult()+Constants.LINE_BREAK);
     }
 
     public static void printUpdateOperation(CtElement srcNode, CtElement dstNode, UpdateOperation operation) {
@@ -57,9 +58,9 @@ public class SpoonHelper {
         System.out.println(srcNode);
         System.out.println("to");
         if (dstNode != null) {
-            System.out.println(dstNode+"\n");
+            System.out.println(dstNode+Constants.LINE_BREAK);
         } else {
-            System.out.println(operation.getAction().getValue()+"\n");
+            System.out.println(operation.getAction().getValue()+Constants.LINE_BREAK);
         }
     }
 

@@ -1,5 +1,7 @@
 package fr.inria.spirals.entities;
 
+import fr.inria.spirals.main.Constants;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,13 +56,13 @@ public abstract class Feature {
     public String toCSV() {
         StringBuilder output = new StringBuilder();
         for (String featureName: getFeatureNames()) {
-            output.append(featureName + "\t");
+            output.append(featureName + Constants.CSV_SEPARATOR);
         }
         for (String featureName: getFeatureNames()) {
             int counter = getFeatureCounter(featureName);
-            output.append(counter + "\t");
+            output.append(counter + Constants.CSV_SEPARATOR);
         }
-        output.append("\n");
+        output.append(Constants.LINE_BREAK);
         return output.toString();
     }
 
@@ -70,7 +72,7 @@ public abstract class Feature {
         for (String featureName: getFeatureNames()) {
             int counter = getFeatureCounter(featureName);
             if (counter != 0) {
-                output.append(featureName + " " + counter + "\n");
+                output.append(featureName + " " + counter + Constants.LINE_BREAK);
             }
         }
         return output.toString();
