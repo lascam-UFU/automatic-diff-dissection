@@ -1,7 +1,7 @@
 package fr.inria.spirals.features.detector.repairpatterns;
 
 import fr.inria.spirals.entities.RepairPatterns;
-import fr.inria.spirals.features.detector.AbstractEditScriptBasedDetector;
+import fr.inria.spirals.features.detector.EditScriptBasedDetector;
 import fr.inria.spirals.features.detector.spoon.CtElementAnalyzer;
 import fr.inria.spirals.features.detector.spoon.SpoonHelper;
 import gumtree.spoon.diff.operations.DeleteOperation;
@@ -13,7 +13,7 @@ import spoon.reflect.declaration.CtElement;
 /**
  * Created by fermadeiral
  */
-public class RepairPatternDetector extends AbstractEditScriptBasedDetector {
+public class RepairPatternDetector extends EditScriptBasedDetector {
 
     private RepairPatterns repairPatterns;
 

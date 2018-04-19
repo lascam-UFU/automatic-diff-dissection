@@ -1,11 +1,13 @@
 package fr.inria.spirals.features.detector;
 
-import fr.inria.spirals.features.diffanalyzer.JGitBasedDiffAnalyzer;
+import fr.inria.spirals.entities.Metric;
 import fr.inria.spirals.features.detector.spoon.SpoonHelper;
+import fr.inria.spirals.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import fr.inria.spirals.main.Config;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;
-import gumtree.spoon.diff.operations.*;
+import gumtree.spoon.diff.operations.MoveOperation;
+import gumtree.spoon.diff.operations.Operation;
 import spoon.Launcher;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.code.CtStatementList;
@@ -17,13 +19,17 @@ import java.util.Map;
 /**
  * Created by tdurieux
  */
-public class AstExtractor {
+public abstract class EditScriptBasedDetector {
 
-    public AstExtractor() {
+    protected Diff editScript;
 
+    public EditScriptBasedDetector() {
+        this.editScript = this.extract();
     }
 
-    public Diff extract() {
+    protected abstract Metric detect();
+
+    private Diff extract() {
         new AstComparator();
         System.setProperty("gumtree.match.gt.minh", "2");
         System.setProperty("gumtree.match.bu.sim", "0.30");
