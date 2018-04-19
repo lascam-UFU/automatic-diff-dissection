@@ -1,8 +1,8 @@
-package fr.inria.spirals.features.pattern;
+package fr.inria.spirals.features.detector.repairpatterns;
 
 import fr.inria.spirals.entities.MetricAnnotation;
 import fr.inria.spirals.entities.RepairPatterns;
-import fr.inria.spirals.features.spoon.CtElementAnalyzer;
+import fr.inria.spirals.features.detector.spoon.CtElementAnalyzer;
 import spoon.Launcher;
 import spoon.reflect.code.CtInvocation;
 import spoon.reflect.code.CtLiteral;
@@ -22,7 +22,7 @@ public class PatternMatcher {
 
     static {
         Launcher launcher = new Launcher();
-        launcher.addInputResource("./src/main/java/fr/inria/spirals/features/pattern/spoonPatternMatcher");
+        launcher.addInputResource("./src/main/java/fr/inria/spirals/features/detector/repairpatterns/spoonPatternMatcher");
         launcher.buildModel();
         templateFactory = launcher.getFactory();
     }

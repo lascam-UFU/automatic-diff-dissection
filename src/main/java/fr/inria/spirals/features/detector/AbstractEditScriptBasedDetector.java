@@ -11,11 +11,11 @@ public abstract class AbstractEditScriptBasedDetector {
 
     protected Diff editScript;
 
-    AbstractEditScriptBasedDetector() {
+    protected AbstractEditScriptBasedDetector() {
         AstExtractor extractor = new AstExtractor();
         this.editScript = extractor.extract();
     }
 
-    abstract Metric detect();
+    protected abstract Metric detect();
 
 }

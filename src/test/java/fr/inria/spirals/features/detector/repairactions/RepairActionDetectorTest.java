@@ -1,4 +1,4 @@
-package fr.inria.spirals.features.detector;
+package fr.inria.spirals.features.detector.repairactions;
 
 import fr.inria.spirals.entities.RepairActions;
 import fr.inria.spirals.utils.TestUtils;

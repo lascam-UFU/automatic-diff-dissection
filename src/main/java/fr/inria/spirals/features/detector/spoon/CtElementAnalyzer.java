@@ -1,4 +1,4 @@
-package fr.inria.spirals.features.spoon;
+package fr.inria.spirals.features.detector.spoon;
 
 import fr.inria.spirals.entities.RepairActions;
 import spoon.reflect.code.*;

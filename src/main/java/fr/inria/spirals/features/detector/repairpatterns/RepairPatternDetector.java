@@ -1,9 +1,9 @@
-package fr.inria.spirals.features.detector;
+package fr.inria.spirals.features.detector.repairpatterns;
 
 import fr.inria.spirals.entities.RepairPatterns;
-import fr.inria.spirals.features.pattern.PatternMatcher;
-import fr.inria.spirals.features.spoon.CtElementAnalyzer;
-import fr.inria.spirals.features.spoon.SpoonHelper;
+import fr.inria.spirals.features.detector.AbstractEditScriptBasedDetector;
+import fr.inria.spirals.features.detector.spoon.CtElementAnalyzer;
+import fr.inria.spirals.features.detector.spoon.SpoonHelper;
 import gumtree.spoon.diff.operations.DeleteOperation;
 import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.Operation;
@@ -23,7 +23,7 @@ public class RepairPatternDetector extends AbstractEditScriptBasedDetector {
     }
 
     @Override
-    RepairPatterns detect() {
+    public RepairPatterns detect() {
         for (int i = 0; i < editScript.getRootOperations().size(); i++) {
             Operation operation = editScript.getRootOperations().get(i);
             CtElement srcNode = operation.getSrcNode();

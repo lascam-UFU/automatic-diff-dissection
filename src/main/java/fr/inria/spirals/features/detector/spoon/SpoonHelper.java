@@ -1,4 +1,4 @@
-package fr.inria.spirals.features.spoon;
+package fr.inria.spirals.features.detector.spoon;
 
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;

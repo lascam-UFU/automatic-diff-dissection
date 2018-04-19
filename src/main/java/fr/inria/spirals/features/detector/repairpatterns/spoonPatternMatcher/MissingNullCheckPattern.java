@@ -1,4 +1,4 @@
-package fr.inria.spirals.features.pattern.spoonPatternMatcher;
+package fr.inria.spirals.features.detector.repairpatterns.spoonPatternMatcher;
 
 import fr.inria.spirals.entities.MetricAnnotation;
 import spoon.reflect.code.CtBlock;
