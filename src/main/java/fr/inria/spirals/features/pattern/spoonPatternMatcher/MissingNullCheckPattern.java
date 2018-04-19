@@ -5,6 +5,9 @@ import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtExpression;
 import spoon.template.TemplateParameter;
 
+/**
+ * Created by tdurieux
+ */
 public class MissingNullCheckPattern {
     public TemplateParameter<Boolean> _bool_;
     public TemplateParameter<Exception> _ex_;

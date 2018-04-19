@@ -4,6 +4,9 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by tdurieux
+ */
 public abstract class Metric {
     public void incrementMetric(String key) {
         try {
@@ -11,6 +14,16 @@ public abstract class Metric {
             field.setAccessible(true);
             int value = (int) field.get(this);
             field.set(this, value + 1);
+        } catch (IllegalAccessException | NoSuchFieldException e) {
+            throw new IllegalArgumentException("Metric not found: " + key, e);
+        }
+    }
+
+    public void setMetric(String key, int value) {
+        try {
+            Field field  = this.getClass().getDeclaredField(key);
+            field.setAccessible(true);
+            field.set(this, value);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             throw new IllegalArgumentException("Metric not found: " + key, e);
         }

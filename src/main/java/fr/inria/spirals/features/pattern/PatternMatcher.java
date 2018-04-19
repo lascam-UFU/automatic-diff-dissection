@@ -14,6 +14,9 @@ import spoon.reflect.factory.Factory;
 import spoon.reflect.visitor.filter.TypeFilter;
 import spoon.template.TemplateMatcher;
 
+/**
+ * Created by tdurieux
+ */
 public class PatternMatcher {
     private static Factory templateFactory;
 

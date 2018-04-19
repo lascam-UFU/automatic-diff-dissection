@@ -19,30 +19,25 @@ import java.util.Set;
  */
 public class MetricExtractor extends AbstractExtractor {
 
+    private Metrics metrics;
+
     public MetricExtractor(String oldSourcePath, String newSourcePath, String diffPath) {
         super(oldSourcePath, newSourcePath, diffPath);
+        this.metrics = new Metrics();
     }
 
     public Metrics extract() {
-        Metrics metrics = new Metrics();
-
         DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
 
         Changes changes = diffAnalyzer.analyze();
 
-        metrics.setNbFiles(diffAnalyzer.getNbFiles());
+        this.metrics.setMetric("nbFiles", diffAnalyzer.getNbFiles());
 
-        Metrics patchSize = this.getPatchSize(changes);
-        metrics.setAddedLines(patchSize.getAddedLines());
-        metrics.setRemovedLines(patchSize.getRemovedLines());
-        metrics.setModifiedLines(patchSize.getModifiedLines());
-        metrics.setPatchSize(patchSize.getPatchSize());
+        this.computePatchSize(changes);
 
-        metrics.setNbChunks(this.getNbChunks(changes));
+        this.computeNbChunks(changes);
 
-        Metrics spreading = this.spreading(changes);
-        metrics.setSpreadingAllLines(spreading.getSpreadingAllLines());
-        metrics.setSpreadingCodeOnly(spreading.getSpreadingCodeOnly());
+        this.computeSpreading(changes);
 
         return metrics;
     }
@@ -50,9 +45,7 @@ public class MetricExtractor extends AbstractExtractor {
     /**
      * Count the number of lines added, removed and modified in the patch
      */
-    public Metrics getPatchSize(Changes changes) {
-        Metrics metrics = new Metrics();
-
+    public void computePatchSize(Changes changes) {
         int patchAddedLines = 0;
         int patchRemovedLines = 0;
         int patchModifiedLines = 0;
@@ -81,18 +74,16 @@ public class MetricExtractor extends AbstractExtractor {
             patchModifiedLines += chunkModifiedLines;
         }
 
-        metrics.setAddedLines(patchAddedLines);
-        metrics.setRemovedLines(patchRemovedLines);
-        metrics.setModifiedLines(patchModifiedLines);
-        metrics.setPatchSize(patchAddedLines + patchRemovedLines + patchModifiedLines);
-
-        return metrics;
+        this.metrics.setMetric("addedLines", patchAddedLines);
+        this.metrics.setMetric("removedLines", patchRemovedLines);
+        this.metrics.setMetric("modifiedLines", patchModifiedLines);
+        this.metrics.setMetric("patchSize", patchAddedLines + patchRemovedLines + patchModifiedLines);
     }
 
     /**
-     * Get the number of chunks in the patch
+     * Compute the number of chunks in the patch
      */
-    public int getNbChunks(Changes changes) {
+    public void computeNbChunks(Changes changes) {
         int nbChunks = 0;
 
         for (Change change : changes.getNewChanges()) {
@@ -115,12 +106,10 @@ public class MetricExtractor extends AbstractExtractor {
             }
         }
 
-        return nbChunks;
+        this.metrics.setMetric("nbChunks", nbChunks);
     }
 
-    public Metrics spreading(Changes changes) {
-        Metrics metrics = new Metrics();
-
+    public void computeSpreading(Changes changes) {
         int spreadingAllLines = 0;
         int spreadingCodeOnly = 0;
 
@@ -185,10 +174,8 @@ public class MetricExtractor extends AbstractExtractor {
             spreadingCodeOnly += lastTrimUntouchedLine;
         }
 
-        metrics.setSpreadingAllLines(spreadingAllLines);
-        metrics.setSpreadingCodeOnly(spreadingCodeOnly);
-
-        return metrics;
+        this.metrics.setMetric("spreadingAllLines", spreadingAllLines);
+        this.metrics.setMetric("spreadingCodeOnly", spreadingCodeOnly);
     }
 
     private Change getChange(Changes changes, String file, int oldLine, int newLine) {
