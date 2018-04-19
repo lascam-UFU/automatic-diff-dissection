@@ -17,7 +17,7 @@ public class RepairActionDetectorTest {
         RepairActionDetector detector = new RepairActionDetector();
         RepairActions repairActions = detector.detect();
 
-        Assert.assertTrue(repairActions.getMetric("condExpMod") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condExpMod") > 0);
     }
 
     @Test
@@ -27,7 +27,7 @@ public class RepairActionDetectorTest {
         RepairActionDetector detector = new RepairActionDetector();
         RepairActions repairActions = detector.detect();
 
-        Assert.assertTrue(repairActions.getMetric("condBranIfAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
     }
 
     @Test
@@ -37,15 +37,15 @@ public class RepairActionDetectorTest {
         RepairActionDetector detector = new RepairActionDetector();
         RepairActions repairActions = detector.detect();
 
-        Assert.assertTrue(repairActions.getMetric("assignAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("condBranIfAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("condBranRem") > 0);
-        Assert.assertTrue(repairActions.getMetric("mcAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("mcRem") > 0);
-        Assert.assertTrue(repairActions.getMetric("objInstAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("exThrowsAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("retRem") > 0);
-        Assert.assertTrue(repairActions.getMetric("varAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranRem") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mcAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mcRem") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("objInstAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("exThrowsAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("retRem") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("varAdd") > 0);
     }
 
     @Test
@@ -55,10 +55,10 @@ public class RepairActionDetectorTest {
         RepairActionDetector detector = new RepairActionDetector();
         RepairActions repairActions = detector.detect();
 
-        Assert.assertTrue(repairActions.getMetric("condBranIfElseAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("condBranRem") > 0);
-        Assert.assertTrue(repairActions.getMetric("condExpExpand") > 0);
-        Assert.assertTrue(repairActions.getMetric("mcAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranIfElseAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranRem") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condExpExpand") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mcAdd") > 0);
 
     }
 
@@ -69,15 +69,15 @@ public class RepairActionDetectorTest {
         RepairActionDetector detector = new RepairActionDetector();
         RepairActions repairActions = detector.detect();
 
-        Assert.assertTrue(repairActions.getMetric("assignAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("condBranIfAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("condBranIfElseAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("condBranRem") > 0);
-        //Assert.assertTrue(repairActions.getMetric("condExpMod") > 0);
-        Assert.assertTrue(repairActions.getMetric("mcAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("mcRem") > 0);
-        Assert.assertTrue(repairActions.getMetric("retBranchAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("varAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranIfElseAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranRem") > 0);
+        //Assert.assertTrue(repairActions.getFeatureCounter("condExpMod") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mcAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mcRem") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("retBranchAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("varAdd") > 0);
     }
 
     @Test
@@ -87,8 +87,8 @@ public class RepairActionDetectorTest {
         RepairActionDetector detector = new RepairActionDetector();
         RepairActions repairActions = detector.detect();
 
-        Assert.assertTrue(repairActions.getMetric("condBranIfAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("retBranchAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("retBranchAdd") > 0);
     }
 
     @Test
@@ -98,14 +98,14 @@ public class RepairActionDetectorTest {
         RepairActionDetector detector = new RepairActionDetector();
         RepairActions repairActions = detector.detect();
 
-        Assert.assertTrue(repairActions.getMetric("assignAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("condBranIfAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("condBranIfElseAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("mcAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("objInstAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("retBranchAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("varAdd") > 0);
-        //Assert.assertTrue(repairActions.getMetric("mcParValChange") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranIfElseAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mcAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("objInstAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("retBranchAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("varAdd") > 0);
+        //Assert.assertTrue(repairActions.getFeatureCounter("mcParValChange") > 0);
 
     }
 
@@ -116,8 +116,8 @@ public class RepairActionDetectorTest {
         RepairActionDetector detector = new RepairActionDetector();
         RepairActions repairActions = detector.detect();
 
-        Assert.assertTrue(repairActions.getMetric("mcAdd") > 0);
-        Assert.assertTrue(repairActions.getMetric("mcParValChange") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mcAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mcParValChange") > 0);
     }
 
 }

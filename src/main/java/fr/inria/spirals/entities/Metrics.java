@@ -3,30 +3,30 @@ package fr.inria.spirals.entities;
 /**
  * Created by fermadeiral
  */
-public class Metrics extends Metric {
+public class Metrics extends Feature {
 
-    @MetricAnnotation(key = "nbFiles", name = "# Files")
+    @FeatureAnnotation(key = "nbFiles", name = "# Files")
     private int nbFiles = 0;
 
-    @MetricAnnotation(key = "addedLines", name = "Added Lines")
+    @FeatureAnnotation(key = "addedLines", name = "Added Lines")
     private int addedLines = 0;
 
-    @MetricAnnotation(key = "removedLines", name = "Removed Lines")
+    @FeatureAnnotation(key = "removedLines", name = "Removed Lines")
     private int removedLines = 0;
 
-    @MetricAnnotation(key = "modifiedLines", name = "Modified Lines")
+    @FeatureAnnotation(key = "modifiedLines", name = "Modified Lines")
     private int modifiedLines = 0;
 
-    @MetricAnnotation(key = "patchSize", name = "Patch Size")
+    @FeatureAnnotation(key = "patchSize", name = "Patch Size")
     private int patchSize = 0;
 
-    @MetricAnnotation(key = "nbChunks", name = "# Chunks")
+    @FeatureAnnotation(key = "nbChunks", name = "# Chunks")
     private int nbChunks = 0;
 
-    @MetricAnnotation(key = "spreadingAllLines", name = "Spreading All Lines")
+    @FeatureAnnotation(key = "spreadingAllLines", name = "Spreading All Lines")
     private int spreadingAllLines = 0;
 
-    @MetricAnnotation(key = "spreadingCodeOnly", name = "Spreading Code Only")
+    @FeatureAnnotation(key = "spreadingCodeOnly", name = "Spreading Code Only")
     private int spreadingCodeOnly = 0;
 
 }

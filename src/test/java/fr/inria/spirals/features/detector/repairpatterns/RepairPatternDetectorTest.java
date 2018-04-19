@@ -17,7 +17,7 @@ public class RepairPatternDetectorTest {
         RepairPatternDetector detector = new RepairPatternDetector();
         RepairPatterns repairPatterns = detector.detect();
 
-        Assert.assertTrue(repairPatterns.getMetric("missNullCheckN") > 0);
+        Assert.assertTrue(repairPatterns.getFeatureCounter("missNullCheckN") > 0);
     }
 
     @Test
@@ -27,7 +27,7 @@ public class RepairPatternDetectorTest {
         RepairPatternDetector detector = new RepairPatternDetector();
         RepairPatterns repairPatterns = detector.detect();
 
-        Assert.assertTrue(repairPatterns.getMetric("missNullCheckP") > 0);
+        Assert.assertTrue(repairPatterns.getFeatureCounter("missNullCheckP") > 0);
     }
 
 }

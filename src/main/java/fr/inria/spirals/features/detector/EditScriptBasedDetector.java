@@ -1,6 +1,6 @@
 package fr.inria.spirals.features.detector;
 
-import fr.inria.spirals.entities.Metric;
+import fr.inria.spirals.entities.Feature;
 import fr.inria.spirals.features.detector.spoon.SpoonHelper;
 import fr.inria.spirals.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import fr.inria.spirals.main.Config;
@@ -27,7 +27,7 @@ public abstract class EditScriptBasedDetector {
         this.editScript = this.extract();
     }
 
-    protected abstract Metric detect();
+    protected abstract Feature detect();
 
     private Diff extract() {
         new AstComparator();

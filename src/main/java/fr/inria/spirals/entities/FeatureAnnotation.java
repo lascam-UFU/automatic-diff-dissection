@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
  */
 @Target({ElementType.FIELD,ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface MetricAnnotation {
+public @interface FeatureAnnotation {
     String key();
     String name() default "";
 }

@@ -1,6 +1,6 @@
 package fr.inria.spirals.features.detector.repairpatterns;
 
-import fr.inria.spirals.entities.MetricAnnotation;
+import fr.inria.spirals.entities.FeatureAnnotation;
 import fr.inria.spirals.entities.RepairPatterns;
 import fr.inria.spirals.features.detector.spoon.CtElementAnalyzer;
 import spoon.Launcher;
@@ -38,7 +38,7 @@ public class PatternMatcher {
 
     public void analyze(RepairPatterns patterns, CtElementAnalyzer.ACTION_TYPE actionType) {
         if (e instanceof CtLiteral && actionType == CtElementAnalyzer.ACTION_TYPE.UPDATE)  {
-            patterns.incrementMetric("constChange");
+            patterns.incrementFeatureCounter("constChange");
             return;
         }
         for (CtType<?> classTemplate: templateFactory.Class().getAll()) {
@@ -52,7 +52,7 @@ public class PatternMatcher {
                 });
                 TemplateMatcher matcher = new TemplateMatcher(method.getBody().getStatement(0));
                 if (matcher.matches(e)) {
-                    String pattern = method.getAnnotation(MetricAnnotation.class).key();
+                    String pattern = method.getAnnotation(FeatureAnnotation.class).key();
                     if (actionType == CtElementAnalyzer.ACTION_TYPE.DELETE && pattern.startsWith("wrap")) {
                         pattern = "un" + pattern.replace("wraps", "wrap");
                         if ("unwrapIf".equals(pattern)) {
@@ -65,7 +65,7 @@ public class PatternMatcher {
                         }
                         pattern += actionType.toString();
                     }
-                    patterns.incrementMetric(pattern);
+                    patterns.incrementFeatureCounter(pattern);
                 }
             }
         }

@@ -31,7 +31,7 @@ public class MetricExtractor {
 
         Changes changes = jgitDiffAnalyzer.analyze();
 
-        this.metrics.setMetric("nbFiles", jgitDiffAnalyzer.getNbFiles());
+        this.metrics.setFeatureCounter("nbFiles", jgitDiffAnalyzer.getNbFiles());
 
         this.computePatchSize(changes);
 
@@ -74,10 +74,10 @@ public class MetricExtractor {
             patchModifiedLines += chunkModifiedLines;
         }
 
-        this.metrics.setMetric("addedLines", patchAddedLines);
-        this.metrics.setMetric("removedLines", patchRemovedLines);
-        this.metrics.setMetric("modifiedLines", patchModifiedLines);
-        this.metrics.setMetric("patchSize", patchAddedLines + patchRemovedLines + patchModifiedLines);
+        this.metrics.setFeatureCounter("addedLines", patchAddedLines);
+        this.metrics.setFeatureCounter("removedLines", patchRemovedLines);
+        this.metrics.setFeatureCounter("modifiedLines", patchModifiedLines);
+        this.metrics.setFeatureCounter("patchSize", patchAddedLines + patchRemovedLines + patchModifiedLines);
     }
 
     /**
@@ -106,7 +106,7 @@ public class MetricExtractor {
             }
         }
 
-        this.metrics.setMetric("nbChunks", nbChunks);
+        this.metrics.setFeatureCounter("nbChunks", nbChunks);
     }
 
     public void computeSpreading(Changes changes) {
@@ -174,8 +174,8 @@ public class MetricExtractor {
             spreadingCodeOnly += lastTrimUntouchedLine;
         }
 
-        this.metrics.setMetric("spreadingAllLines", spreadingAllLines);
-        this.metrics.setMetric("spreadingCodeOnly", spreadingCodeOnly);
+        this.metrics.setFeatureCounter("spreadingAllLines", spreadingAllLines);
+        this.metrics.setFeatureCounter("spreadingCodeOnly", spreadingCodeOnly);
     }
 
     private Change getChange(Changes changes, String file, int oldLine, int newLine) {

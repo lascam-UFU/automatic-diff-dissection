@@ -17,14 +17,14 @@ public class MetricExtractorTest {
 
         MetricExtractor extractor = new MetricExtractor();
         Metrics metrics = extractor.extract();
-        assertEquals(1, metrics.getMetric("nbFiles"));
-        assertEquals(0, metrics.getMetric("addedLines"));
-        assertEquals(0, metrics.getMetric("removedLines"));
-        assertEquals(1, metrics.getMetric("modifiedLines"));
-        assertEquals(1, metrics.getMetric("patchSize"));
-        assertEquals(1, metrics.getMetric("nbChunks"));
-        assertEquals(0, metrics.getMetric("spreadingAllLines"));
-        assertEquals(0, metrics.getMetric("spreadingCodeOnly"));
+        assertEquals(1, metrics.getFeatureCounter("nbFiles"));
+        assertEquals(0, metrics.getFeatureCounter("addedLines"));
+        assertEquals(0, metrics.getFeatureCounter("removedLines"));
+        assertEquals(1, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(1, metrics.getFeatureCounter("patchSize"));
+        assertEquals(1, metrics.getFeatureCounter("nbChunks"));
+        assertEquals(0, metrics.getFeatureCounter("spreadingAllLines"));
+        assertEquals(0, metrics.getFeatureCounter("spreadingCodeOnly"));
     }
 
     @Test
@@ -33,14 +33,14 @@ public class MetricExtractorTest {
 
         MetricExtractor extractor = new MetricExtractor();
         Metrics metrics = extractor.extract();
-        assertEquals(1, metrics.getMetric("nbFiles"));
-        assertEquals(2, metrics.getMetric("addedLines"));
-        assertEquals(0, metrics.getMetric("removedLines"));
-        assertEquals(0, metrics.getMetric("modifiedLines"));
-        assertEquals(2, metrics.getMetric("patchSize"));
-        assertEquals(2, metrics.getMetric("nbChunks"));
-        assertEquals(8, metrics.getMetric("spreadingAllLines"));
-        assertEquals(8, metrics.getMetric("spreadingCodeOnly"));
+        assertEquals(1, metrics.getFeatureCounter("nbFiles"));
+        assertEquals(2, metrics.getFeatureCounter("addedLines"));
+        assertEquals(0, metrics.getFeatureCounter("removedLines"));
+        assertEquals(0, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(2, metrics.getFeatureCounter("patchSize"));
+        assertEquals(2, metrics.getFeatureCounter("nbChunks"));
+        assertEquals(8, metrics.getFeatureCounter("spreadingAllLines"));
+        assertEquals(8, metrics.getFeatureCounter("spreadingCodeOnly"));
     }
 
     @Test
@@ -49,14 +49,14 @@ public class MetricExtractorTest {
 
         MetricExtractor extractor = new MetricExtractor();
         Metrics metrics = extractor.extract();
-        assertEquals(2, metrics.getMetric("nbFiles"));
-        assertEquals(10, metrics.getMetric("addedLines"));
-        assertEquals(2, metrics.getMetric("removedLines"));
-        assertEquals(1, metrics.getMetric("modifiedLines"));
-        assertEquals(13, metrics.getMetric("patchSize"));
-        assertEquals(6, metrics.getMetric("nbChunks"));
-        assertEquals(19, metrics.getMetric("spreadingAllLines"));
-        assertEquals(9, metrics.getMetric("spreadingCodeOnly"));
+        assertEquals(2, metrics.getFeatureCounter("nbFiles"));
+        assertEquals(10, metrics.getFeatureCounter("addedLines"));
+        assertEquals(2, metrics.getFeatureCounter("removedLines"));
+        assertEquals(1, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(13, metrics.getFeatureCounter("patchSize"));
+        assertEquals(6, metrics.getFeatureCounter("nbChunks"));
+        assertEquals(19, metrics.getFeatureCounter("spreadingAllLines"));
+        assertEquals(9, metrics.getFeatureCounter("spreadingCodeOnly"));
     }
 
     @Test
@@ -65,14 +65,14 @@ public class MetricExtractorTest {
 
         MetricExtractor extractor = new MetricExtractor();
         Metrics metrics = extractor.extract();
-        assertEquals(1, metrics.getMetric("nbFiles"));
-        assertEquals(2, metrics.getMetric("addedLines"));
-        assertEquals(1, metrics.getMetric("removedLines"));
-        assertEquals(2, metrics.getMetric("modifiedLines"));
-        assertEquals(5, metrics.getMetric("patchSize"));
-        assertEquals(4, metrics.getMetric("nbChunks"));
-        assertEquals(15, metrics.getMetric("spreadingAllLines"));
-        assertEquals(9, metrics.getMetric("spreadingCodeOnly"));
+        assertEquals(1, metrics.getFeatureCounter("nbFiles"));
+        assertEquals(2, metrics.getFeatureCounter("addedLines"));
+        assertEquals(1, metrics.getFeatureCounter("removedLines"));
+        assertEquals(2, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(5, metrics.getFeatureCounter("patchSize"));
+        assertEquals(4, metrics.getFeatureCounter("nbChunks"));
+        assertEquals(15, metrics.getFeatureCounter("spreadingAllLines"));
+        assertEquals(9, metrics.getFeatureCounter("spreadingCodeOnly"));
     }
 
     @Test
@@ -81,14 +81,14 @@ public class MetricExtractorTest {
 
         MetricExtractor extractor = new MetricExtractor();
         Metrics metrics = extractor.extract();
-        assertEquals(1, metrics.getMetric("nbFiles"));
-        assertEquals(37, metrics.getMetric("addedLines"));
-        assertEquals(6, metrics.getMetric("removedLines"));
-        assertEquals(0, metrics.getMetric("modifiedLines"));
-        assertEquals(43, metrics.getMetric("patchSize"));
-        assertEquals(11, metrics.getMetric("nbChunks"));
-        assertEquals(73, metrics.getMetric("spreadingAllLines"));
-        assertEquals(48, metrics.getMetric("spreadingCodeOnly"));
+        assertEquals(1, metrics.getFeatureCounter("nbFiles"));
+        assertEquals(37, metrics.getFeatureCounter("addedLines"));
+        assertEquals(6, metrics.getFeatureCounter("removedLines"));
+        assertEquals(0, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(43, metrics.getFeatureCounter("patchSize"));
+        assertEquals(11, metrics.getFeatureCounter("nbChunks"));
+        assertEquals(73, metrics.getFeatureCounter("spreadingAllLines"));
+        assertEquals(48, metrics.getFeatureCounter("spreadingCodeOnly"));
     }
 
     @Test
@@ -97,14 +97,14 @@ public class MetricExtractorTest {
 
         MetricExtractor extractor = new MetricExtractor();
         Metrics metrics = extractor.extract();
-        assertEquals(2, metrics.getMetric("nbFiles"));
-        assertEquals(6, metrics.getMetric("addedLines"));
-        assertEquals(0, metrics.getMetric("removedLines"));
-        assertEquals(0, metrics.getMetric("modifiedLines"));
-        assertEquals(6, metrics.getMetric("patchSize"));
-        assertEquals(2, metrics.getMetric("nbChunks"));
-        assertEquals(0, metrics.getMetric("spreadingAllLines"));
-        assertEquals(0, metrics.getMetric("spreadingCodeOnly"));
+        assertEquals(2, metrics.getFeatureCounter("nbFiles"));
+        assertEquals(6, metrics.getFeatureCounter("addedLines"));
+        assertEquals(0, metrics.getFeatureCounter("removedLines"));
+        assertEquals(0, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(6, metrics.getFeatureCounter("patchSize"));
+        assertEquals(2, metrics.getFeatureCounter("nbChunks"));
+        assertEquals(0, metrics.getFeatureCounter("spreadingAllLines"));
+        assertEquals(0, metrics.getFeatureCounter("spreadingCodeOnly"));
     }
 
     @Test
@@ -113,14 +113,14 @@ public class MetricExtractorTest {
 
         MetricExtractor extractor = new MetricExtractor();
         Metrics metrics = extractor.extract();
-        assertEquals(2, metrics.getMetric("nbFiles"));
-        assertEquals(12, metrics.getMetric("addedLines"));
-        assertEquals(0, metrics.getMetric("removedLines"));
-        assertEquals(2, metrics.getMetric("modifiedLines"));
-        assertEquals(14, metrics.getMetric("patchSize"));
-        assertEquals(8, metrics.getMetric("nbChunks"));
-        assertEquals(70, metrics.getMetric("spreadingAllLines"));
-        assertEquals(26, metrics.getMetric("spreadingCodeOnly"));
+        assertEquals(2, metrics.getFeatureCounter("nbFiles"));
+        assertEquals(12, metrics.getFeatureCounter("addedLines"));
+        assertEquals(0, metrics.getFeatureCounter("removedLines"));
+        assertEquals(2, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(14, metrics.getFeatureCounter("patchSize"));
+        assertEquals(8, metrics.getFeatureCounter("nbChunks"));
+        assertEquals(70, metrics.getFeatureCounter("spreadingAllLines"));
+        assertEquals(26, metrics.getFeatureCounter("spreadingCodeOnly"));
     }
 
     @Test
@@ -129,14 +129,14 @@ public class MetricExtractorTest {
 
         MetricExtractor extractor = new MetricExtractor();
         Metrics metrics = extractor.extract();
-        assertEquals(1, metrics.getMetric("nbFiles"));
-        assertEquals(5, metrics.getMetric("addedLines"));
-        assertEquals(4, metrics.getMetric("removedLines"));
-        assertEquals(4, metrics.getMetric("modifiedLines"));
-        assertEquals(13, metrics.getMetric("patchSize"));
-        assertEquals(8, metrics.getMetric("nbChunks"));
-        assertEquals(17, metrics.getMetric("spreadingAllLines"));
-        assertEquals(17, metrics.getMetric("spreadingCodeOnly"));
+        assertEquals(1, metrics.getFeatureCounter("nbFiles"));
+        assertEquals(5, metrics.getFeatureCounter("addedLines"));
+        assertEquals(4, metrics.getFeatureCounter("removedLines"));
+        assertEquals(4, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(13, metrics.getFeatureCounter("patchSize"));
+        assertEquals(8, metrics.getFeatureCounter("nbChunks"));
+        assertEquals(17, metrics.getFeatureCounter("spreadingAllLines"));
+        assertEquals(17, metrics.getFeatureCounter("spreadingCodeOnly"));
     }
 
 }
