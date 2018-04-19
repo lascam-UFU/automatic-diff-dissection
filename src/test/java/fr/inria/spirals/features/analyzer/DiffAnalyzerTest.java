@@ -1,5 +1,7 @@
 package fr.inria.spirals.features.analyzer;
 
+import fr.inria.spirals.main.Config;
+import fr.inria.spirals.utils.TestUtils;
 import org.junit.Test;
 
 import java.util.*;
@@ -14,9 +16,9 @@ public class DiffAnalyzerTest {
 
     @Test
     public void testMethodAnalyze() {
-        String diffPath = DiffAnalyzerTest.class.getResource("/closure_24/closure_24.diff").getPath();
+        TestUtils.setupConfig("Closure 24");
 
-        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
+        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(Config.getInstance().getDiffPath());
         Changes changes = diffAnalyzer.analyze();
 
         assertEquals(1, diffAnalyzer.getNbFiles());
@@ -25,12 +27,13 @@ public class DiffAnalyzerTest {
 
     @Test
     public void testMethodGetOriginalFilesToReturnOneFile() {
-        String diffPath = DiffAnalyzerTest.class.getResource("/chart_1/chart_1.diff").getPath();
-        String buggySourcePath = DiffAnalyzerTest.class.getResource("/chart_1/buggy-version").getPath();
+        TestUtils.setupConfig("Chart 1");
+
+        String buggySourcePath = Config.getInstance().getBuggySourceDirectoryPath();
         List<String> expectedBuggyFilePaths = new ArrayList<>(
                 Arrays.asList(buggySourcePath+"/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java"));
 
-        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
+        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(Config.getInstance().getDiffPath());
         Map<String, List<String>> buggyFiles = diffAnalyzer.getOriginalFiles(buggySourcePath);
 
         List<String> actualBuggyFilePaths = new ArrayList<>();
@@ -45,13 +48,14 @@ public class DiffAnalyzerTest {
 
     @Test
     public void testMethodGetOriginalFilesToReturnMoreThanOneFile() {
-        String diffPath = DiffAnalyzerTest.class.getResource("/chart_18/chart_18.diff").getPath();
-        String buggySourcePath = DiffAnalyzerTest.class.getResource("/chart_18/buggy-version").getPath();
+        TestUtils.setupConfig("Chart 18");
+
+        String buggySourcePath = Config.getInstance().getBuggySourceDirectoryPath();
         List<String> expectedBuggyFilePaths = new ArrayList<>(
                 Arrays.asList(buggySourcePath+"/source/org/jfree/data/DefaultKeyedValues.java",
                         buggySourcePath+"/source/org/jfree/data/DefaultKeyedValues2D.java"));
 
-        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
+        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(Config.getInstance().getDiffPath());
         Map<String, List<String>> buggyFiles = diffAnalyzer.getOriginalFiles(buggySourcePath);
 
         List<String> actualBuggyFilePaths = new ArrayList<>();

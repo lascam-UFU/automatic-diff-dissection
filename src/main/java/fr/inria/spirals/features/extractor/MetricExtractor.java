@@ -4,6 +4,7 @@ import fr.inria.spirals.entities.Metrics;
 import fr.inria.spirals.features.analyzer.Change;
 import fr.inria.spirals.features.analyzer.Changes;
 import fr.inria.spirals.features.analyzer.DiffAnalyzer;
+import fr.inria.spirals.main.Config;
 import fr.inria.spirals.main.Utils;
 
 import java.io.BufferedReader;
@@ -17,17 +18,16 @@ import java.util.Set;
 /**
  * Created by tdurieux
  */
-public class MetricExtractor extends AbstractExtractor {
+public class MetricExtractor {
 
     private Metrics metrics;
 
-    public MetricExtractor(String oldSourcePath, String newSourcePath, String diffPath) {
-        super(oldSourcePath, newSourcePath, diffPath);
+    public MetricExtractor() {
         this.metrics = new Metrics();
     }
 
     public Metrics extract() {
-        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(diffPath);
+        DiffAnalyzer diffAnalyzer = new DiffAnalyzer(Config.getInstance().getDiffPath());
 
         Changes changes = diffAnalyzer.analyze();
 
@@ -129,8 +129,8 @@ public class MetricExtractor extends AbstractExtractor {
             int lastUntouchedline = 0;
             int lastTrimUntouchedLine = 0;
 
-            List<String> newFileContent = getFileContent(file, changes.getNewChanges(), this.fixedSourcePath);
-            List<String> oldFileContent = getFileContent(file, changes.getOldChanges(), this.buggySourcePath);
+            List<String> newFileContent = getFileContent(file, changes.getNewChanges(), Config.getInstance().getFixedSourceDirectoryPath());
+            List<String> oldFileContent = getFileContent(file, changes.getOldChanges(), Config.getInstance().getBuggySourceDirectoryPath());
 
             int lineDiff = 0;
             boolean first = false;

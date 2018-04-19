@@ -126,17 +126,12 @@ public class Launcher {
     private void execute() {
         switch (this.config.getLauncherMode()) {
             case AST:
-                AstExtractor astExtractor = new AstExtractor(
-                        this.config.getBuggySourceDirectoryPath(),
-                        this.config.getDiffPath());
+                AstExtractor astExtractor = new AstExtractor();
 
                 astExtractor.extract();
                 break;
             case METRICS:
-                MetricExtractor metricsExtractor = new MetricExtractor(
-                        this.config.getBuggySourceDirectoryPath(),
-                        this.config.getFixedSourceDirectoryPath(),
-                        this.config.getDiffPath());
+                MetricExtractor metricsExtractor = new MetricExtractor();
 
                 Metrics metrics = metricsExtractor.extract();
                 System.out.println(metrics.toString());
