@@ -77,6 +77,7 @@ $ ./patch-clustering/scripts/defects4j/checkout-defects4j/checkout_all.sh
 - `defects4j` must be set with the path of the Defects4J repository cloned in Step 1.
 - `checkout` must be set with the path of the directory containing the buggy versions checked out in Step 2.
 - `fix_checkout` must be set with the path of the directory containing the fixed versions checked out in Step 2.
+- `output` should be set with an existing path to output the extracted features as a JSON file (optional).
 
 4. Enter in the directory where this project was cloned and compile this project:
 
