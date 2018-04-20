@@ -35,9 +35,9 @@ public class Launcher {
 
     private void showUsage(JSAP jsap) {
         System.err.println();
-        System.err.println("Usage: java -jar patchclustering.jar <options>");
+        System.err.println("Usage: java -jar patchclustering.jar <arguments>");
         System.err.println();
-        System.err.println("Options:");
+        System.err.println("Arguments:");
         System.err.println();
         System.err.println(jsap.getHelp());
     }
@@ -71,7 +71,7 @@ public class Launcher {
         opt.setAllowMultipleDeclarations(false);
         opt.setUsageName(launcherModeValues);
         opt.setStringParser(EnumeratedStringParser.getParser(launcherModeValues));
-        opt.setHelp("The launcher mode.");
+        opt.setHelp("Provide the launcher mode, which is the type of the features that will be extracted.");
         jsap.registerParameter(opt);
 
         opt = new FlaggedOption("bugId");
@@ -80,7 +80,7 @@ public class Launcher {
         opt.setRequired(true);
         opt.setAllowMultipleDeclarations(false);
         opt.setStringParser(JSAP.STRING_PARSER);
-        opt.setHelp("The bug id.");
+        opt.setHelp("Provide the bug id (this is used only for information presentation).");
         jsap.registerParameter(opt);
 
         opt = new FlaggedOption("buggySourceDirectory");
@@ -88,7 +88,7 @@ public class Launcher {
         opt.setRequired(true);
         opt.setAllowMultipleDeclarations(false);
         opt.setStringParser(JSAP.STRING_PARSER);
-        opt.setHelp("The path to the buggy source code directory of the project.");
+        opt.setHelp("Provide the path to the buggy source code directory of the bug.");
         jsap.registerParameter(opt);
 
         opt = new FlaggedOption("fixedSourceDirectory");
@@ -96,7 +96,7 @@ public class Launcher {
         opt.setRequired(true);
         opt.setAllowMultipleDeclarations(false);
         opt.setStringParser(JSAP.STRING_PARSER);
-        opt.setHelp("The path to the fixed source code directory of the project.");
+        opt.setHelp("Provide the path to the fixed source code directory of the bug.");
         jsap.registerParameter(opt);
 
         opt = new FlaggedOption("diffPath");
@@ -104,7 +104,7 @@ public class Launcher {
         opt.setRequired(true);
         opt.setAllowMultipleDeclarations(true);
         opt.setStringParser(JSAP.STRING_PARSER);
-        opt.setHelp("The path to the diff file.");
+        opt.setHelp("Provide the path to the diff file.");
         jsap.registerParameter(opt);
 
         opt = new FlaggedOption("outputDirectory");
@@ -113,7 +113,7 @@ public class Launcher {
         opt.setRequired(false);
         opt.setAllowMultipleDeclarations(false);
         opt.setStringParser(FileStringParser.getParser().setMustBeDirectory(true).setMustExist(true));
-        opt.setHelp("The path to output the results.");
+        opt.setHelp("Provide an existing path to output the extracted features as a JSON file (optional).");
         jsap.registerParameter(opt);
 
         return jsap;
