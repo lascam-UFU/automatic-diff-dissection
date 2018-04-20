@@ -11,13 +11,13 @@ public class LauncherTest {
 
     @Test
     public void chart1() {
-        TestUtils.setupConfig("Chart 1");
+        Config config = TestUtils.setupConfig("Chart 1");
 
         String[] args = new String[] {"-m", LauncherMode.ALL.name(),
-                "-b", Config.getInstance().getBugId(),
-                "--buggySourceDirectory", Config.getInstance().getBuggySourceDirectoryPath(),
-                "--fixedSourceDirectory", Config.getInstance().getFixedSourceDirectoryPath(),
-                "--diff", Config.getInstance().getDiffPath(),
+                "-b", config.getBugId(),
+                "--buggySourceDirectory", config.getBuggySourceDirectoryPath(),
+                "--fixedSourceDirectory", config.getFixedSourceDirectoryPath(),
+                "--diff", config.getDiffPath(),
                 "-o", System.getProperty("user.dir")
         };
 

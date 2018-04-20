@@ -1,6 +1,7 @@
 package fr.inria.spirals.features.detector.repairactions;
 
 import fr.inria.spirals.entities.RepairActions;
+import fr.inria.spirals.main.Config;
 import fr.inria.spirals.utils.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -12,9 +13,9 @@ public class RepairActionDetectorTest {
 
     @Test
     public void chart1() {
-        TestUtils.setupConfig("Chart 1");
+        Config config = TestUtils.setupConfig("Chart 1");
 
-        RepairActionDetector detector = new RepairActionDetector();
+        RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("condExpMod") > 0);
@@ -22,9 +23,9 @@ public class RepairActionDetectorTest {
 
     @Test
     public void chart4() {
-        TestUtils.setupConfig("Chart 4");
+        Config config = TestUtils.setupConfig("Chart 4");
 
-        RepairActionDetector detector = new RepairActionDetector();
+        RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
@@ -32,9 +33,9 @@ public class RepairActionDetectorTest {
 
     @Test
     public void chart18() {
-        TestUtils.setupConfig("Chart 18");
+        Config config = TestUtils.setupConfig("Chart 18");
 
-        RepairActionDetector detector = new RepairActionDetector();
+        RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") > 0);
@@ -50,9 +51,9 @@ public class RepairActionDetectorTest {
 
     @Test
     public void closure24() {
-        TestUtils.setupConfig("Closure 24");
+        Config config = TestUtils.setupConfig("Closure 24");
 
-        RepairActionDetector detector = new RepairActionDetector();
+        RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("condBranIfElseAdd") > 0);
@@ -64,9 +65,9 @@ public class RepairActionDetectorTest {
 
     @Test
     public void closure76() {
-        TestUtils.setupConfig("Closure 76");
+        Config config = TestUtils.setupConfig("Closure 76");
 
-        RepairActionDetector detector = new RepairActionDetector();
+        RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") > 0);
@@ -82,9 +83,9 @@ public class RepairActionDetectorTest {
 
     @Test
     public void math4() {
-        TestUtils.setupConfig("Math 4");
+        Config config = TestUtils.setupConfig("Math 4");
 
-        RepairActionDetector detector = new RepairActionDetector();
+        RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
@@ -93,9 +94,9 @@ public class RepairActionDetectorTest {
 
     @Test
     public void time12() {
-        TestUtils.setupConfig("Time 12");
+        Config config = TestUtils.setupConfig("Time 12");
 
-        RepairActionDetector detector = new RepairActionDetector();
+        RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") > 0);
@@ -111,9 +112,9 @@ public class RepairActionDetectorTest {
 
     @Test
     public void time23() {
-        TestUtils.setupConfig("Time 23");
+        Config config = TestUtils.setupConfig("Time 23");
 
-        RepairActionDetector detector = new RepairActionDetector();
+        RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("mcAdd") > 0);

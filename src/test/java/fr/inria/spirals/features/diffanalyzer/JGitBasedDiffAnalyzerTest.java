@@ -16,9 +16,9 @@ public class JGitBasedDiffAnalyzerTest {
 
     @Test
     public void testMethodAnalyze() {
-        TestUtils.setupConfig("Closure 24");
+        Config config = TestUtils.setupConfig("Closure 24");
 
-        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(config.getDiffPath());
         Changes changes = jgitDiffAnalyzer.analyze();
 
         assertEquals(1, jgitDiffAnalyzer.getNbFiles());
@@ -27,13 +27,13 @@ public class JGitBasedDiffAnalyzerTest {
 
     @Test
     public void testMethodGetOriginalFilesToReturnOneFile() {
-        TestUtils.setupConfig("Chart 1");
+        Config config = TestUtils.setupConfig("Chart 1");
 
-        String buggySourcePath = Config.getInstance().getBuggySourceDirectoryPath();
+        String buggySourcePath = config.getBuggySourceDirectoryPath();
         List<String> expectedBuggyFilePaths = new ArrayList<>(
                 Arrays.asList(buggySourcePath+"/source/org/jfree/chart/renderer/category/AbstractCategoryItemRenderer.java"));
 
-        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(config.getDiffPath());
         Map<String, List<String>> buggyFiles = jgitDiffAnalyzer.getOriginalFiles(buggySourcePath);
 
         List<String> actualBuggyFilePaths = new ArrayList<>();
@@ -48,14 +48,14 @@ public class JGitBasedDiffAnalyzerTest {
 
     @Test
     public void testMethodGetOriginalFilesToReturnMoreThanOneFile() {
-        TestUtils.setupConfig("Chart 18");
+        Config config = TestUtils.setupConfig("Chart 18");
 
-        String buggySourcePath = Config.getInstance().getBuggySourceDirectoryPath();
+        String buggySourcePath = config.getBuggySourceDirectoryPath();
         List<String> expectedBuggyFilePaths = new ArrayList<>(
                 Arrays.asList(buggySourcePath+"/source/org/jfree/data/DefaultKeyedValues.java",
                         buggySourcePath+"/source/org/jfree/data/DefaultKeyedValues2D.java"));
 
-        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(config.getDiffPath());
         Map<String, List<String>> buggyFiles = jgitDiffAnalyzer.getOriginalFiles(buggySourcePath);
 
         List<String> actualBuggyFilePaths = new ArrayList<>();

@@ -9,10 +9,10 @@ public class JSONOutputFileCreator {
 
     public static String FILE_EXTENSION = ".json";
 
-    public static void writeJSONfile(String jsonString) {
+    public static void writeJSONfile(String jsonString, Config config) {
         FileWriter fileWriter;
         try {
-            fileWriter = new FileWriter(Config.getInstance().getOutputDirectoryPath()+"/"+Config.getInstance().getBugId()+"_"+Config.getInstance().getLauncherMode().name().toLowerCase()+FILE_EXTENSION);
+            fileWriter = new FileWriter(config.getOutputDirectoryPath()+"/"+config.getBugId()+"_"+config.getLauncherMode().name().toLowerCase()+FILE_EXTENSION);
             fileWriter.write(jsonString);
             fileWriter.flush();
         } catch (Exception e) {

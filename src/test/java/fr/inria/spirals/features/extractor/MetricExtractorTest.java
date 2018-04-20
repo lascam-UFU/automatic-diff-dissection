@@ -1,6 +1,7 @@
 package fr.inria.spirals.features.extractor;
 
 import fr.inria.spirals.entities.Metrics;
+import fr.inria.spirals.main.Config;
 import fr.inria.spirals.utils.TestUtils;
 import org.junit.Test;
 
@@ -13,9 +14,9 @@ public class MetricExtractorTest {
 
     @Test
     public void chart1() {
-        TestUtils.setupConfig("Chart 1");
+        Config config = TestUtils.setupConfig("Chart 1");
 
-        MetricExtractor extractor = new MetricExtractor();
+        MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(1, metrics.getFeatureCounter("nbFiles"));
         assertEquals(0, metrics.getFeatureCounter("addedLines"));
@@ -29,9 +30,9 @@ public class MetricExtractorTest {
 
     @Test
     public void chart4() {
-        TestUtils.setupConfig("Chart 4");
+        Config config = TestUtils.setupConfig("Chart 4");
 
-        MetricExtractor extractor = new MetricExtractor();
+        MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(1, metrics.getFeatureCounter("nbFiles"));
         assertEquals(2, metrics.getFeatureCounter("addedLines"));
@@ -45,9 +46,9 @@ public class MetricExtractorTest {
 
     @Test
     public void chart18() {
-        TestUtils.setupConfig("Chart 18");
+        Config config = TestUtils.setupConfig("Chart 18");
 
-        MetricExtractor extractor = new MetricExtractor();
+        MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(2, metrics.getFeatureCounter("nbFiles"));
         assertEquals(10, metrics.getFeatureCounter("addedLines"));
@@ -61,9 +62,9 @@ public class MetricExtractorTest {
 
     @Test
     public void closure24() {
-        TestUtils.setupConfig("Closure 24");
+        Config config = TestUtils.setupConfig("Closure 24");
 
-        MetricExtractor extractor = new MetricExtractor();
+        MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(1, metrics.getFeatureCounter("nbFiles"));
         assertEquals(2, metrics.getFeatureCounter("addedLines"));
@@ -77,9 +78,9 @@ public class MetricExtractorTest {
 
     @Test
     public void closure76() {
-        TestUtils.setupConfig("Closure 76");
+        Config config = TestUtils.setupConfig("Closure 76");
 
-        MetricExtractor extractor = new MetricExtractor();
+        MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(1, metrics.getFeatureCounter("nbFiles"));
         assertEquals(37, metrics.getFeatureCounter("addedLines"));
@@ -93,9 +94,9 @@ public class MetricExtractorTest {
 
     @Test
     public void math4() {
-        TestUtils.setupConfig("Math 4");
+        Config config = TestUtils.setupConfig("Math 4");
 
-        MetricExtractor extractor = new MetricExtractor();
+        MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(2, metrics.getFeatureCounter("nbFiles"));
         assertEquals(6, metrics.getFeatureCounter("addedLines"));
@@ -109,9 +110,9 @@ public class MetricExtractorTest {
 
     @Test
     public void time12() {
-        TestUtils.setupConfig("Time 12");
+        Config config = TestUtils.setupConfig("Time 12");
 
-        MetricExtractor extractor = new MetricExtractor();
+        MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(2, metrics.getFeatureCounter("nbFiles"));
         assertEquals(12, metrics.getFeatureCounter("addedLines"));
@@ -125,9 +126,9 @@ public class MetricExtractorTest {
 
     @Test
     public void time23() {
-        TestUtils.setupConfig("Time 23");
+        Config config = TestUtils.setupConfig("Time 23");
 
-        MetricExtractor extractor = new MetricExtractor();
+        MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(1, metrics.getFeatureCounter("nbFiles"));
         assertEquals(5, metrics.getFeatureCounter("addedLines"));

@@ -120,7 +120,7 @@ public class Launcher {
     }
 
     private void initConfig(JSAPResult arguments) {
-        this.config = Config.getInstance();
+        this.config = new Config();
         this.config.setLauncherMode(LauncherMode.valueOf(arguments.getString("launcherMode").toUpperCase()));
         this.config.setBugId(arguments.getString("bugId"));
         this.config.setBuggySourceDirectoryPath(arguments.getString("buggySourceDirectory"));
@@ -137,15 +137,15 @@ public class Launcher {
 
         if (this.config.getLauncherMode() == LauncherMode.REPAIR_PATTERNS ||
                 this.config.getLauncherMode() == LauncherMode.ALL) {
-            featureAnalyzers.add(new RepairPatternDetector());
+            featureAnalyzers.add(new RepairPatternDetector(this.config));
         }
         if (this.config.getLauncherMode() == LauncherMode.REPAIR_ACTIONS ||
                 this.config.getLauncherMode() == LauncherMode.ALL) {
-            featureAnalyzers.add(new RepairActionDetector());
+            featureAnalyzers.add(new RepairActionDetector(this.config));
         }
         if (this.config.getLauncherMode() == LauncherMode.METRICS ||
                 this.config.getLauncherMode() == LauncherMode.ALL) {
-            featureAnalyzers.add(new MetricExtractor());
+            featureAnalyzers.add(new MetricExtractor(this.config));
         }
 
         for (FeatureAnalyzer featureAnalyzer : featureAnalyzers) {
@@ -156,7 +156,7 @@ public class Launcher {
 
         if (this.config.getOutputDirectoryPath() != null) {
             JSONObject json = new JSONObject(features.toString());
-            JSONOutputFileCreator.writeJSONfile(json.toString(4));
+            JSONOutputFileCreator.writeJSONfile(json.toString(4), this.config);
         }
     }
 

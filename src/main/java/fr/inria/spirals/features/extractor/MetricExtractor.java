@@ -23,13 +23,14 @@ public class MetricExtractor extends FeatureAnalyzer {
 
     private Metrics metrics;
 
-    public MetricExtractor() {
+    public MetricExtractor(Config config) {
+        super(config);
         this.metrics = new Metrics();
     }
 
     @Override
     public Metrics analyze() {
-        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(this.config.getDiffPath());
 
         Changes changes = jgitDiffAnalyzer.analyze();
 
@@ -131,8 +132,8 @@ public class MetricExtractor extends FeatureAnalyzer {
             int lastUntouchedline = 0;
             int lastTrimUntouchedLine = 0;
 
-            List<String> newFileContent = getFileContent(file, changes.getNewChanges(), Config.getInstance().getFixedSourceDirectoryPath());
-            List<String> oldFileContent = getFileContent(file, changes.getOldChanges(), Config.getInstance().getBuggySourceDirectoryPath());
+            List<String> newFileContent = getFileContent(file, changes.getNewChanges(), this.config.getFixedSourceDirectoryPath());
+            List<String> oldFileContent = getFileContent(file, changes.getOldChanges(), this.config.getBuggySourceDirectoryPath());
 
             int lineDiff = 0;
             boolean first = false;

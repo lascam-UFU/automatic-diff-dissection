@@ -23,7 +23,8 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
 
     protected Diff editScript;
 
-    public EditScriptBasedDetector() {
+    public EditScriptBasedDetector(Config config) {
+        super(config);
         this.editScript = this.extractEditScript();
     }
 
@@ -32,10 +33,10 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
         System.setProperty("gumtree.match.gt.minh", "2");
         System.setProperty("gumtree.match.bu.sim", "0.30");
 
-        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(this.config.getDiffPath());
 
-        Map<String, List<String>> originalFiles = jgitDiffAnalyzer.getOriginalFiles(Config.getInstance().getBuggySourceDirectoryPath());
-        Map<String, List<String>> patchedFiles = jgitDiffAnalyzer.getPatchedFiles(Config.getInstance().getBuggySourceDirectoryPath());
+        Map<String, List<String>> originalFiles = jgitDiffAnalyzer.getOriginalFiles(this.config.getBuggySourceDirectoryPath());
+        Map<String, List<String>> patchedFiles = jgitDiffAnalyzer.getPatchedFiles(this.config.getBuggySourceDirectoryPath());
 
         Launcher oldSpoon = SpoonHelper.initSpoon(originalFiles);
         Launcher newSpoon = SpoonHelper.initSpoon(patchedFiles);

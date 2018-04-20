@@ -7,14 +7,16 @@ import fr.inria.spirals.main.Config;
  */
 public class TestUtils {
 
-    public static void setupConfig(String bugId) {
+    public static Config setupConfig(String bugId) {
         BugInfo bugInfo = Constants.BUG_ID_T0_INFO_MAP.get(bugId);
 
-        Config config = Config.getInstance();
+        Config config = new Config();
         config.setBugId(bugId);
         config.setBuggySourceDirectoryPath(bugInfo.getBuggySourceDirectoryPath());
         config.setFixedSourceDirectoryPath(bugInfo.getFixedSourceDirectoryPath());
         config.setDiffPath(bugInfo.getDiffPath());
+
+        return config;
     }
 
 }

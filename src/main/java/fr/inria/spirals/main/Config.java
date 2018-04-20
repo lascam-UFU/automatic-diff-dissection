@@ -5,8 +5,6 @@ package fr.inria.spirals.main;
  */
 public class Config {
 
-    private static Config INSTANCE;
-
     private LauncherMode launcherMode;
     private String bugId;
     private String buggySourceDirectoryPath;
@@ -14,14 +12,7 @@ public class Config {
     private String diffPath;
     private String outputDirectoryPath;
 
-    private Config() {}
-
-    public static Config getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new Config();
-        }
-        return INSTANCE;
-    }
+    public Config() {}
 
     public LauncherMode getLauncherMode() {
         return launcherMode;
