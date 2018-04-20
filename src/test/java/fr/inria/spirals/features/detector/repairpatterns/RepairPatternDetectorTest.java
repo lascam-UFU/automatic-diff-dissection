@@ -15,9 +15,10 @@ public class RepairPatternDetectorTest {
         TestUtils.setupConfig("Chart 4");
 
         RepairPatternDetector detector = new RepairPatternDetector();
-        RepairPatterns repairPatterns = detector.detect();
+        RepairPatterns repairPatterns = detector.analyze();
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("missNullCheckN") > 0);
+        Assert.assertTrue(repairPatterns.getFeatureCounter("wrapsIf") > 0);
     }
 
     @Test
@@ -25,7 +26,7 @@ public class RepairPatternDetectorTest {
         TestUtils.setupConfig("Chart 18");
 
         RepairPatternDetector detector = new RepairPatternDetector();
-        RepairPatterns repairPatterns = detector.detect();
+        RepairPatterns repairPatterns = detector.analyze();
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("missNullCheckP") > 0);
     }

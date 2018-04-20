@@ -1,6 +1,6 @@
 package fr.inria.spirals.features.detector;
 
-import fr.inria.spirals.entities.Feature;
+import fr.inria.spirals.features.FeatureAnalyzer;
 import fr.inria.spirals.features.detector.spoon.SpoonHelper;
 import fr.inria.spirals.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import fr.inria.spirals.main.Config;
@@ -19,17 +19,15 @@ import java.util.Map;
 /**
  * Created by tdurieux
  */
-public abstract class EditScriptBasedDetector {
+public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
 
     protected Diff editScript;
 
     public EditScriptBasedDetector() {
-        this.editScript = this.extract();
+        this.editScript = this.extractEditScript();
     }
 
-    protected abstract Feature detect();
-
-    private Diff extract() {
+    private Diff extractEditScript() {
         new AstComparator();
         System.setProperty("gumtree.match.gt.minh", "2");
         System.setProperty("gumtree.match.bu.sim", "0.30");

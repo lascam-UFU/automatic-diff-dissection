@@ -23,7 +23,7 @@ public class RepairActionDetector extends EditScriptBasedDetector {
     }
 
     @Override
-    public RepairActions detect() {
+    public RepairActions analyze() {
         for (int i = 0; i < editScript.getRootOperations().size(); i++) {
             Operation operation = editScript.getRootOperations().get(i);
             CtElement srcNode = operation.getSrcNode();

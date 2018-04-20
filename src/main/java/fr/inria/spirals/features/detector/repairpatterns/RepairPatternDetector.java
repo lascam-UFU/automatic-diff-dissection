@@ -23,7 +23,7 @@ public class RepairPatternDetector extends EditScriptBasedDetector {
     }
 
     @Override
-    public RepairPatterns detect() {
+    public RepairPatterns analyze() {
         for (int i = 0; i < editScript.getRootOperations().size(); i++) {
             Operation operation = editScript.getRootOperations().get(i);
             CtElement srcNode = operation.getSrcNode();

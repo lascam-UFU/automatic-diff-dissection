@@ -1,6 +1,7 @@
 package fr.inria.spirals.entities;
 
 import fr.inria.spirals.main.Constants;
+import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -53,34 +54,28 @@ public abstract class Feature {
         return output;
     }
 
-    public String toCSV(boolean printHeader, boolean printValues) {
+    public String toCSV() {
         StringBuilder output = new StringBuilder();
-        if (printHeader) {
-            for (String featureName : getFeatureNames()) {
-                output.append(featureName + Constants.CSV_SEPARATOR);
-            }
+        for (String featureName : getFeatureNames()) {
+            output.append(featureName + Constants.CSV_SEPARATOR);
         }
-        if (printHeader && printValues) {
-            output.append(Constants.LINE_BREAK);
-        }
-        if (printValues) {
-            for (String featureName : getFeatureNames()) {
-                int counter = getFeatureCounter(featureName);
-                output.append(counter + Constants.CSV_SEPARATOR);
-            }
+        output.append(Constants.LINE_BREAK);
+        for (String featureName : getFeatureNames()) {
+            int counter = getFeatureCounter(featureName);
+            output.append(counter + Constants.CSV_SEPARATOR);
         }
         return output.toString();
     }
 
     @Override
     public String toString() {
-        StringBuilder output = new StringBuilder();
+        JSONObject jsonObjectFeatures = new JSONObject();
         for (String featureName: getFeatureNames()) {
             int counter = getFeatureCounter(featureName);
-            if (counter != 0) {
-                output.append(featureName + ": " + counter + Constants.LINE_BREAK);
-            }
+            jsonObjectFeatures.put(featureName, counter);
         }
-        return output.toString();
+        JSONObject json = new JSONObject();
+        json.put(this.getClass().getSimpleName(), jsonObjectFeatures);
+        return json.toString(4);
     }
 }

@@ -1,6 +1,7 @@
 package fr.inria.spirals.features.extractor;
 
 import fr.inria.spirals.entities.Metrics;
+import fr.inria.spirals.features.FeatureAnalyzer;
 import fr.inria.spirals.features.diffanalyzer.Change;
 import fr.inria.spirals.features.diffanalyzer.Changes;
 import fr.inria.spirals.features.diffanalyzer.JGitBasedDiffAnalyzer;
@@ -18,7 +19,7 @@ import java.util.Set;
 /**
  * Created by tdurieux
  */
-public class MetricExtractor {
+public class MetricExtractor extends FeatureAnalyzer {
 
     private Metrics metrics;
 
@@ -26,7 +27,8 @@ public class MetricExtractor {
         this.metrics = new Metrics();
     }
 
-    public Metrics extract() {
+    @Override
+    public Metrics analyze() {
         JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(Config.getInstance().getDiffPath());
 
         Changes changes = jgitDiffAnalyzer.analyze();

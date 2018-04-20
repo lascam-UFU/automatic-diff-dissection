@@ -15,7 +15,7 @@ public class RepairActionDetectorTest {
         TestUtils.setupConfig("Chart 1");
 
         RepairActionDetector detector = new RepairActionDetector();
-        RepairActions repairActions = detector.detect();
+        RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("condExpMod") > 0);
     }
@@ -25,7 +25,7 @@ public class RepairActionDetectorTest {
         TestUtils.setupConfig("Chart 4");
 
         RepairActionDetector detector = new RepairActionDetector();
-        RepairActions repairActions = detector.detect();
+        RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
     }
@@ -35,7 +35,7 @@ public class RepairActionDetectorTest {
         TestUtils.setupConfig("Chart 18");
 
         RepairActionDetector detector = new RepairActionDetector();
-        RepairActions repairActions = detector.detect();
+        RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
@@ -53,7 +53,7 @@ public class RepairActionDetectorTest {
         TestUtils.setupConfig("Closure 24");
 
         RepairActionDetector detector = new RepairActionDetector();
-        RepairActions repairActions = detector.detect();
+        RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("condBranIfElseAdd") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("condBranRem") > 0);
@@ -67,7 +67,7 @@ public class RepairActionDetectorTest {
         TestUtils.setupConfig("Closure 76");
 
         RepairActionDetector detector = new RepairActionDetector();
-        RepairActions repairActions = detector.detect();
+        RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
@@ -85,7 +85,7 @@ public class RepairActionDetectorTest {
         TestUtils.setupConfig("Math 4");
 
         RepairActionDetector detector = new RepairActionDetector();
-        RepairActions repairActions = detector.detect();
+        RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("retBranchAdd") > 0);
@@ -96,7 +96,7 @@ public class RepairActionDetectorTest {
         TestUtils.setupConfig("Time 12");
 
         RepairActionDetector detector = new RepairActionDetector();
-        RepairActions repairActions = detector.detect();
+        RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
@@ -114,7 +114,7 @@ public class RepairActionDetectorTest {
         TestUtils.setupConfig("Time 23");
 
         RepairActionDetector detector = new RepairActionDetector();
-        RepairActions repairActions = detector.detect();
+        RepairActions repairActions = detector.analyze();
 
         Assert.assertTrue(repairActions.getFeatureCounter("mcAdd") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("mcParValChange") > 0);

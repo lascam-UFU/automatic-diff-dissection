@@ -5,14 +5,17 @@ import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
-import fr.inria.spirals.entities.Metrics;
-import fr.inria.spirals.entities.RepairActions;
-import fr.inria.spirals.entities.RepairPatterns;
+import com.martiansoftware.jsap.stringparsers.FileStringParser;
+import fr.inria.spirals.entities.FeatureList;
+import fr.inria.spirals.features.FeatureAnalyzer;
 import fr.inria.spirals.features.detector.repairactions.RepairActionDetector;
 import fr.inria.spirals.features.detector.repairpatterns.RepairPatternDetector;
 import fr.inria.spirals.features.extractor.MetricExtractor;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by tdurieux
@@ -109,7 +112,7 @@ public class Launcher {
         opt.setLongFlag("output");
         opt.setRequired(false);
         opt.setAllowMultipleDeclarations(false);
-        opt.setStringParser(JSAP.STRING_PARSER);
+        opt.setStringParser(FileStringParser.getParser().setMustBeDirectory(true).setMustExist(true));
         opt.setHelp("The path to output the results.");
         jsap.registerParameter(opt);
 
@@ -123,50 +126,38 @@ public class Launcher {
         this.config.setBuggySourceDirectoryPath(arguments.getString("buggySourceDirectory"));
         this.config.setFixedSourceDirectoryPath(arguments.getString("fixedSourceDirectory"));
         this.config.setDiffPath(arguments.getString("diffPath"));
-        this.config.setOutputDirectoryPath(arguments.getString("outputDirectory"));
-    }
-
-    private void execute() {
-        switch (this.config.getLauncherMode()) {
-            case REPAIR_PATTERNS:
-                RepairPatterns repairPatterns = this.detectRepairPatterns();
-                System.out.println(repairPatterns.toCSV(true, true));
-                break;
-            case REPAIR_ACTIONS:
-                RepairActions repairActions = this.detectRepairActions();
-                System.out.println(repairActions.toCSV(true, true));
-                break;
-            case METRICS:
-                Metrics metrics = this.extractMetrics();
-                System.out.println(metrics.toCSV(true, true));
-                break;
-            case ALL:
-                repairPatterns = this.detectRepairPatterns();
-                repairActions = this.detectRepairActions();
-                metrics = this.extractMetrics();
-                System.out.print(repairPatterns.toCSV(true, false));
-                System.out.print(repairActions.toCSV(true, false));
-                System.out.println(metrics.toCSV(true, false));
-                System.out.print(repairPatterns.toCSV(false, true));
-                System.out.print(repairActions.toCSV(false, true));
-                System.out.println(metrics.toCSV(false, true));
-                break;
+        if (arguments.getFile("outputDirectory") != null) {
+            this.config.setOutputDirectoryPath(arguments.getFile("outputDirectory").getAbsolutePath());
         }
     }
 
-    private RepairPatterns detectRepairPatterns() {
-        RepairPatternDetector repairPatternDetector = new RepairPatternDetector();
-        return repairPatternDetector.detect();
-    }
+    protected void execute() {
+        FeatureList features = new FeatureList();
+        List<FeatureAnalyzer> featureAnalyzers = new ArrayList<>();
 
-    private RepairActions detectRepairActions() {
-        RepairActionDetector repairActionDetector = new RepairActionDetector();
-        return repairActionDetector.detect();
-    }
+        if (this.config.getLauncherMode() == LauncherMode.REPAIR_PATTERNS ||
+                this.config.getLauncherMode() == LauncherMode.ALL) {
+            featureAnalyzers.add(new RepairPatternDetector());
+        }
+        if (this.config.getLauncherMode() == LauncherMode.REPAIR_ACTIONS ||
+                this.config.getLauncherMode() == LauncherMode.ALL) {
+            featureAnalyzers.add(new RepairActionDetector());
+        }
+        if (this.config.getLauncherMode() == LauncherMode.METRICS ||
+                this.config.getLauncherMode() == LauncherMode.ALL) {
+            featureAnalyzers.add(new MetricExtractor());
+        }
 
-    private Metrics extractMetrics() {
-        MetricExtractor metricExtractor = new MetricExtractor();
-        return metricExtractor.extract();
+        for (FeatureAnalyzer featureAnalyzer : featureAnalyzers) {
+            features.add(featureAnalyzer.analyze());
+        }
+
+        System.out.println(features.toCSV());
+
+        if (this.config.getOutputDirectoryPath() != null) {
+            JSONObject json = new JSONObject(features.toString());
+            JSONOutputFileCreator.writeJSONfile(json.toString(4));
+        }
     }
 
     public static void main(String[] args) throws Exception {
