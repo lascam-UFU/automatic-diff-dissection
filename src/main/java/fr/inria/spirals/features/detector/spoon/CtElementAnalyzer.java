@@ -205,7 +205,7 @@ public class CtElementAnalyzer {
                     @Override
                     public <T> void visitCtConstructorCall(CtConstructorCall<T> e) {
                         if (actionType == ACTION_TYPE.UPDATE) {
-                            output.incrementFeatureCounter("objInstMod" + actionType.name);
+                            output.incrementFeatureCounter("objInstMod");
                         } else {
                             output.incrementFeatureCounter("objInst" + actionType.name);
                         }
