@@ -156,7 +156,11 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void visitCtParameter(CtParameter<T> e) {
-                        output.incrementFeatureCounter("mdPar" + actionType.name);
+                        if (actionType == ACTION_TYPE.UPDATE) {
+                            output.incrementFeatureCounter("mdParRem");
+                        } else {
+                            output.incrementFeatureCounter("mdPar" + actionType.name);
+                        }
                         super.visitCtParameter(e);
                     }
 
@@ -192,7 +196,9 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void scanCtType(CtType<T> type) {
-                        output.incrementFeatureCounter("ty");
+                        if (actionType == ACTION_TYPE.ADD) {
+                            output.incrementFeatureCounter("tyAdd");
+                        }
                         super.scanCtType(type);
                     }
 
