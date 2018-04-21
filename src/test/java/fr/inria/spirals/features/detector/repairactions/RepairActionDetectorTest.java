@@ -121,4 +121,16 @@ public class RepairActionDetectorTest {
         Assert.assertTrue(repairActions.getFeatureCounter("mcParValChange") > 0);
     }
 
+
+    @Test
+    public void jackrabbit002c5845() {
+        Config config = TestUtils.setupConfig("Jackrabbit 002c5845");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("objInstMod") > 0);
+    }
+
+
 }

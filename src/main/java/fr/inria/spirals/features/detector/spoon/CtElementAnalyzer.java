@@ -105,6 +105,15 @@ public class CtElementAnalyzer {
                     }
 
                     @Override
+                    public <T> void visitCtLiteral(CtLiteral<T> e) {
+                        CtVariable parent = e.getParent(CtVariable.class);
+                        if (parent.getMetadata("new") == null && parent != null)  {
+                            output.incrementFeatureCounter("objInstMod");
+                        }
+                        super.visitCtLiteral(e);
+                    }
+
+                    @Override
                     public <T> void visitCtInvocation(CtInvocation<T> e) {
                         if (actionType == ACTION_TYPE.UPDATE) {
                             output.incrementFeatureCounter("mcRepl");

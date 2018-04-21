@@ -61,6 +61,12 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/time_23/time_23.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Jackrabbit 002c5845");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/jackrabbit-oak_002c5845/buggy-version").getPath());
+        //bugInfo.setFixedSourceDirectoryPath(Constants.class.getResource("/jackrabbit-oak_002c5845/fixed-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/jackrabbit-oak_002c5845/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         return tmpBugIdToInfoMap;
     }
 

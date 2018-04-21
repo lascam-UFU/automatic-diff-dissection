@@ -1,0 +1,13 @@
+diff --git a/oak-lucene/src/main/java/org/apache/jackrabbit/oak/plugins/index/lucene/LucenePropertyIndex.java b/oak-lucene/src/main/java/org/apache/jackrabbit/oak/plugins/index/lucene/LucenePropertyIndex.java
+index 749756a..42a7804 100644
+--- a/oak-lucene/src/main/java/org/apache/jackrabbit/oak/plugins/index/lucene/LucenePropertyIndex.java
++++ b/oak-lucene/src/main/java/org/apache/jackrabbit/oak/plugins/index/lucene/LucenePropertyIndex.java
+@@ -1371,7 +1371,7 @@ static Query tokenToQuery(String text, String fieldName, Analyzer analyzer) {
+     /**
+      * Following chars are used as operators in Lucene Query and should be escaped
+      */
+-    private static final char[] LUCENE_QUERY_OPERATORS = {':' , '/', '!', '&', '|'};
++    private static final char[] LUCENE_QUERY_OPERATORS = {':' , '/', '!', '&', '|', '='};
+ 
+     /**
+      * Following logic is taken from org.apache.jackrabbit.core.query.lucene.JackrabbitQueryParser#parse(java.lang.String)
