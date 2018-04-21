@@ -58,14 +58,16 @@ public class PatternMatcher {
                         if ("unwrapIf".equals(pattern)) {
                             pattern = "unwrapIfElse";
                         }
-                    }
-                    if (pattern.contains("condBlock")) {
+                        patterns.incrementFeatureCounter(pattern);
+                    } else if (pattern.contains("condBlock")) {
                         if (actionType == CtElementAnalyzer.ACTION_TYPE.DELETE) {
                             pattern = "condBlock";
                         }
                         pattern += actionType.toString();
+                        patterns.incrementFeatureCounter(pattern);
+                    } else if (actionType != CtElementAnalyzer.ACTION_TYPE.DELETE) {
+                        patterns.incrementFeatureCounter(pattern);
                     }
-                    patterns.incrementFeatureCounter(pattern);
                 }
             }
         }

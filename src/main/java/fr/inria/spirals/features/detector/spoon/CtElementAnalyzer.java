@@ -70,7 +70,11 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void visitCtConditional(CtConditional<T> e) {
-                        output.incrementFeatureCounter("condBranIfElse" + actionType.name);
+                        if (actionType == ACTION_TYPE.DELETE) {
+                            output.incrementFeatureCounter("condBran" + actionType.name);
+                        } else {
+                            output.incrementFeatureCounter("condBranIfElse" + actionType.name);
+                        }
                         super.visitCtConditional(e);
                     }
 
@@ -194,7 +198,11 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void visitCtConstructorCall(CtConstructorCall<T> e) {
-                        output.incrementFeatureCounter("objInst" + actionType.name);
+                        if (actionType == ACTION_TYPE.UPDATE) {
+                            output.incrementFeatureCounter("objInstMod" + actionType.name);
+                        } else {
+                            output.incrementFeatureCounter("objInst" + actionType.name);
+                        }
                         super.visitCtConstructorCall(e);
                     }
 
@@ -219,7 +227,7 @@ public class CtElementAnalyzer {
 
                             CtFor ctFor = expression.getParent(CtFor.class);
                             if (ctFor != null && ctIf.getMetadata("new") == null) {
-                                if (expression.hasParent(ctFor.getForInit().get(0))) {
+                                if (ctFor.getForInit() != null && expression.hasParent(ctFor.getForInit().get(0))) {
                                     output.incrementFeatureCounter("loopInitChange");
                                 } else if (expression.hasParent(ctFor.getExpression())) {
                                     output.incrementFeatureCounter("loopCondChange");
