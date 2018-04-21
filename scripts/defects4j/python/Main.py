@@ -58,7 +58,10 @@ def get_project_features(info, project, bug_id, diff, mode):
            mode)
     if output_path:
         cmd += """ -o %s""" % output_path
-    return subprocess.check_output(cmd, shell=True).strip()
+    try:
+        return subprocess.check_output(cmd, shell=True).strip()
+    except subprocess.CalledProcessError as e:
+        return "command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output)
 
 def getSource(info, id):
     for index, src in info['src'].iteritems():
