@@ -23,7 +23,7 @@ public class SpoonHelper {
     public static Launcher initSpoon(Map<String, List<String>> files) {
         Launcher spoon = new Launcher();
         spoon.getEnvironment().setNoClasspath(true);
-        spoon.getEnvironment().setAutoImports(true);
+        spoon.getEnvironment().setAutoImports(false);
         spoon.getEnvironment().setCommentEnabled(false);
         for (String path : files.keySet()) {
             VirtualFile virtualFile = new VirtualFile(String.join(Constants.LINE_BREAK, files.get(path)), new File(path).getName());

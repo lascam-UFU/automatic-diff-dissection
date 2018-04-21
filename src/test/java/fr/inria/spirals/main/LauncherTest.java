@@ -32,7 +32,6 @@ public class LauncherTest {
     }
 
     @Test
-    @Ignore
     public void closure114() {
         Config config = TestUtils.setupConfig("Closure 114");
 
