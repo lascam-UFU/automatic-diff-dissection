@@ -106,7 +106,11 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void visitCtInvocation(CtInvocation<T> e) {
-                        output.incrementFeatureCounter("mc" + actionType.name);
+                        if (actionType == ACTION_TYPE.UPDATE) {
+                            output.incrementFeatureCounter("mcRepl");
+                        } else {
+                            output.incrementFeatureCounter("mc" + actionType.name);
+                        }
                         super.visitCtInvocation(e);
                     }
 
