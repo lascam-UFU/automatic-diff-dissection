@@ -132,7 +132,7 @@ public class Launcher {
     }
 
     protected void execute() {
-        FeatureList features = new FeatureList();
+        FeatureList features = new FeatureList(this.config);
         List<FeatureAnalyzer> featureAnalyzers = new ArrayList<>();
 
         if (this.config.getLauncherMode() == LauncherMode.REPAIR_PATTERNS ||

@@ -1,5 +1,6 @@
 package fr.inria.spirals.entities;
 
+import fr.inria.spirals.main.Config;
 import fr.inria.spirals.main.Constants;
 import org.json.JSONObject;
 
@@ -12,13 +13,16 @@ import java.util.List;
 public class FeatureList {
 
     private List<Feature> featureList;
+    private Config config;
 
-    public FeatureList() {
+    public FeatureList(Config config) {
+        this.config = config;
         this.featureList = new ArrayList<>();
     }
 
     public void add(Feature feature) {
         this.featureList.add(feature);
+        feature.setConfig(this.config);
     }
 
     public String toCSV() {

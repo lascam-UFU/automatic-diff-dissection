@@ -1,5 +1,6 @@
 package fr.inria.spirals.entities;
 
+import fr.inria.spirals.main.Config;
 import fr.inria.spirals.main.Constants;
 import org.json.JSONObject;
 
@@ -11,6 +12,13 @@ import java.util.List;
  * Created by tdurieux
  */
 public abstract class Feature {
+
+    private Config config;
+
+    public void setConfig(Config config) {
+        this.config = config;
+    }
+
     public void incrementFeatureCounter(String key) {
         try {
             Field field  = this.getClass().getDeclaredField(key);
@@ -75,6 +83,7 @@ public abstract class Feature {
             jsonObjectFeatures.put(featureName, counter);
         }
         JSONObject json = new JSONObject();
+        json.put("bugId", this.config.getBugId());
         json.put(this.getClass().getSimpleName(), jsonObjectFeatures);
         return json.toString(4);
     }
