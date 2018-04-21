@@ -99,6 +99,9 @@ public class JGitBasedDiffAnalyzer {
                 int pos = 0;
                 for(int j = 1; j < hunkLines.size(); ++j) {
                     String hunkLine = hunkLines.get(j);
+                    if (hunkLine.isEmpty()) {
+                        continue;
+                    }
                     switch(hunkLine.charAt(0)) {
                         case ' ':
                             ++pos;
