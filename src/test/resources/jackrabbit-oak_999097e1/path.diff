@@ -2,6 +2,14 @@ diff --git a/oak-core/src/main/java/org/apache/jackrabbit/oak/plugins/memory/Mem
 index ce13f08..6600cc7 100644
 --- a/oak-core/src/main/java/org/apache/jackrabbit/oak/plugins/memory/MemoryNodeBuilder.java
 +++ b/oak-core/src/main/java/org/apache/jackrabbit/oak/plugins/memory/MemoryNodeBuilder.java
+@@ -24,7 +24,6 @@
+ 
+ import com.google.common.collect.ImmutableMap;
+ import com.google.common.collect.Maps;
+-
+ import org.apache.jackrabbit.oak.api.PropertyState;
+ import org.apache.jackrabbit.oak.api.Type;
+ import org.apache.jackrabbit.oak.spi.state.AbstractNodeState;
 @@ -268,11 +267,12 @@ private boolean isRemoved(String name) {
  
      @Override
@@ -23,4 +31,4 @@ index ce13f08..6600cc7 100644
 +        read();
          return baseState;
      }
- 
+

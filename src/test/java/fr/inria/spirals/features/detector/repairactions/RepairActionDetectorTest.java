@@ -132,5 +132,27 @@ public class RepairActionDetectorTest {
         Assert.assertTrue(repairActions.getFeatureCounter("objInstMod") > 0);
     }
 
+    @Test
+    public void jackrabbit999097e1() {
+        Config config = TestUtils.setupConfig("Jackrabbit 999097e1");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mcAdd") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("varAdd") > 0);
+    }
+
+    @Test
+    public void wicket34634266() {
+        Config config = TestUtils.setupConfig("Wicket 34634266");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("objInstMod") > 0);
+    }
+
 
 }

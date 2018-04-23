@@ -79,6 +79,17 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/jackrabbit-oak_002c5845/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Jackrabbit 999097e1");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/jackrabbit-oak_999097e1/buggy-version").getPath());
+        //bugInfo.setFixedSourceDirectoryPath(Constants.class.getResource("/jackrabbit-oak_002c5845/fixed-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/jackrabbit-oak_999097e1/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Wicket 34634266");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/wicket_34634266/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/wicket_34634266/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         return tmpBugIdToInfoMap;
     }
 
