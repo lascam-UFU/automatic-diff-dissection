@@ -26,7 +26,10 @@ public class SpoonHelper {
         spoon.getEnvironment().setAutoImports(false);
         spoon.getEnvironment().setCommentEnabled(false);
         for (String path : files.keySet()) {
-            VirtualFile virtualFile = new VirtualFile(String.join(Constants.LINE_BREAK, files.get(path)), new File(path).getName());
+            String fileContent = String.join(Constants.LINE_BREAK, files.get(path))
+                    .replace("import javax.annotation.Nullable", "// import javax.annotation.Nullable")
+                    .replace("import javax.annotation.CheckForNull", "// import javax.annotation.CheckForNull");
+            VirtualFile virtualFile = new VirtualFile(fileContent, new File(path).getName());
             spoon.getModelBuilder().addInputSource(virtualFile);
         }
         spoon.buildModel();
