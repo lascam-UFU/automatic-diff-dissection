@@ -151,7 +151,7 @@ public class RepairActionDetectorTest {
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
 
-        Assert.assertTrue(repairActions.getFeatureCounter("objInstMod") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mdRen") > 0);
     }
 
 
