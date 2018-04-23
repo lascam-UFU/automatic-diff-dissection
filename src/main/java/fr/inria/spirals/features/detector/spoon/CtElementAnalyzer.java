@@ -32,12 +32,114 @@ public class CtElementAnalyzer {
     }
 
     private CtElement element;
+    private CtElement dstElement;
+
+    public CtElementAnalyzer(CtElement e, CtElement dst) {
+        this.element = e;
+        this.dstElement = dst;
+    }
 
     public CtElementAnalyzer(CtElement element) {
-        this.element = element;
+        this(element, null);
     }
 
     public RepairActions analyze(final RepairActions output, final ACTION_TYPE actionType) {
+        if (actionType == ACTION_TYPE.UPDATE) {
+            element.accept(new CtInheritanceScanner() {
+                @Override
+                public <T> void visitCtBinaryOperator(CtBinaryOperator<T> e) {
+                    CtIf ctIf = e.getParent(CtIf.class);
+                    if (ctIf != null && (e.equals(ctIf.getCondition()) || e.hasParent(ctIf.getCondition()))) {
+                        output.incrementFeatureCounter("condExpMod");
+                    }
+                    super.visitCtBinaryOperator(e);
+                }
+
+                @Override
+                public <T> void visitCtMethod(CtMethod<T> e) {
+                    if (!e.getSimpleName().equals(((CtNamedElement) dstElement).getSimpleName())) {
+                        output.incrementFeatureCounter("mdRen");
+                    }
+                    if (e.getModifiers().size() != ((CtModifiable) dstElement).getModifiers().size() ||
+                            !e.getModifiers().containsAll(((CtModifiable) dstElement).getModifiers())) {
+                        output.incrementFeatureCounter("mdModChange");
+                    }
+                    super.visitCtMethod(e);
+                }
+
+                @Override
+                public <T> void scanCtVariable(CtVariable<T> e) {
+                    if (e.getModifiers().size() != ((CtModifiable) dstElement).getModifiers().size() ||
+                            !e.getModifiers().containsAll(((CtModifiable) dstElement).getModifiers())) {
+                        output.incrementFeatureCounter("varModChange");
+                    }
+                    super.scanCtVariable(e);
+                }
+
+                @Override
+                public <T> void scanCtType(CtType<T> type) {
+                    if (!type.getSimpleName().equals(((CtNamedElement) dstElement).getSimpleName())) {
+                        output.incrementFeatureCounter("tyRen");
+                    }
+                    super.scanCtType(type);
+                }
+
+                @Override
+                public <T> void visitCtConstructorCall(CtConstructorCall<T> e) {
+                    output.incrementFeatureCounter("objInstMod");
+                    super.visitCtConstructorCall(e);
+                }
+
+                @Override
+                public <T> void scanCtExpression(CtExpression<T> expression) {
+                    if (expression.getRoleInParent() == CtRole.ARGUMENT && expression.getParent().getMetadata("new") == null) {
+                        output.incrementFeatureCounter("mcParVal" + actionType.name);
+                    }
+                    CtAssignment assignment = expression.getParent(CtAssignment.class);
+                    if (assignment != null && assignment.getMetadata("isMoved") != null && expression.hasParent(assignment.getAssignment())) {
+                        output.incrementFeatureCounter("assignExp" + actionType.name);
+                    }
+
+                    CtFor ctFor = expression.getParent(CtFor.class);
+                    if (ctFor != null && ctFor.getMetadata("new") == null) {
+                        if (ctFor.getForInit() != null && expression.hasParent(ctFor.getForInit().get(0))) {
+                            output.incrementFeatureCounter("loopInitChange");
+                        } else if (expression.hasParent(ctFor.getExpression())) {
+                            output.incrementFeatureCounter("loopCondChange");
+                        }
+                    }
+                    super.scanCtExpression(expression);
+                }
+
+                @Override
+                public <T> void visitCtParameter(CtParameter<T> e) {
+                    output.incrementFeatureCounter("mdParRem");
+                    super.visitCtParameter(e);
+                }
+
+                @Override
+                public <T> void visitCtTypeReference(CtTypeReference<T> e) {
+                    if (e.getRoleInParent() == CtRole.TYPE && e.getMetadata("new") == null) {
+                        if (e.getParent() instanceof CtMethod) {
+                            output.incrementFeatureCounter("mdRetTyChange");
+                        }
+                        if (e.getParent() instanceof CtVariable) {
+                            output.incrementFeatureCounter("varTyChange");
+                        }
+                    } else if (e.getRoleInParent() == CtRole.INTERFACE) {
+                        output.incrementFeatureCounter("tyImpInterf");
+                    }
+                    super.visitCtTypeReference(e);
+                }
+
+                @Override
+                public <T> void visitCtInvocation(CtInvocation<T> e) {
+                    output.incrementFeatureCounter("mcRepl");
+                    super.visitCtInvocation(e);
+                }
+            });
+            return output;
+        }
         element.accept(new CtScanner() {
             @Override
             public void scan(CtElement element) {
@@ -119,11 +221,7 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void visitCtInvocation(CtInvocation<T> e) {
-                        if (actionType == ACTION_TYPE.UPDATE) {
-                            output.incrementFeatureCounter("mcRepl");
-                        } else {
-                            output.incrementFeatureCounter("mc" + actionType.name);
-                        }
+                        output.incrementFeatureCounter("mc" + actionType.name);
                         super.visitCtInvocation(e);
                     }
 
@@ -156,20 +254,13 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void visitCtParameter(CtParameter<T> e) {
-                        if (actionType == ACTION_TYPE.UPDATE) {
-                            output.incrementFeatureCounter("mdParRem");
-                        } else {
-                            output.incrementFeatureCounter("mdPar" + actionType.name);
-                        }
+                        output.incrementFeatureCounter("mdPar" + actionType.name);
                         super.visitCtParameter(e);
                     }
 
                     @Override
                     public <T> void visitCtTypeReference(CtTypeReference<T> e) {
                         if (e.getRoleInParent() == CtRole.TYPE && e.getMetadata("new") == null) {
-                            if (e.getParent() instanceof CtMethod && actionType == ACTION_TYPE.UPDATE) {
-                                output.incrementFeatureCounter("mdRetTyChange");
-                            }
                             if (e.getParent() instanceof CtVariable) {
                                 output.incrementFeatureCounter("varTyChange");
                             }
@@ -204,41 +295,14 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void visitCtConstructorCall(CtConstructorCall<T> e) {
-                        if (actionType == ACTION_TYPE.UPDATE) {
-                            output.incrementFeatureCounter("objInstMod");
-                        } else {
-                            output.incrementFeatureCounter("objInst" + actionType.name);
-                        }
+                        output.incrementFeatureCounter("objInst" + actionType.name);
                         super.visitCtConstructorCall(e);
                     }
 
                     @Override
                     public <T> void scanCtExpression(CtExpression<T> expression) {
                         if (expression.getRoleInParent() == CtRole.ARGUMENT && expression.getParent().getMetadata("new") == null) {
-                            if (actionType == ACTION_TYPE.UPDATE) {
-                                output.incrementFeatureCounter("mcParVal" + actionType.name);
-                            } else {
-                                output.incrementFeatureCounter("mcPar" + actionType.name);
-                            }
-                        }
-                        if (actionType == ACTION_TYPE.UPDATE) {
-                            CtAssignment assignment = expression.getParent(CtAssignment.class);
-                            if (assignment != null && assignment.getMetadata("isMoved") != null && expression.hasParent(assignment.getAssignment())) {
-                                output.incrementFeatureCounter("assignExp" + actionType.name);
-                            }
-                            CtIf ctIf = expression.getParent(CtIf.class);
-                            if (ctIf != null && expression.hasParent(ctIf.getCondition())) {
-                                output.incrementFeatureCounter("condExpMod");
-                            }
-
-                            CtFor ctFor = expression.getParent(CtFor.class);
-                            if (ctFor != null && ctIf.getMetadata("new") == null) {
-                                if (ctFor.getForInit() != null && expression.hasParent(ctFor.getForInit().get(0))) {
-                                    output.incrementFeatureCounter("loopInitChange");
-                                } else if (expression.hasParent(ctFor.getExpression())) {
-                                    output.incrementFeatureCounter("loopCondChange");
-                                }
-                            }
+                            output.incrementFeatureCounter("mcPar" + actionType.name);
                         }
                         super.scanCtExpression(expression);
                     }

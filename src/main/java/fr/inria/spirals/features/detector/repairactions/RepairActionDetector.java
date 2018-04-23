@@ -36,7 +36,7 @@ public class RepairActionDetector extends EditScriptBasedDetector {
             } else {
                 if (operation instanceof UpdateOperation) {
                     CtElement dstNode = operation.getDstNode();
-                    this.detectRepairActions(srcNode, CtElementAnalyzer.ACTION_TYPE.UPDATE);
+                    this.detectRepairActionsInUpdate(srcNode, dstNode);
                     SpoonHelper.printUpdateOperation(srcNode, dstNode, (UpdateOperation) operation);
                 }
             }
@@ -46,6 +46,9 @@ public class RepairActionDetector extends EditScriptBasedDetector {
 
     private void detectRepairActions(CtElement e, CtElementAnalyzer.ACTION_TYPE actionType) {
         new CtElementAnalyzer(e).analyze(repairActions, actionType);
+    }
+    private void detectRepairActionsInUpdate(CtElement e, CtElement dst) {
+        new CtElementAnalyzer(e,dst).analyze(repairActions, CtElementAnalyzer.ACTION_TYPE.UPDATE);
     }
 
     public RepairActions getRepairActions() {
