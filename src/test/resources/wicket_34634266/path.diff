@@ -1,0 +1,20 @@
+diff --git a/wicket-core/src/main/java/org/apache/wicket/model/StringResourceModel.java b/wicket-core/src/main/java/org/apache/wicket/model/StringResourceModel.java
+index 95b37f8..35ef7bb 100644
+--- a/wicket-core/src/main/java/org/apache/wicket/model/StringResourceModel.java
++++ b/wicket-core/src/main/java/org/apache/wicket/model/StringResourceModel.java
+@@ -590,13 +590,10 @@ protected final String load()
+ 		return getString();
+ 	}
+ 
+-	/**
+-	 * @see org.apache.wicket.model.IDetachable#detach()
+-	 */
+ 	@Override
+-	protected final void onDetach()
++	public final void detach()
+ 	{
+-		super.onDetach();
++		super.detach();
+ 
+ 		// detach any model
+ 		if (model != null)

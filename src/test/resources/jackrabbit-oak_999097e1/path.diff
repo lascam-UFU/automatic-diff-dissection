@@ -1,0 +1,26 @@
+diff --git a/oak-core/src/main/java/org/apache/jackrabbit/oak/plugins/memory/MemoryNodeBuilder.java b/oak-core/src/main/java/org/apache/jackrabbit/oak/plugins/memory/MemoryNodeBuilder.java
+index ce13f08..6600cc7 100644
+--- a/oak-core/src/main/java/org/apache/jackrabbit/oak/plugins/memory/MemoryNodeBuilder.java
++++ b/oak-core/src/main/java/org/apache/jackrabbit/oak/plugins/memory/MemoryNodeBuilder.java
+@@ -268,11 +267,12 @@ private boolean isRemoved(String name) {
+ 
+     @Override
+     public boolean isModified() {
++        NodeState baseState = getBaseState();
+         if (writeState == null) {
+             return false;
+         }
+         else {
+-            NodeState baseState = getBaseState();
++            Map<String, MutableNodeState> nodes = writeState.nodes;
+             for (Entry<String, MutableNodeState> n : writeState.nodes.entrySet()) {
+                 if (n.getValue() == null) {
+                     return true;
+@@ -308,6 +308,7 @@ public NodeState getNodeState() {
+ 
+     @Override
+     public NodeState getBaseState() {
++        read();
+         return baseState;
+     }
+ 

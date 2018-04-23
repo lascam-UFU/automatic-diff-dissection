@@ -100,10 +100,14 @@ public class JGitBasedDiffAnalyzer {
                 for(int j = 1; j < hunkLines.size(); ++j) {
                     String hunkLine = hunkLines.get(j);
                     if (hunkLine.isEmpty()) {
+                        ++pos;
                         continue;
                     }
                     switch(hunkLine.charAt(0)) {
                         case ' ':
+                            if (!hunkLine.substring(1).equals(output.get(fileName).get(hh.getNewStartLine() - 1 + pos))) {
+                                throw new RuntimeException("Invalid diff");
+                            }
                             ++pos;
                             break;
                         case '+':
@@ -118,6 +122,9 @@ public class JGitBasedDiffAnalyzer {
                                 index = hh.getNewStartLine() - 1 + pos;
                                 if (pos == 0 && hh.getNewLineCount() == 0) {
                                     index++;
+                                }
+                                if (!hunkLine.substring(1).equals(output.get(fileName).get(index))) {
+                                    throw new RuntimeException("Invalid diff");
                                 }
                                 output.get(fileName).remove(index);
                             }

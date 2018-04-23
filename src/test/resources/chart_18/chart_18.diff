@@ -17,7 +17,7 @@ index 707eb0a..5569198 100644
          int index = getIndex(key);
          if (index < 0) {
 -			return;
-+            throw new UnknownKeyException("The key (" + key
++            throw new UnknownKeyException("The key (" + key 
 +                    + ") is not recognised.");
          }
          removeValue(index);
