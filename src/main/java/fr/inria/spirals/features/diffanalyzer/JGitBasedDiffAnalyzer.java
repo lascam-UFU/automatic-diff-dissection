@@ -98,7 +98,7 @@ public class JGitBasedDiffAnalyzer {
 
                 int pos = 0;
                 for(int j = 1; j < hunkLines.size(); ++j) {
-                    String hunkLine = hunkLines.get(j);
+                    String hunkLine = hunkLines.get(j).replace("\r", "");
                     if (hunkLine.isEmpty()) {
                         ++pos;
                         continue;
