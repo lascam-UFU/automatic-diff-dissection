@@ -45,7 +45,8 @@ public class RepairPatternDetector extends EditScriptBasedDetector {
     }
 
     private void detectRepairPatterns(CtElement e, CtElementAnalyzer.ACTION_TYPE actionType) {
-        new PatternMatcher(e).analyze(this.repairPatterns, actionType);
+        //new PatternMatcher(e).analyze(this.repairPatterns, actionType);
+        new MissingNullCheckPatternDetector(e, actionType).process(this.repairPatterns);
     }
 
     public RepairPatterns getRepairPatterns() {
