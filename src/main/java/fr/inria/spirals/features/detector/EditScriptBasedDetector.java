@@ -9,8 +9,6 @@ import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import spoon.Launcher;
-import spoon.reflect.code.CtStatement;
-import spoon.reflect.code.CtStatementList;
 import spoon.reflect.path.CtRole;
 
 import java.util.List;
@@ -52,10 +50,10 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
             Operation operation = editScript.getAllOperations().get(i);
             if (operation instanceof MoveOperation) {
                 if (operation.getDstNode().getRoleInParent() == CtRole.STATEMENT) {
-                    operation.getDstNode().getParent(CtStatementList.class).removeStatement((CtStatement) operation.getDstNode());
+                    //operation.getDstNode().getParent(CtStatementList.class).removeStatement((CtStatement) operation.getDstNode());
                 }
                 if (operation.getSrcNode().getRoleInParent() == CtRole.STATEMENT) {
-                    operation.getSrcNode().getParent(CtStatementList.class).removeStatement((CtStatement) operation.getSrcNode());
+                    //operation.getSrcNode().getParent(CtStatementList.class).removeStatement((CtStatement) operation.getSrcNode());
                 }
                 operation.getSrcNode().putMetadata("isMoved", true);
                 operation.getDstNode().putMetadata("isMoved", true);

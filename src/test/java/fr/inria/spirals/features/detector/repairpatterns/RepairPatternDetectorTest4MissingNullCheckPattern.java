@@ -8,8 +8,10 @@ import org.junit.Test;
 
 /**
  * Created by fermadeiral
+ *
+ * Tests for the features missNullCheckP and missNullCheckN
  */
-public class RepairPatternDetectorTest {
+public class RepairPatternDetectorTest4MissingNullCheckPattern {
 
     @Test
     public void chart4() {
@@ -19,7 +21,6 @@ public class RepairPatternDetectorTest {
         RepairPatterns repairPatterns = detector.analyze();
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("missNullCheckN") > 0);
-        Assert.assertTrue(repairPatterns.getFeatureCounter("wrapsIf") > 0);
     }
 
     @Test
@@ -30,6 +31,26 @@ public class RepairPatternDetectorTest {
         RepairPatterns repairPatterns = detector.analyze();
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("missNullCheckP") > 0);
+    }
+
+    @Test
+    public void closure23() {
+        Config config = TestUtils.setupConfig("Closure 23");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("missNullCheckP") == 0);
+    }
+
+    @Test
+    public void mockito22() {
+        Config config = TestUtils.setupConfig("Mockito 22");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("missNullCheckP") == 0);
     }
 
 }

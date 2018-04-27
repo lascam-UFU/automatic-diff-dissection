@@ -1,0 +1,18 @@
+--- a/com/google/javascript/jscomp/PeepholeFoldConstants.java
++++ b/com/google/javascript/jscomp/PeepholeFoldConstants.java
+@@ -1448,8 +1448,14 @@ private Node tryFoldArrayAccess(Node n, Node left, Node right) {
+ 
+     Node current = left.getFirstChild();
+     Node elem = null;
+-    for (int i = 0; current != null && i < intIndex; i++) {
++    for (int i = 0; current != null; i++) {
++      if (i != intIndex) {
++        if (mayHaveSideEffects(current)) {
++          return n;
++        }
++      } else {
+         elem = current;
++      }
+ 
+       current = current.getNext();
+     }
