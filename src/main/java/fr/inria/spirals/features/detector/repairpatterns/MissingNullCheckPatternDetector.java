@@ -7,8 +7,8 @@ import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.reference.CtVariableReference;
-import spoon.reflect.visitor.filter.AbstractFilter;
 import spoon.reflect.visitor.filter.LineFilter;
+import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,14 +43,7 @@ public class MissingNullCheckPatternDetector {
 
                     final CtElement parent = binaryOperator.getParent(new LineFilter());
 
-                    CtElement parentAux = parent;
-                    while (parentAux != null && !(parentAux instanceof CtMethod)) {
-                        parentAux = parentAux.getParent();
-                    }
-                    if (parentAux == null || !(parentAux instanceof CtMethod)) {
-                        return;
-                    }
-                    CtMethod surroundingMethod = (CtMethod) parentAux;
+                    CtMethod surroundingMethod = parent.getParent(CtMethod.class);
                     List<CtElement> referenceExpressionUsages = this.getReferenceExpressionUsages(referenceExpression, surroundingMethod);
                     for (CtElement e : referenceExpressionUsages) {
                         if (e.getPosition() == null) {
@@ -77,7 +70,7 @@ public class MissingNullCheckPatternDetector {
 
         if (referenceExpression instanceof CtVariableAccess) {
             final CtVariableReference variable = ((CtVariableAccess) referenceExpression).getVariable();
-            referenceExpressionUsages.addAll(method.getElements(new AbstractFilter<CtVariableAccess>(CtVariableAccess.class) {
+            referenceExpressionUsages.addAll(method.getElements(new TypeFilter<CtVariableAccess>(CtVariableAccess.class) {
                 @Override
                 public boolean matches(CtVariableAccess element) {
                     if (element == referenceExpression) {
@@ -88,7 +81,7 @@ public class MissingNullCheckPatternDetector {
             }));
         } else {
             if (referenceExpression instanceof CtArrayAccess) {
-                referenceExpressionUsages.addAll(method.getElements(new AbstractFilter<CtArrayAccess>(CtArrayAccess.class) {
+                referenceExpressionUsages.addAll(method.getElements(new TypeFilter<CtArrayAccess>(CtArrayAccess.class) {
                     @Override
                     public boolean matches(CtArrayAccess element) {
                         if (element == referenceExpression) {
@@ -99,7 +92,7 @@ public class MissingNullCheckPatternDetector {
                 }));
             } else {
                 if (referenceExpression instanceof CtInvocation) {
-                    referenceExpressionUsages.addAll(method.getElements(new AbstractFilter<CtInvocation>(CtInvocation.class) {
+                    referenceExpressionUsages.addAll(method.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
                         @Override
                         public boolean matches(CtInvocation element) {
                             if (element == referenceExpression) {
