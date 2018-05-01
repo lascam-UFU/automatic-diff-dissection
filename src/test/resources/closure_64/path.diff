@@ -1,0 +1,34 @@
+--- a/com/google/javascript/jscomp/Compiler.java
++++ b/com/google/javascript/jscomp/Compiler.java
+@@ -1429,7 +1429,7 @@ public Void call() throws Exception {
+ 
+         // if LanguageMode is ECMASCRIPT5_STRICT, only print 'use strict'
+         // for the first input file
+-        String code = toSource(root, sourceMap);
++        String code = toSource(root, sourceMap, inputSeqNum == 0);
+         if (!code.isEmpty()) {
+           cb.append(code);
+ 
+@@ -1458,19 +1458,19 @@ public Void call() throws Exception {
+   @Override
+   String toSource(Node n) {
+     initCompilerOptionsIfTesting();
+-    return toSource(n, null);
++    return toSource(n, null, true);
+   }
+ 
+   /**
+    * Generates JavaScript source code for an AST.
+    */
+-  private String toSource(Node n, SourceMap sourceMap) {
++  private String toSource(Node n, SourceMap sourceMap, boolean firstOutput) {
+     CodePrinter.Builder builder = new CodePrinter.Builder(n);
+     builder.setPrettyPrint(options.prettyPrint);
+     builder.setLineBreak(options.lineBreak);
+     builder.setSourceMap(sourceMap);
+     builder.setSourceMapDetailLevel(options.sourceMapDetailLevel);
+-    builder.setTagAsStrict(
++    builder.setTagAsStrict(firstOutput &&
+         options.getLanguageOut() == LanguageMode.ECMASCRIPT5_STRICT);
+     builder.setLineLengthThreshold(options.lineLengthThreshold);
+ 

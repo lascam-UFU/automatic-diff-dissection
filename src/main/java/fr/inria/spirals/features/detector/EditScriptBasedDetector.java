@@ -11,6 +11,7 @@ import gumtree.spoon.diff.operations.Operation;
 import spoon.Launcher;
 import spoon.reflect.path.CtRole;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,8 +47,11 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
     }
 
     private void preprocessEditScript(Diff editScript) {
-        for (int i = 0; i < editScript.getAllOperations().size(); i++) {
-            Operation operation = editScript.getAllOperations().get(i);
+        List<Operation> operations = new ArrayList<>();
+        operations.addAll(editScript.getAllOperations());
+        operations.addAll(editScript.getRootOperations());
+        for (int i = 0; i < operations.size(); i++) {
+            Operation operation = operations.get(i);
             if (operation instanceof MoveOperation) {
                 if (operation.getDstNode().getRoleInParent() == CtRole.STATEMENT) {
                     //operation.getDstNode().getParent(CtStatementList.class).removeStatement((CtStatement) operation.getDstNode());
@@ -66,6 +70,10 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
                 }
             }
         }
+    }
+
+    public Diff getEditScript() {
+        return editScript;
     }
 
 }
