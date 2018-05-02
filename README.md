@@ -59,30 +59,26 @@ The results will be printed in the terminal, and if a path was provided to the a
 
 TODO: to show an usage case with one bug.
 
-### Example on a dataset: extract features from the Defects4J
+### Example on a dataset: extract features from Defects4J patches
 
-1. Clone and init Defects4J anywhere: follow instructions [here](https://github.com/rjust/defects4j)
-
-2. Checkout each bug and patch by running the following script (WARNING: 12,3 GB in disk will be used):
+1. Clone `tdurieux/pattern-detector-experiment` anywhere:
 
 ```bash
-$ ./patch-clustering/scripts/defects4j/checkout-defects4j/checkout_all.sh
+$ git clone https://github.com/tdurieux/pattern-detector-experiment.git
 ```
 
-3. Change the configuration in `/patch-clustering/scripts/defects4j/config.cfg` file:
+2. Change the configuration in `/patch-clustering/scripts/defects4j/python/config.cfg` file:
 
-- `defects4j` must be set with the path of the Defects4J repository cloned in Step 1.
-- `checkout` must be set with the path of the directory containing the buggy versions checked out in Step 2.
-- `fix_checkout` must be set with the path of the directory containing the fixed versions checked out in Step 2.
+- `checkout` must be set with the path of the repository cloned in Step 1 plus `/benchmark/defects4j`.
 - `output` should be set with an existing path to output the extracted features as a JSON file (optional).
 
-4. Enter in the directory where this project was cloned and compile this project:
+3. Enter in the directory where this project was cloned and compile this project:
 
 ```bash
 $ mvn package -DskipTests
 ```
 
-5. Run the feature extractor:
+4. Run the feature extractor:
 
 ```bash
 $ python scripts/defects4j/python/Main.py <REPAIR_PATTERNS;REPAIR_ACTIONS;METRICS;ALL>

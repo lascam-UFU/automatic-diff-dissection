@@ -14,7 +14,7 @@ def find_info_from_bug(bug_id, json_file):
         all_info = json.load(data)
         for bug_info in all_info:
             bug_id2 = bug_info['project'] + "_" + str(bug_info['bugId'])
-            if bug_id2 == bug_id:
+            if bug_id2.lower() == bug_id:
                 return bug_info
     return None
 

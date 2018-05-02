@@ -7,14 +7,12 @@ config = ConfigParser.ConfigParser()
 
 config.add_section('path')
 config.set('path', 'root', os.path.join(os.path.dirname(__file__), '..', '..', '..'))
-config.set('path', 'output', os.path.join(config.get('path', 'root'), "features"))
-config.set('path', 'defects4j', os.path.expanduser("~/defects4j"))
-config.set('path', 'checkout', os.path.expanduser("~/projects"))
-config.set('path', 'fix_checkout', os.path.expanduser("~/projects_fix"))
+config.set('path', 'checkout')
+config.set('path', 'output')
 
 
 
-path_config_file = os.path.join(config.get('path', 'root'), 'scripts', 'defects4j', 'config.cfg')
+path_config_file = os.path.join(config.get('path', 'root'), 'scripts', 'defects4j', 'python', 'config.cfg')
 
 if os.path.isfile(path_config_file):
     with open(path_config_file, 'r') as configfile:
