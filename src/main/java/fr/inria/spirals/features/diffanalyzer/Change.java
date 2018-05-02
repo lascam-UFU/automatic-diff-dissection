@@ -36,7 +36,8 @@ public class Change {
             indexStartPackage = file.lastIndexOf("/com");
         }
         file = file.substring(indexStartPackage + 1);
-        return file.substring(0, file.lastIndexOf(".")).replace("/", ".");
+        file = file.substring(0, file.lastIndexOf(".")).replace("/", ".");
+        return file;
     }
 
     public int getEndLine() {

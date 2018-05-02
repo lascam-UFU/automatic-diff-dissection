@@ -6,14 +6,10 @@ import fr.inria.spirals.features.diffanalyzer.Change;
 import fr.inria.spirals.features.diffanalyzer.Changes;
 import fr.inria.spirals.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import fr.inria.spirals.main.Config;
-import fr.inria.spirals.main.Utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -40,7 +36,7 @@ public class MetricExtractor extends FeatureAnalyzer {
 
         this.computeNbChunks(changes);
 
-        this.computeSpreading(changes);
+        this.computeSpreading(changes, jgitDiffAnalyzer);
 
         return metrics;
     }
@@ -112,19 +108,15 @@ public class MetricExtractor extends FeatureAnalyzer {
         this.metrics.setFeatureCounter("nbChunks", nbChunks);
     }
 
-    public void computeSpreading(Changes changes) {
+    public void computeSpreading(Changes changes, JGitBasedDiffAnalyzer jgitDiffAnalyzer) {
         int spreadingAllLines = 0;
         int spreadingCodeOnly = 0;
 
         Set<String> files = new HashSet<>();
-        for (int i = 0; i < changes.getNewChanges().size(); i++) {
-            Change change = changes.getNewChanges().get(i);
-            files.add(change.getClassName());
-        }
-        for (int i = 0; i < changes.getOldChanges().size(); i++) {
-            Change change = changes.getOldChanges().get(i);
-            files.add(change.getClassName());
-        }
+        Map<String, List<String>> originalFiles = jgitDiffAnalyzer.getOriginalFiles(this.config.getBuggySourceDirectoryPath());
+        Map<String, List<String>> patchedFiles = jgitDiffAnalyzer.getPatchedFiles(this.config.getBuggySourceDirectoryPath());
+        files.addAll(originalFiles.keySet());
+        files.addAll(patchedFiles.keySet());
 
         for (String file : files) {
             int untouchedline = 0;
@@ -132,8 +124,8 @@ public class MetricExtractor extends FeatureAnalyzer {
             int lastUntouchedline = 0;
             int lastTrimUntouchedLine = 0;
 
-            List<String> newFileContent = getFileContent(file, changes.getNewChanges(), this.config.getFixedSourceDirectoryPath());
-            List<String> oldFileContent = getFileContent(file, changes.getOldChanges(), this.config.getBuggySourceDirectoryPath());
+            List<String> newFileContent = patchedFiles.get(file);
+            List<String> oldFileContent = originalFiles.get(file);
 
             int lineDiff = 0;
             boolean first = false;
@@ -187,7 +179,9 @@ public class MetricExtractor extends FeatureAnalyzer {
             if (change.getLength() == 0) {
                 continue;
             }
-            if (change.getClassName().equals(file)) {
+            String fileName = file.replace("/", ".");
+            String className = change.getClassName() + ".java";
+            if (fileName.endsWith(className)) {
                 if (change.getLine() <= oldLine && change.getEndLine() >= oldLine) {
                     return change;
                 }
@@ -198,7 +192,9 @@ public class MetricExtractor extends FeatureAnalyzer {
             if (change.getLength() == 0) {
                 continue;
             }
-            if (change.getClassName().equals(file)) {
+            String fileName = file.replace("/", ".");
+            String className = change.getClassName() + ".java";
+            if (fileName.endsWith(className)) {
                 if (change.getLine() <= newLine && change.getEndLine() >= newLine) {
                     return change;
                 }
@@ -214,30 +210,6 @@ public class MetricExtractor extends FeatureAnalyzer {
                 s.startsWith("/*") ||
                 s.startsWith("*/") ||
                 s.startsWith("*");
-    }
-
-    private List<String> getFileContent(String filename, List<Change> changes, String root) {
-        String pathFile = null;
-        for (Change change : changes) {
-            String file = change.getClassName();
-            if (file.equals(filename)) {
-                pathFile = change.getFile();
-                break;
-            }
-        }
-
-        pathFile = Utils.getFullPath(root, pathFile);
-
-        try (BufferedReader br = new BufferedReader(new FileReader(new File(pathFile)))) {
-            List<String> output = new ArrayList<>();
-            String line;
-            while ((line = br.readLine()) != null) {
-                output.add(line);
-            }
-            return output;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
 }
