@@ -91,14 +91,6 @@ public class Launcher {
         opt.setHelp("Provide the path to the buggy source code directory of the bug.");
         jsap.registerParameter(opt);
 
-        opt = new FlaggedOption("fixedSourceDirectory");
-        opt.setLongFlag("fixedSourceDirectory");
-        opt.setRequired(true);
-        opt.setAllowMultipleDeclarations(false);
-        opt.setStringParser(JSAP.STRING_PARSER);
-        opt.setHelp("Provide the path to the fixed source code directory of the bug.");
-        jsap.registerParameter(opt);
-
         opt = new FlaggedOption("diffPath");
         opt.setLongFlag("diff");
         opt.setRequired(true);
@@ -124,7 +116,6 @@ public class Launcher {
         this.config.setLauncherMode(LauncherMode.valueOf(arguments.getString("launcherMode").toUpperCase()));
         this.config.setBugId(arguments.getString("bugId"));
         this.config.setBuggySourceDirectoryPath(arguments.getString("buggySourceDirectory"));
-        this.config.setFixedSourceDirectoryPath(arguments.getString("fixedSourceDirectory"));
         this.config.setDiffPath(arguments.getString("diffPath"));
         if (arguments.getFile("outputDirectory") != null) {
             this.config.setOutputDirectoryPath(arguments.getFile("outputDirectory").getAbsolutePath());

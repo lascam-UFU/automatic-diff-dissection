@@ -17,7 +17,6 @@ public class LauncherTest {
         String[] args = new String[] {"-m", LauncherMode.ALL.name(),
                 "-b", config.getBugId(),
                 "--buggySourceDirectory", config.getBuggySourceDirectoryPath(),
-                "--fixedSourceDirectory", config.getFixedSourceDirectoryPath(),
                 "--diff", config.getDiffPath(),
                 "-o", System.getProperty("user.dir")
         };
@@ -38,7 +37,6 @@ public class LauncherTest {
         String[] args = new String[] {"-m", LauncherMode.ALL.name(),
                 "-b", config.getBugId(),
                 "--buggySourceDirectory", config.getBuggySourceDirectoryPath(),
-                "--fixedSourceDirectory", config.getFixedSourceDirectoryPath(),
                 "--diff", config.getDiffPath(),
                 "-o", System.getProperty("user.dir")
         };
@@ -60,7 +58,6 @@ public class LauncherTest {
         String[] args = new String[] {"-m", LauncherMode.ALL.name(),
                 "-b", config.getBugId(),
                 "--buggySourceDirectory", config.getBuggySourceDirectoryPath(),
-                "--fixedSourceDirectory", config.getFixedSourceDirectoryPath(),
                 "--diff", config.getDiffPath(),
                 "-o", System.getProperty("user.dir")
         };

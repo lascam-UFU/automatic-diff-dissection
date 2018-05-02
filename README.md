@@ -47,9 +47,6 @@ Note that Patch Clustering receives a set of arguments to run. The argument opti
   --buggySourceDirectory <buggySourceDirectory>
         Provide the path to the buggy source code directory of the bug.
 
-  --fixedSourceDirectory <fixedSourceDirectory>
-        Provide the path to the fixed source code directory of the bug.
-
   --diff <diffPath>
         Provide the path to the diff file.
 

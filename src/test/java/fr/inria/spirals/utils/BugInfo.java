@@ -7,7 +7,6 @@ public class BugInfo {
 
     private String bugId;
     private String buggySourceDirectoryPath;
-    private String fixedSourceDirectoryPath;
     private String diffPath;
 
     BugInfo(String bugId) {
@@ -24,14 +23,6 @@ public class BugInfo {
 
     public void setBuggySourceDirectoryPath(String buggySourceDirectoryPath) {
         this.buggySourceDirectoryPath = buggySourceDirectoryPath;
-    }
-
-    public String getFixedSourceDirectoryPath() {
-        return fixedSourceDirectoryPath;
-    }
-
-    public void setFixedSourceDirectoryPath(String fixedSourceDirectoryPath) {
-        this.fixedSourceDirectoryPath = fixedSourceDirectoryPath;
     }
 
     public String getDiffPath() {

@@ -8,7 +8,6 @@ public class Config {
     private LauncherMode launcherMode;
     private String bugId;
     private String buggySourceDirectoryPath;
-    private String fixedSourceDirectoryPath;
     private String diffPath;
     private String outputDirectoryPath;
 
@@ -36,14 +35,6 @@ public class Config {
 
     public void setBuggySourceDirectoryPath(String buggySourceDirectoryPath) {
         this.buggySourceDirectoryPath = buggySourceDirectoryPath;
-    }
-
-    public String getFixedSourceDirectoryPath() {
-        return fixedSourceDirectoryPath;
-    }
-
-    public void setFixedSourceDirectoryPath(String fixedSourceDirectoryPath) {
-        this.fixedSourceDirectoryPath = fixedSourceDirectoryPath;
     }
 
     public String getDiffPath() {

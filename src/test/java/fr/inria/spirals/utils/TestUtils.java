@@ -13,7 +13,6 @@ public class TestUtils {
         Config config = new Config();
         config.setBugId(bugId);
         config.setBuggySourceDirectoryPath(bugInfo.getBuggySourceDirectoryPath());
-        config.setFixedSourceDirectoryPath(bugInfo.getFixedSourceDirectoryPath());
         config.setDiffPath(bugInfo.getDiffPath());
 
         return config;

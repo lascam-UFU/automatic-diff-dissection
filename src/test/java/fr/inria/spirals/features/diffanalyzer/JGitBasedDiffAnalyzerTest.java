@@ -17,17 +17,15 @@ public class JGitBasedDiffAnalyzerTest {
 
     @Test
     public void testFixedVersionCreation() {
-        String[] bugs = new String[]{"Chart 1", "Chart 4", "Chart 18", "Math 4", "Time 12", "Time 23", "Mockito 21", "Closure 24", "Closure 114", "Closure 76"};
-        for (int i = 0; i < bugs.length; i++) {
-            Config config = TestUtils.setupConfig(bugs[i]);
-            JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(config.getDiffPath());
-            Map<String, List<String>> fixedFiles = jgitDiffAnalyzer.getOriginalFiles(config.getFixedSourceDirectoryPath());
-            Map<String, List<String>> patchedFiles = jgitDiffAnalyzer.getPatchedFiles(config.getBuggySourceDirectoryPath());
-            for (String path: fixedFiles.keySet()) {
-                String buggyPath = path.replace(config.getFixedSourceDirectoryPath(), config.getBuggySourceDirectoryPath());
-                assertEquals("Patched source version not valid for: " + bugs[i], String.join(fr.inria.spirals.main.Constants.LINE_BREAK, fixedFiles.get(path)),
-                        String.join(Constants.LINE_BREAK, patchedFiles.get(buggyPath)));
-            }
+        Config config = TestUtils.setupConfig("Time 12");
+        String fixedSourceDirectoryPath = config.getBuggySourceDirectoryPath().replace("buggy", "fixed");
+        JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(config.getDiffPath());
+        Map<String, List<String>> fixedFiles = jgitDiffAnalyzer.getOriginalFiles(fixedSourceDirectoryPath);
+        Map<String, List<String>> patchedFiles = jgitDiffAnalyzer.getPatchedFiles(config.getBuggySourceDirectoryPath());
+        for (String path: fixedFiles.keySet()) {
+            String buggyPath = path.replace(fixedSourceDirectoryPath, config.getBuggySourceDirectoryPath());
+            assertEquals("Patched source version not valid for " + config.getBugId(), String.join(fr.inria.spirals.main.Constants.LINE_BREAK, fixedFiles.get(path)),
+                    String.join(Constants.LINE_BREAK, patchedFiles.get(buggyPath)));
         }
     }
 
