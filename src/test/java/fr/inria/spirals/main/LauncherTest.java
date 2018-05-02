@@ -51,7 +51,6 @@ public class LauncherTest {
     }
 
     @Test
-    @Ignore
     public void mockito21() {
         Config config = TestUtils.setupConfig("Mockito 21");
 
