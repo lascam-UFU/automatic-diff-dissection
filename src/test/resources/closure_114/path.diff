@@ -1,5 +1,5 @@
---- a/src/com/google/javascript/jscomp/NameAnalyzer.java
-+++ b/src/com/google/javascript/jscomp/NameAnalyzer.java
+--- a/com/google/javascript/jscomp/NameAnalyzer.java
++++ b/com/google/javascript/jscomp/NameAnalyzer.java
 @@ -575,7 +575,7 @@ private void recordAssignment(NodeTraversal t, Node n, Node recordNode) {
            } else {
              recordDepScope(nameNode, ns);
@@ -8,4 +8,4 @@
 +        } else if (!(parent.isCall() && parent.getFirstChild() == n)) {
            // The rhs of the assignment is the caller, so it's used by the
            // context. Don't associate it w/ the lhs.
-// FYI: this fixes only the specific case where the assignment is the
+           // FYI: this fixes only the specific case where the assignment is the

@@ -1,10 +1,6 @@
-diff --git a/src/com/google/javascript/jscomp/ScopedAliases.java b/src/com/google/javascript/jscomp/ScopedAliases.java
-index 30d29d0..c248002 100644
---- a/src/com/google/javascript/jscomp/ScopedAliases.java
-+++ b/src/com/google/javascript/jscomp/ScopedAliases.java
-@@ -273,28 +273,29 @@ class ScopedAliases implements HotSwapCompilerPass {
-       Scope scope = t.getScope();
-       for (Var v : scope.getVarIterable()) {
+--- a/com/google/javascript/jscomp/ScopedAliases.java
++++ b/com/google/javascript/jscomp/ScopedAliases.java
+@@ -275,8 +275,8 @@ private void findAliases(NodeTraversal t) {
          Node n = v.getNode();
          int type = n.getType();
          Node parent = n.getParent();
@@ -15,7 +11,7 @@ index 30d29d0..c248002 100644
            String name = n.getString();
            Var aliasVar = scope.getVar(name);
            aliases.put(name, aliasVar);
- 
+@@ -284,15 +284,16 @@ private void findAliases(NodeTraversal t) {
            String qualifiedName =
                aliasVar.getInitialValue().getQualifiedName();
            transformation.addAlias(name, qualifiedName);
@@ -33,5 +29,3 @@ index 30d29d0..c248002 100644
        }
      }
  
-     private void validateScopeCall(NodeTraversal t, Node n, Node parent) {
-       if (preprocessorSymbolTable != null) {

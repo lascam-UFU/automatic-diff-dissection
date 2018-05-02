@@ -1,5 +1,5 @@
---- a/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
-+++ b/src/org/mockito/internal/creation/instance/ConstructorInstantiator.java
+--- a/org/mockito/internal/creation/instance/ConstructorInstantiator.java
++++ b/org/mockito/internal/creation/instance/ConstructorInstantiator.java
 @@ -14,18 +14,23 @@ public ConstructorInstantiator(Object outerClassInstance) {
          if (outerClassInstance == null) {
              return noArgConstructor(cls);
@@ -7,7 +7,7 @@
 -        return withOuterClass(cls);
 +        return withParams(cls, outerClassInstance);
      }
-
+ 
 -    private <T> T withOuterClass(Class<T> cls) {
 +    private static <T> T withParams(Class<T> cls, Object... params) {
          try {
@@ -26,12 +26,12 @@
          }
 +        throw paramsException(cls, null);
      }
-
+ 
      private static <T> InstantationException paramsException(Class<T> cls, Exception e) {
 @@ -33,6 +38,17 @@ public ConstructorInstantiator(Object outerClassInstance) {
                  + cls.getSimpleName() + "'.\nPlease ensure that the outer instance has correct type and that the target class has parameter-less constructor.", e);
      }
-
+ 
 +    private static boolean paramsMatch(Class<?>[] types, Object[] params) {
 +        if (params.length != types.length) {
 +            return false;
@@ -43,6 +43,6 @@
 +        }
 +        return true;
 +    }
-
+ 
      private static <T> T noArgConstructor(Class<T> cls) {
-try {
+         try {
