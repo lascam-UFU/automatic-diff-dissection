@@ -1,16 +1,14 @@
 package fr.inria.spirals.features.detector.repairpatterns;
 
 import fr.inria.spirals.entities.RepairPatterns;
-import fr.inria.spirals.features.detector.spoon.*;
-import fr.inria.spirals.features.detector.spoon.filter.*;
+import fr.inria.spirals.features.detector.spoon.CtElementAnalyzer;
+import fr.inria.spirals.features.detector.spoon.RepairPatternUtils;
+import fr.inria.spirals.features.detector.spoon.filter.NullCheckFilter;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
-import spoon.reflect.declaration.CtMethod;
-import spoon.reflect.reference.CtVariableReference;
+import spoon.reflect.declaration.CtVariable;
 import spoon.reflect.visitor.filter.LineFilter;
-import spoon.reflect.visitor.filter.TypeFilter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,82 +29,60 @@ public class MissingNullCheckPatternDetector {
             System.out.println("Element: " + this.element.toString());
             List<CtBinaryOperator> binaryOperatorList = this.element.getElements(new NullCheckFilter());
             for (CtBinaryOperator binaryOperator : binaryOperatorList) {
-                if (binaryOperator.getMetadata("new") != null && (Boolean) binaryOperator.getMetadata("new")) {
-                    System.out.println("-Null check: " + binaryOperator.toString());
-                    final CtElement referenceExpression;
-                    if (binaryOperator.getRightHandOperand().toString().equals("null")) {
-                        referenceExpression = binaryOperator.getLeftHandOperand();
-                    } else {
-                        referenceExpression = binaryOperator.getRightHandOperand();
-                    }
-                    System.out.println("-Reference expression: " + referenceExpression.toString());
+                if (RepairPatternUtils.isNewBinaryOperator(binaryOperator)) {
+                    if (RepairPatternUtils.isNewConditionInBinaryOperator(binaryOperator)) {
+                        System.out.println("-New null check: " + binaryOperator.toString());
 
-                    final CtElement parent = binaryOperator.getParent(new LineFilter());
-
-                    CtMethod surroundingMethod = parent.getParent(CtMethod.class);
-                    List<CtElement> referenceExpressionUsages = this.getReferenceExpressionUsages(referenceExpression, surroundingMethod);
-                    for (CtElement e : referenceExpressionUsages) {
-                        if (e.getPosition() == null) {
-                            continue;
+                        final CtElement referenceExpression;
+                        if (binaryOperator.getRightHandOperand().toString().equals("null")) {
+                            referenceExpression = binaryOperator.getLeftHandOperand();
+                        } else {
+                            referenceExpression = binaryOperator.getRightHandOperand();
                         }
-                        if (e.getMetadata("new") == null) {
-                            if (e.getPosition().getSourceStart() > referenceExpression.getPosition().getSourceEnd()) {
-                                System.out.println("Valid usage found in line " + e.getPosition().getSourceStart() + ": " + e.getParent().toString());
-                                if (binaryOperator.getKind().equals(BinaryOperatorKind.EQ)) {
-                                    repairPatterns.incrementFeatureCounter("missNullCheckP");
-                                } else {
-                                    repairPatterns.incrementFeatureCounter("missNullCheckN");
+                        System.out.println("-Reference expression: " + referenceExpression.toString());
+
+                        boolean wasPatternFound = false;
+
+                        CtVariable variable = RepairPatternUtils.getVariableFromReferenceExpression(referenceExpression);
+                        if (variable == null ||
+                                (variable != null && !RepairPatternUtils.isNewVariable(variable))) {
+                            wasPatternFound = true;
+                        } else {
+                            CtElement parent = binaryOperator.getParent(new LineFilter());
+                            if (parent instanceof CtIf) {
+                                CtBlock block = ((CtIf) parent).getThenStatement();
+                                if (block != null) {
+                                    for (CtStatement statement : block.getStatements()) {
+                                        if (statement.getMetadata("new") == null) {
+                                            wasPatternFound = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (!wasPatternFound) {
+                                    block = ((CtIf) parent).getElseStatement();
+                                    if (block != null) {
+                                        for (CtStatement statement : block.getStatements()) {
+                                            if (statement.getMetadata("new") == null) {
+                                                wasPatternFound = true;
+                                                break;
+                                            }
+                                        }
+                                    }
                                 }
                             }
                         }
-                    }
-                }
-            }
-        }
-    }
-
-    private List<CtElement> getReferenceExpressionUsages(final CtElement referenceExpression, CtMethod method) {
-        List<CtElement> referenceExpressionUsages = new ArrayList<>();
-
-        if (referenceExpression instanceof CtVariableAccess) {
-            final CtVariableReference variable = ((CtVariableAccess) referenceExpression).getVariable();
-            referenceExpressionUsages.addAll(method.getElements(new TypeFilter<CtVariableAccess>(CtVariableAccess.class) {
-                @Override
-                public boolean matches(CtVariableAccess element) {
-                    if (element == referenceExpression) {
-                        return false;
-                    }
-                    return variable.equals(element.getVariable());
-                }
-            }));
-        } else {
-            if (referenceExpression instanceof CtArrayAccess) {
-                referenceExpressionUsages.addAll(method.getElements(new TypeFilter<CtArrayAccess>(CtArrayAccess.class) {
-                    @Override
-                    public boolean matches(CtArrayAccess element) {
-                        if (element == referenceExpression) {
-                            return false;
-                        }
-                        return referenceExpression.equals(element);
-                    }
-                }));
-            } else {
-                if (referenceExpression instanceof CtInvocation) {
-                    referenceExpressionUsages.addAll(method.getElements(new TypeFilter<CtInvocation>(CtInvocation.class) {
-                        @Override
-                        public boolean matches(CtInvocation element) {
-                            if (element == referenceExpression) {
-                                return false;
+                        if (wasPatternFound) {
+                            if (binaryOperator.getKind().equals(BinaryOperatorKind.EQ)) {
+                                repairPatterns.incrementFeatureCounter("missNullCheckP");
+                            } else {
+                                repairPatterns.incrementFeatureCounter("missNullCheckN");
                             }
-                            return referenceExpression.equals(element);
                         }
-                    }));
-                } else {
-                    System.err.println(referenceExpression);
+                    }
                 }
             }
         }
-        return referenceExpressionUsages;
     }
 
 }

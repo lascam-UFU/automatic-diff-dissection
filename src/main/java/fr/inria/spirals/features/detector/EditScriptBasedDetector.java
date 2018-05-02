@@ -29,8 +29,8 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
 
     private Diff extractEditScript() {
         new AstComparator();
-        System.setProperty("gumtree.match.gt.minh", "2");
-        System.setProperty("gumtree.match.bu.sim", "0.30");
+        System.setProperty("gumtree.match.gt.minh", "1");
+        System.setProperty("gumtree.match.bu.sim", "0.5");
 
         JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(this.config.getDiffPath());
 

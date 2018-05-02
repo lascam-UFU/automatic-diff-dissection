@@ -128,6 +128,25 @@ public class RepairPatternUtilsTest {
         Assert.assertFalse(RepairPatternUtils.isNewVariable(ctVariable));
     }
 
+    @Test
+    public void TestIsNewVariableWithNonNewFieldInSuperClassDefinition() {
+        Config config = TestUtils.setupConfig("Math 68");
+
+        String variableName = "checker"; // existing field in super class definition
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        Diff editScript = detector.getEditScript();
+
+        List<CtVariable> variableList = this.findVariableInEditScript(variableName, editScript);
+
+        Assert.assertTrue(variableList.size() > 0);
+
+        CtVariable ctVariable = variableList.get(0);
+        if (ctVariable != null) {
+            Assert.assertFalse(RepairPatternUtils.isNewVariable(ctVariable));
+        }
+    }
+
 
 
     private List<CtVariable> findVariableInEditScript(String variableName, Diff editScript) {
@@ -159,7 +178,7 @@ public class RepairPatternUtilsTest {
                 public boolean matches(CtVariableAccess element) {
                     if (element.getVariable().getSimpleName().equals(variableName)) {
                         variableList.add(element.getVariable().getDeclaration());
-                        System.out.println("Variable found in line "+element.getPosition().toString()+" - the declaration is in line "+element.getVariable().getDeclaration().getPosition().toString());
+                        System.out.println("Variable found in line "+element.getPosition().toString());
                         return true;
                     }
                     return false;

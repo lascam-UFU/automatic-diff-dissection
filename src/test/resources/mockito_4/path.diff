@@ -1,0 +1,30 @@
+--- a/org/mockito/exceptions/Reporter.java
++++ b/org/mockito/exceptions/Reporter.java
+@@ -421,7 +421,7 @@ public void noMoreInteractionsWanted(Invocation undesired, List<VerificationAwar
+         throw new NoInteractionsWanted(join(
+                 "No interactions wanted here:",
+                 new LocationImpl(),
+-                "But found this interaction on mock '" + undesired.getMock() + "':",
++                "But found this interaction on mock '" + safelyGetMockName(undesired.getMock()) + "':",
+                 undesired.getLocation(),
+                 scenario
+         ));
+@@ -431,7 +431,7 @@ public void noMoreInteractionsWantedInOrder(Invocation undesired) {
+         throw new VerificationInOrderFailure(join(
+                 "No interactions wanted here:",
+                 new LocationImpl(),
+-                "But found this interaction on mock '" + undesired.getMock() + "':",
++                "But found this interaction on mock '" + safelyGetMockName(undesired.getMock()) + "':",
+                 undesired.getLocation()
+         ));
+     }
+@@ -674,6 +674,9 @@ public void cannotInjectDependency(Field field, Object matchingMock, Exception d
+     }
+ 
+     private String exceptionCauseMessageIfAvailable(Exception details) {
++        if (details.getCause() == null) {
++            return details.getMessage();
++        }
+         return details.getCause().getMessage();
+     }
+ 

@@ -1,0 +1,11 @@
+--- a/com/google/javascript/jscomp/TypeCheck.java
++++ b/com/google/javascript/jscomp/TypeCheck.java
+@@ -1658,7 +1658,7 @@ private void visitNew(NodeTraversal t, Node n) {
+     JSType type = getJSType(constructor).restrictByNotNullOrUndefined();
+     if (type.isConstructor() || type.isEmptyType() || type.isUnknownType()) {
+       FunctionType fnType = type.toMaybeFunctionType();
+-      if (fnType != null) {
++      if (fnType != null && fnType.hasInstanceType()) {
+         visitParameterList(t, n, fnType);
+         ensureTyped(t, n, fnType.getInstanceType());
+       } else {
