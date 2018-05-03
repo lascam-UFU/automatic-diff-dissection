@@ -1,5 +1,7 @@
 package fr.inria.spirals.main;
 
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
@@ -12,6 +14,7 @@ import fr.inria.spirals.features.detector.repairactions.RepairActionDetector;
 import fr.inria.spirals.features.detector.repairpatterns.RepairPatternDetector;
 import fr.inria.spirals.features.extractor.MetricExtractor;
 import org.json.JSONObject;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -21,6 +24,7 @@ import java.util.List;
  * Created by tdurieux
  */
 public class Launcher {
+    private static org.slf4j.Logger LOGGER = LoggerFactory.getLogger(Launcher.class);
 
     private Config config;
 
@@ -31,6 +35,9 @@ public class Launcher {
             System.exit(-1);
         }
         this.initConfig(arguments);
+
+        Logger logger = (Logger) LoggerFactory.getLogger("fr.inria");
+        logger.setLevel(Level.DEBUG);
     }
 
     private void showUsage(JSAP jsap) {
@@ -143,7 +150,7 @@ public class Launcher {
             features.add(featureAnalyzer.analyze());
         }
 
-        System.out.println(features.toCSV());
+        LOGGER.info(features.toCSV());
 
         if (this.config.getOutputDirectoryPath() != null) {
             JSONObject json = new JSONObject(features.toString());

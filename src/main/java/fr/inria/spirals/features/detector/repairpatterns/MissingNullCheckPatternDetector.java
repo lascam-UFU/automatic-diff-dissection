@@ -4,6 +4,8 @@ import fr.inria.spirals.entities.RepairPatterns;
 import fr.inria.spirals.features.detector.spoon.CtElementAnalyzer;
 import fr.inria.spirals.features.detector.spoon.RepairPatternUtils;
 import fr.inria.spirals.features.detector.spoon.filter.NullCheckFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtVariable;
@@ -15,6 +17,7 @@ import java.util.List;
  * Created by fermadeiral
  */
 public class MissingNullCheckPatternDetector {
+    private static Logger LOGGER = LoggerFactory.getLogger(MissingNullCheckPatternDetector.class);
 
     private CtElement element;
     private CtElementAnalyzer.ACTION_TYPE actionType;
@@ -26,12 +29,12 @@ public class MissingNullCheckPatternDetector {
 
     public void process(RepairPatterns repairPatterns) {
         if (actionType == CtElementAnalyzer.ACTION_TYPE.ADD) {
-            System.out.println("Element: " + this.element.toString());
+            LOGGER.debug("Element: " + this.element.toString());
             List<CtBinaryOperator> binaryOperatorList = this.element.getElements(new NullCheckFilter());
             for (CtBinaryOperator binaryOperator : binaryOperatorList) {
                 if (RepairPatternUtils.isNewBinaryOperator(binaryOperator)) {
                     if (RepairPatternUtils.isNewConditionInBinaryOperator(binaryOperator)) {
-                        System.out.println("-New null check: " + binaryOperator.toString());
+                        LOGGER.debug("-New null check: " + binaryOperator.toString());
 
                         final CtElement referenceExpression;
                         if (binaryOperator.getRightHandOperand().toString().equals("null")) {
@@ -39,7 +42,7 @@ public class MissingNullCheckPatternDetector {
                         } else {
                             referenceExpression = binaryOperator.getRightHandOperand();
                         }
-                        System.out.println("-Reference expression: " + referenceExpression.toString());
+                        LOGGER.debug("-Reference expression: " + referenceExpression.toString());
 
                         boolean wasPatternFound = false;
 

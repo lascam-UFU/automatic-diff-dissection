@@ -7,6 +7,8 @@ import org.eclipse.jgit.diff.RawText;
 import org.eclipse.jgit.patch.FileHeader;
 import org.eclipse.jgit.patch.HunkHeader;
 import org.eclipse.jgit.patch.Patch;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.util.Map;
  * Created by tdurieux
  */
 public class JGitBasedDiffAnalyzer {
+    private static Logger LOGGER = LoggerFactory.getLogger(JGitBasedDiffAnalyzer.class);
 
     private final Patch patch;
     private int nbFiles;
@@ -28,7 +31,7 @@ public class JGitBasedDiffAnalyzer {
         try {
             patch.parse(new FileInputStream(diffPath));
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
     }
 

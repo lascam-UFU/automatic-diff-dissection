@@ -1,5 +1,8 @@
 package fr.inria.spirals.main;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +16,7 @@ import java.util.List;
  * Created by fermadeiral
  */
 public class Utils {
+    private static Logger LOGGER = LoggerFactory.getLogger(Utils.class);
 
     public static String getFullPath(String projectRoot, String fileName) {
         if (!fileName.startsWith("/")) {
@@ -36,7 +40,7 @@ public class Utils {
                 lines.add(line);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
         return lines;
     }

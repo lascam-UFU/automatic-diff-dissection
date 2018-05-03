@@ -1,11 +1,15 @@
 package fr.inria.spirals.main;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.FileWriter;
 
 /**
  * Created by fermadeiral
  */
 public class JSONOutputFileCreator {
+    private static Logger LOGGER = LoggerFactory.getLogger(JSONOutputFileCreator.class);
 
     public static String FILE_EXTENSION = ".json";
 
@@ -16,7 +20,7 @@ public class JSONOutputFileCreator {
             fileWriter.write(jsonString);
             fileWriter.flush();
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.toString());
         }
     }
 

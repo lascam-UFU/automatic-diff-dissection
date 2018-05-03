@@ -58,6 +58,11 @@
             <artifactId>gumtree-spoon-ast-diff</artifactId>
             <version>1.5-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.1.8</version>
+        </dependency>
     </dependencies>
 
     <repositories>

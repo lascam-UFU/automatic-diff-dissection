@@ -5,6 +5,8 @@ import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spoon.Launcher;
 import spoon.compiler.Environment;
 import spoon.reflect.declaration.CtElement;
@@ -19,6 +21,7 @@ import java.util.Map;
  * Created by fermadeiral
  */
 public class SpoonHelper {
+    private static Logger LOGGER = LoggerFactory.getLogger(SpoonHelper.class);
 
     public static Launcher initSpoon(Map<String, List<String>> files) {
         Launcher spoon = new Launcher();
@@ -52,18 +55,18 @@ public class SpoonHelper {
             }
         };
         print.scan(element);
-        System.out.println(operation.getClass().getSimpleName());
-        System.out.println(print.getResult()+Constants.LINE_BREAK);
+        LOGGER.debug(operation.getClass().getSimpleName());
+        LOGGER.debug(print.getResult()+Constants.LINE_BREAK);
     }
 
     public static void printUpdateOperation(CtElement srcNode, CtElement dstNode, UpdateOperation operation) {
-        System.out.println(UpdateOperation.class.getSimpleName());
-        System.out.println(srcNode);
-        System.out.println("to");
+        LOGGER.debug(UpdateOperation.class.getSimpleName());
+        LOGGER.debug(srcNode.toString());
+        LOGGER.debug("to");
         if (dstNode != null) {
-            System.out.println(dstNode+Constants.LINE_BREAK);
+            LOGGER.debug(dstNode+Constants.LINE_BREAK);
         } else {
-            System.out.println(operation.getAction().getValue()+Constants.LINE_BREAK);
+            LOGGER.debug(operation.getAction().getValue()+Constants.LINE_BREAK);
         }
     }
 
