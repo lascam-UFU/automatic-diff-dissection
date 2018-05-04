@@ -12,7 +12,7 @@ config.set('path', 'output')
 
 
 
-path_config_file = os.path.join(config.get('path', 'root'), 'scripts', 'defects4j', 'python', 'config.cfg')
+path_config_file = os.path.join(config.get('path', 'root'), 'scripts', 'defects4j', 'run-tool-on-defects4j', 'config.cfg')
 
 if os.path.isfile(path_config_file):
     with open(path_config_file, 'r') as configfile:
