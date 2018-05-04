@@ -33,7 +33,7 @@ def compare_feature(bug_info1, bug_info2, feature, feature_type):
 def printf(str, *args):
     print(str % args, end='')
 
-def sorted_aphanumeric(data):
+def sorted_alphanumeric(data):
     convert = lambda text: int(text) if text.isdigit() else text.lower()
     alphanum_key = lambda key: [ convert(c) for c in re.split('([0-9]+)', key) ]
     return sorted(data, key=alphanum_key)
@@ -47,7 +47,7 @@ with open(path_json2) as manual_data:
         for feature in features[feature_type]:
             printf(",%s" % feature)
     print("")
-    for json_file_name in sorted_aphanumeric(os.listdir(path_json1)):
+    for json_file_name in sorted_alphanumeric(os.listdir(path_json1)):
         json_file_path = os.path.join(path_json1, json_file_name)
         with open(json_file_path, 'r') as file:
             file_content = json.load(file)

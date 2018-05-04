@@ -67,7 +67,7 @@ TODO: to show an usage case with one bug.
 $ git clone https://github.com/tdurieux/pattern-detector-experiment.git
 ```
 
-2. Change the configuration in `/patch-clustering/scripts/defects4j/python/config.cfg` file:
+2. Change the configuration in `/patch-clustering/scripts/defects4j/run-tool-on-defects4j/config.cfg` file:
 
 - `checkout` must be set with the path of the repository cloned in Step 1 plus `/benchmark/defects4j`.
 - `output` should be set with an existing path to output the extracted features as a JSON file (optional).
@@ -81,7 +81,7 @@ $ mvn package -DskipTests
 4. Run the feature extractor:
 
 ```bash
-$ python scripts/defects4j/python/Main.py <REPAIR_PATTERNS;REPAIR_ACTIONS;METRICS;ALL>
+$ python scripts/defects4j/run-tool-on-defects4j/Launch.py <REPAIR_PATTERNS;REPAIR_ACTIONS;METRICS;ALL>
 ```
 
 Output:
