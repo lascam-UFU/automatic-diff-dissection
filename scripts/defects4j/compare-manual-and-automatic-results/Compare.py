@@ -18,9 +18,7 @@ def find_info_from_bug(bug_id, manual_analysis_info):
 
 def compare_feature(bug_info1, bug_info2, feature, feature_type):
     automatic_info = bug_info1[feature_type][feature]
-    manual_info = False
-    if feature in bug_info2:
-        manual_info = bug_info2[feature]
+    manual_info = feature in bug_info2["repairPatterns"]
     if automatic_info > 0 and manual_info:
         return "Both detected"
     if automatic_info == 0 and not manual_info:
