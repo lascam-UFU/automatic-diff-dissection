@@ -7,10 +7,9 @@ import fr.inria.spirals.features.diffanalyzer.Changes;
 import fr.inria.spirals.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import fr.inria.spirals.main.Config;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by tdurieux
@@ -32,6 +31,8 @@ public class MetricExtractor extends FeatureAnalyzer {
 
         this.metrics.setFeatureCounter("nbFiles", jgitDiffAnalyzer.getNbFiles());
 
+        this.computeNbModifiedClassesAndMethods(changes, jgitDiffAnalyzer);
+
         this.computePatchSize(changes);
 
         this.computeNbChunks(changes);
@@ -39,6 +40,85 @@ public class MetricExtractor extends FeatureAnalyzer {
         this.computeSpreading(changes, jgitDiffAnalyzer);
 
         return metrics;
+    }
+
+    public void computeNbModifiedClassesAndMethods(Changes changes, JGitBasedDiffAnalyzer jgitDiffAnalyzer) {
+        int nbModifiedClasses = 0;
+        int nbModifiedMethods = 0;
+
+        Pattern packagePattern = Pattern.compile("package\\s+([\\w\\.]+);");
+        Pattern classDefinitionPattern = Pattern.compile("(^.*class\\s+((\\w+)(\\s*<[\\w,\\s]+>)?)(\\s+extends\\s+((\\w+)(\\s*<[\\w,\\s]+>)?))?(\\s+implements\\s+(((\\w+\\s*(<[\\w,\\s]+>)?)[,\\s]*)+))?\\s*\\{)", Pattern.MULTILINE);
+        Pattern methodDefinitionPattern = Pattern.compile("(((public|private|protected|static|final|native|synchronized|abstract|transient)+\\s)+[\\$_\\w\\<\\>\\w\\s\\[\\]]*\\s+[\\$_\\w]+\\([^\\)]*\\)?\\s*)", Pattern.MULTILINE);
+
+        Map<String, List<String>> modifiedClassesAndMethods = new HashMap<>();
+
+        Map<String, List<String>> patchedFiles = jgitDiffAnalyzer.getPatchedFiles(this.config.getBuggySourceDirectoryPath());
+
+        for (Change change : changes.getNewChanges()) {
+            String changedFile = change.getFile();
+            int changedLine = change.getLine();
+
+            List<String> newFileContent = null;
+            for (String patchedFile : patchedFiles.keySet()) {
+                if (patchedFile.endsWith(changedFile)) {
+                    newFileContent = patchedFiles.get(patchedFile);
+                    break;
+                }
+            }
+            if (newFileContent == null) {
+                continue;
+            }
+            String inputToMatcher = this.putFileContentInString(newFileContent, changedLine - 1);
+
+            String packageName = "";
+            Matcher matcher = packagePattern.matcher(inputToMatcher);
+            while (matcher.find()) {
+                packageName = matcher.group(1);
+            }
+
+            Map<String, Integer> classes = new HashMap<>();
+            matcher = classDefinitionPattern.matcher(inputToMatcher);
+            while (matcher.find()) {
+                classes.put(packageName+"."+matcher.group(2), matcher.end(2));
+            }
+
+            Map<String, Integer> methods = new HashMap<>();
+            matcher = methodDefinitionPattern.matcher(inputToMatcher);
+            while (matcher.find()) {
+                methods.put(matcher.group(1), matcher.end(1));
+            }
+
+            if (!classes.isEmpty()) {
+                String closestClass = null;
+                for (Map.Entry<String, Integer> entry : classes.entrySet()) {
+                    if (closestClass == null || (closestClass != null && entry.getValue() > classes.get(closestClass))) {
+                        closestClass = entry.getKey();
+                    }
+                }
+                if (!modifiedClassesAndMethods.containsKey(closestClass)) {
+                    modifiedClassesAndMethods.put(closestClass, new ArrayList<>());
+                }
+                if (!methods.isEmpty()) {
+                    String closestMethod = null;
+                    for (Map.Entry<String, Integer> entry : methods.entrySet()) {
+                        if (closestMethod == null || (closestMethod != null && entry.getValue() > methods.get(closestMethod))) {
+                            closestMethod = entry.getKey();
+                        }
+                    }
+                    if (!modifiedClassesAndMethods.get(closestClass).contains(closestMethod)) {
+                        modifiedClassesAndMethods.get(closestClass).add(closestMethod);
+                    }
+                }
+            }
+        }
+
+        nbModifiedClasses = modifiedClassesAndMethods.keySet().size();
+        for (List<String> methods : modifiedClassesAndMethods.values()) {
+            nbModifiedMethods += methods.size();
+        }
+
+        this.metrics.setFeatureCounter("nbModifiedClasses", nbModifiedClasses);
+        this.metrics.setFeatureCounter("nbModifiedMethods", nbModifiedMethods);
     }
 
     /**
@@ -210,6 +290,16 @@ public class MetricExtractor extends FeatureAnalyzer {
                 s.startsWith("/*") ||
                 s.startsWith("*/") ||
                 s.startsWith("*");
+    }
+
+    private String putFileContentInString(List<String> fileContent, int lineLimit) {
+        String content = "";
+        String line;
+        for (int i = 0; i < fileContent.size() && i < lineLimit; i++) {
+            line = fileContent.get(i);
+            content += line+"\n";
+        }
+        return content;
     }
 
 }

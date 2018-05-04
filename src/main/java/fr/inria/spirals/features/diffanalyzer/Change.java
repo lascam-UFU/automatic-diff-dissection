@@ -7,6 +7,7 @@ public class Change {
 
     private String type;
     private String file;
+    private int line;
     private int endLine;
     private int length;
     private Change associateChange;
@@ -18,8 +19,6 @@ public class Change {
         this.endLine = endLine;
         this.length = length;
     }
-
-    private int line;
 
     public int getLine() {
         return line;

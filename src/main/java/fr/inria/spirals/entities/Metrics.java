@@ -8,6 +8,12 @@ public class Metrics extends Feature {
     @FeatureAnnotation(key = "nbFiles", name = "# Files")
     private int nbFiles = 0;
 
+    @FeatureAnnotation(key = "nbModifiedClasses", name = "# Modified Classes")
+    private int nbModifiedClasses = 0;
+
+    @FeatureAnnotation(key = "nbModifiedMethods", name = "# Modified Methods")
+    private int nbModifiedMethods = 0;
+
     @FeatureAnnotation(key = "addedLines", name = "Added Lines")
     private int addedLines = 0;
 

@@ -140,4 +140,67 @@ public class MetricExtractorTest {
         assertEquals(17, metrics.getFeatureCounter("spreadingCodeOnly"));
     }
 
+    @Test
+    public void testNbModifiedClassesClosure30() {
+        Config config = TestUtils.setupConfig("Closure 30");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(3, metrics.getFeatureCounter("nbModifiedClasses"));
+    }
+
+    @Test
+    public void testNbModifiedClassesMath4() {
+        Config config = TestUtils.setupConfig("Math 4");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(2, metrics.getFeatureCounter("nbModifiedClasses"));
+    }
+
+    @Test
+    public void testNbModifiedClassesMath12() {
+        Config config = TestUtils.setupConfig("Math 12");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(1, metrics.getFeatureCounter("nbModifiedClasses"));
+    }
+
+    @Test
+    public void testNbModifiedClassesMockito23() {
+        Config config = TestUtils.setupConfig("Mockito 23");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(2, metrics.getFeatureCounter("nbModifiedClasses"));
+    }
+
+    @Test
+    public void testNbModifiedMethodsMath12() {
+        Config config = TestUtils.setupConfig("Math 12");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(0, metrics.getFeatureCounter("nbModifiedMethods"));
+    }
+
+    @Test
+    public void testNbModifiedMethodsMath104() {
+        Config config = TestUtils.setupConfig("Math 104");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(0, metrics.getFeatureCounter("nbModifiedMethods"));
+    }
+
+    @Test
+    public void testNbModifiedMethodsMockito21() {
+        Config config = TestUtils.setupConfig("Mockito 21");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(3, metrics.getFeatureCounter("nbModifiedMethods"));
+    }
+
 }

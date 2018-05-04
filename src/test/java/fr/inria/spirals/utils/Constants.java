@@ -58,6 +58,11 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/closure_26/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Closure 30");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_30/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_30/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Closure 64");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_64/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_64/path.diff").getPath());
@@ -88,9 +93,19 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/math_4/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Math 12");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_12/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/math_12/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Math 68");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_68/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/math_68/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Math 104");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_104/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/math_104/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Mockito 4");
@@ -106,6 +121,11 @@ public class Constants {
         bugInfo = new BugInfo("Mockito 22");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/mockito_22/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/mockito_22/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Mockito 23");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/mockito_23/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/mockito_23/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Time 12");
