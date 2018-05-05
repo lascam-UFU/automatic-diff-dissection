@@ -150,6 +150,15 @@ public class MetricExtractorTest {
     }
 
     @Test
+    public void testNbModifiedClassesClosure120() {
+        Config config = TestUtils.setupConfig("Closure 120");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(1, metrics.getFeatureCounter("nbModifiedClasses"));
+    }
+
+    @Test
     public void testNbModifiedClassesMath4() {
         Config config = TestUtils.setupConfig("Math 4");
 
