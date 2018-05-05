@@ -79,7 +79,7 @@ public class CtElementAnalyzer {
                 @Override
                 public <T> void scanCtType(CtType<T> type) {
                     if (!type.getSimpleName().equals(((CtNamedElement) dstElement).getSimpleName())) {
-                        output.incrementFeatureCounter("tyRen");
+                        //output.incrementFeatureCounter("tyRen");
                     }
                     super.scanCtType(type);
                 }
