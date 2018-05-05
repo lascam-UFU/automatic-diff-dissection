@@ -43,6 +43,11 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/chart_25/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Closure 20");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_20/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_20/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Closure 23");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_23/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_23/path.diff").getPath());

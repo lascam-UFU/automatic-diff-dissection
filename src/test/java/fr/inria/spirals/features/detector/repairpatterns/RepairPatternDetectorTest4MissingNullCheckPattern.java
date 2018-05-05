@@ -122,6 +122,17 @@ public class RepairPatternDetectorTest4MissingNullCheckPattern {
     }
 
     @Test
+    public void closure20() {
+        Config config = TestUtils.setupConfig("Closure 20");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("missNullCheckP") > 0);
+        Assert.assertTrue(repairPatterns.getFeatureCounter("missNullCheckN") == 0);
+    }
+
+    @Test
     public void closure23() {
         Config config = TestUtils.setupConfig("Closure 23");
 
