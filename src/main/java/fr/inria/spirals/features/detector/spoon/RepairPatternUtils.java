@@ -1,9 +1,6 @@
 package fr.inria.spirals.features.detector.spoon;
 
-import spoon.reflect.code.CtArrayAccess;
-import spoon.reflect.code.CtBinaryOperator;
-import spoon.reflect.code.CtInvocation;
-import spoon.reflect.code.CtVariableAccess;
+import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtVariable;
 import spoon.reflect.visitor.filter.TypeFilter;
@@ -33,6 +30,22 @@ public class RepairPatternUtils {
         if (binaryOperator.getRightHandOperand().getMetadata("isMoved") == null ||
                 binaryOperator.getLeftHandOperand().getMetadata("isMoved") == null) {
             return true;
+        }
+        return false;
+    }
+
+    public static boolean isNewStatement(CtStatement statement) {
+        if (statement.getMetadata("new") != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isThereOldStatementInBlock(CtBlock block) {
+        for (CtStatement statement : block.getStatements()) {
+            if (!RepairPatternUtils.isNewStatement(statement)) {
+                return true;
+            }
         }
         return false;
     }
