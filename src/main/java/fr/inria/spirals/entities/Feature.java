@@ -42,9 +42,12 @@ public abstract class Feature {
 
     public int getFeatureCounter(String key) {
         try {
-            Field field = field = this.getClass().getDeclaredField(key);
-            field.setAccessible(true);
-            return (int) field.get(this);
+            Field field = this.getClass().getDeclaredField(key);
+            if (int.class.isAssignableFrom(field.getType())) {
+                field.setAccessible(true);
+                return (int) field.get(this);
+            }
+            throw new IllegalArgumentException("Feature not found" + key);
         } catch (IllegalAccessException | NoSuchFieldException e) {
             throw new IllegalArgumentException("Feature not found" + key, e);
         }
@@ -75,16 +78,22 @@ public abstract class Feature {
         return output.toString();
     }
 
-    @Override
-    public String toString() {
+    public JSONObject toJson() {
         JSONObject jsonObjectFeatures = new JSONObject();
         for (String featureName: getFeatureNames()) {
             int counter = getFeatureCounter(featureName);
             jsonObjectFeatures.put(featureName, counter);
         }
         JSONObject json = new JSONObject();
-        json.put("bugId", this.config.getBugId());
-        json.put(this.getClass().getSimpleName(), jsonObjectFeatures);
-        return json.toString(4);
+        if (config != null) {
+            json.put("bugId", this.config.getBugId());
+        }
+        json.put(Character.toLowerCase(this.getClass().getSimpleName().charAt(0)) + this.getClass().getSimpleName().substring(1), jsonObjectFeatures);
+        return json;
+    }
+
+    @Override
+    public String toString() {
+        return toJson().toString(2);
     }
 }

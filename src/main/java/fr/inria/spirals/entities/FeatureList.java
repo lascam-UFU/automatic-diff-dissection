@@ -44,17 +44,21 @@ public class FeatureList {
         return output.toString();
     }
 
-    @Override
-    public String toString() {
+    public JSONObject toJson() {
         JSONObject mergedJSON = new JSONObject();
         for (int i = 0; i < featureList.size(); i++) {
             Feature feature = featureList.get(i);
-            JSONObject jsonObject = new JSONObject(feature.toString());
+            JSONObject jsonObject = feature.toJson();
             for (String key : JSONObject.getNames(jsonObject)) {
                 mergedJSON.put(key, jsonObject.get(key));
             }
         }
-        return mergedJSON.toString(4);
+        return mergedJSON;
+    }
+
+    @Override
+    public String toString() {
+        return toJson().toString(2);
     }
 
 }

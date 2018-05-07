@@ -253,6 +253,24 @@ public class MetricExtractor extends FeatureAnalyzer {
         this.metrics.setFeatureCounter("spreadingCodeOnly", spreadingCodeOnly);
     }
 
+    public Map<String, List<Integer>> getChangedFiles(Changes changes) {
+        Map<String, List<Integer>> changedFile = new HashMap<>();
+        for (int i = 0; i < changes.getOldChanges().size(); i++) {
+            Change change = changes.getOldChanges().get(i);
+            if (!changedFile.containsKey(change.getFile())) {
+                changedFile.put(change.getFile(), new ArrayList<>());
+            }
+            if ("INSERT".equals(change.getType())) {
+                changedFile.get(change.getFile()).add(change.getLine());
+            } else {
+                for (int j = change.getLine(); j <= change.getEndLine(); j++) {
+                    changedFile.get(change.getFile()).add(j);
+                }
+            }
+        }
+        return changedFile;
+    }
+
     private Change getChange(Changes changes, String file, int oldLine, int newLine) {
         for (int i = 0; i < changes.getOldChanges().size(); i++) {
             Change change = changes.getOldChanges().get(i);
