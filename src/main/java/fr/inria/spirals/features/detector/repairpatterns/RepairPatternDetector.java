@@ -26,6 +26,7 @@ public class RepairPatternDetector extends EditScriptBasedDetector {
 
         List<AbstractPatternDetector> detectors = new ArrayList<>();
         detectors.add(new MissingNullCheckPatternDetector(operations));
+        detectors.add(new SingleLinePatternDetector(this.config, operations));
 
         for (AbstractPatternDetector detector : detectors) {
             detector.detect(this.repairPatterns);

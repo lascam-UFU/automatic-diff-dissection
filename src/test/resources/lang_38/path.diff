@@ -1,0 +1,10 @@
+--- a/org/apache/commons/lang3/time/FastDateFormat.java
++++ b/org/apache/commons/lang3/time/FastDateFormat.java
+@@ -869,6 +869,7 @@ public StringBuffer format(Date date, StringBuffer buf) {
+      */
+     public StringBuffer format(Calendar calendar, StringBuffer buf) {
+         if (mTimeZoneForced) {
++            calendar.getTime(); /// LANG-538
+             calendar = (Calendar) calendar.clone();
+             calendar.setTimeZone(mTimeZone);
+         }

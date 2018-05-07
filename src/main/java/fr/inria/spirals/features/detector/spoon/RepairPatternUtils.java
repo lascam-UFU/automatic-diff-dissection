@@ -1,10 +1,13 @@
 package fr.inria.spirals.features.detector.spoon;
 
+import gumtree.spoon.diff.operations.MoveOperation;
+import gumtree.spoon.diff.operations.Operation;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtVariable;
 import spoon.reflect.visitor.filter.TypeFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -67,6 +70,38 @@ public class RepairPatternUtils {
             }
         }
         return null;
+    }
+
+    public static List<Operation> getOperationsWithoutMoveOperation(List<Operation> operations) {
+        List<Operation> operationsWithoutMoveOperation = new ArrayList<>();
+        for (Operation operation : operations) {
+            if (!(operation instanceof MoveOperation)) {
+                operationsWithoutMoveOperation.add(operation);
+            }
+        }
+        return operationsWithoutMoveOperation;
+    }
+
+    public static int getNumberOfNewStatements(List<CtStatement> statements) {
+        int newStatements = 0;
+        for (CtStatement statement : statements) {
+            if (RepairPatternUtils.isNewStatement(statement)) {
+                newStatements++;
+            }
+        }
+        return newStatements;
+    }
+
+    public static boolean areAllOperationsAtTheSamePosition(List<Operation> operations) {
+        boolean allSamePosition = true;
+        int position = operations.get(0).getSrcNode().getPosition().getLine();
+        for (int i = 1; i < operations.size(); i++) {
+            if (operations.get(i).getSrcNode().getPosition().getLine() != position) {
+                allSamePosition = false;
+                break;
+            }
+        }
+        return allSamePosition;
     }
 
 }

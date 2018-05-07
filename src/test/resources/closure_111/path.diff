@@ -1,0 +1,12 @@
+--- a/com/google/javascript/jscomp/type/ClosureReverseAbstractInterpreter.java
++++ b/com/google/javascript/jscomp/type/ClosureReverseAbstractInterpreter.java
+@@ -51,7 +51,8 @@
+       new RestrictByTrueTypeOfResultVisitor() {
+         @Override
+         protected JSType caseTopType(JSType topType) {
+-          return topType;
++          return topType.isAllType() ?
++              getNativeType(ARRAY_TYPE) : topType;
+         }
+ 
+         @Override
