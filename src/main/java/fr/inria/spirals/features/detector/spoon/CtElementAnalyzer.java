@@ -182,7 +182,11 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <E> void visitCtCase(CtCase<E> e) {
-                        output.incrementFeatureCounter("condBranCase" + actionType.name);
+                        if (actionType == ACTION_TYPE.DELETE) {
+                            output.incrementFeatureCounter("condBranRem");
+                        } else if (actionType == ACTION_TYPE.ADD) {
+                            output.incrementFeatureCounter("condBranCaseAdd");
+                        }
                         super.visitCtCase(e);
                     }
 
