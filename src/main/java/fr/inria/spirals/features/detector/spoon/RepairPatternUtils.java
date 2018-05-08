@@ -1,5 +1,7 @@
 package fr.inria.spirals.features.detector.spoon;
 
+import fr.inria.spirals.features.detector.spoon.filter.ReturnInsideConditionalFilter;
+import fr.inria.spirals.features.detector.spoon.filter.ThrowInsideConditionalFilter;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import spoon.reflect.code.*;
@@ -44,8 +46,8 @@ public class RepairPatternUtils {
         return false;
     }
 
-    public static boolean isThereOldStatementInBlock(CtBlock block) {
-        for (CtStatement statement : block.getStatements()) {
+    public static boolean isThereOldStatementInStatementList(List<CtStatement> statements) {
+        for (CtStatement statement : statements) {
             if (!RepairPatternUtils.isNewStatement(statement)) {
                 return true;
             }
@@ -102,6 +104,16 @@ public class RepairPatternUtils {
             }
         }
         return allSamePosition;
+    }
+
+    public static boolean isThereReturnInIfOrCase(CtElement ctElement) {
+        List<CtReturn> returnList = ctElement.getElements(new ReturnInsideConditionalFilter(ctElement));
+        return (returnList.size() > 0) ? true : false;
+    }
+
+    public static boolean isThereThrowInIfOrCase(CtElement ctElement) {
+        List<CtThrow> throwList = ctElement.getElements(new ThrowInsideConditionalFilter(ctElement));
+        return (throwList.size() > 0) ? true : false;
     }
 
 }

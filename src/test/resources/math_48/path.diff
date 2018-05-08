@@ -1,0 +1,12 @@
+--- a/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java
++++ b/org/apache/commons/math/analysis/solvers/BaseSecantSolver.java
+@@ -186,6 +186,9 @@ protected final double doSolve() {
+                 case REGULA_FALSI:
+                     // Detect early that algorithm is stuck, instead of waiting
+                     // for the maximum number of iterations to be exceeded.
++                    if (x == x1) {
++                        throw new ConvergenceException();
++                    }
+                     break;
+                 default:
+                     // Should never happen.

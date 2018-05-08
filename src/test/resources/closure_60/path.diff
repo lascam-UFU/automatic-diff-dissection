@@ -1,0 +1,22 @@
+--- a/com/google/javascript/jscomp/NodeUtil.java
++++ b/com/google/javascript/jscomp/NodeUtil.java
+@@ -105,6 +105,8 @@ static TernaryValue getImpureBooleanValue(Node n) {
+         // ignoring side-effects
+         return TernaryValue.TRUE;
+ 
++      case Token.VOID:
++        return TernaryValue.FALSE;
+ 
+       default:
+         return getPureBooleanValue(n);
+@@ -133,7 +135,10 @@ static TernaryValue getPureBooleanValue(Node n) {
+         return TernaryValue.FALSE;
+ 
+       case Token.VOID:
++        if (!mayHaveSideEffects(n.getFirstChild())) {
+           return TernaryValue.FALSE;
++        }
++        break;
+ 
+       case Token.NAME:
+         String name = n.getString();

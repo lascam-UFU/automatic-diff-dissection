@@ -1,0 +1,12 @@
+--- a/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java
++++ b/com/google/javascript/jscomp/type/ChainableReverseAbstractInterpreter.java
+@@ -169,7 +169,9 @@ protected void declareNameInScope(FlowScope scope, Node node, JSType type) {
+         scope.inferQualifiedSlot(node, qualifiedName, origType, type);
+         break;
+ 
++      case Token.THIS:
+         // "this" references aren't currently modeled in the CFG.
++        break;
+ 
+       default:
+         throw new IllegalArgumentException("Node cannot be refined. \n" +

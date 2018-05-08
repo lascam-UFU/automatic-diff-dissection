@@ -48,9 +48,24 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/closure_1/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Closure 2");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_2/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_2/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Closure 5");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_5/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_5/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Closure 13");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_13/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_13/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Closure 19");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_19/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_19/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Closure 20");
@@ -81,6 +96,16 @@ public class Constants {
         bugInfo = new BugInfo("Closure 31");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_31/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_31/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Closure 60");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_60/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_60/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Closure 61");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_61/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_61/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Closure 64");
@@ -148,6 +173,11 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/lang_38/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Lang 45");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/lang_45/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/lang_45/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Math 4");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_4/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/math_4/path.diff").getPath());
@@ -156,6 +186,16 @@ public class Constants {
         bugInfo = new BugInfo("Math 12");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_12/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/math_12/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Math 48");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_48/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/math_48/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Math 50");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_50/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/math_50/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Math 68");

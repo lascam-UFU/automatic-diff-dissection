@@ -6,7 +6,7 @@ import os
 import json
 import re
 
-features = {'repairPatterns': { 'missNullCheckN', 'missNullCheckP', 'singleLine' }}
+features = {'repairPatterns': { 'missNullCheckN', 'missNullCheckP', 'singleLine', 'condBlockOthersAdd', 'condBlockRetAdd', 'condBlockExcAdd', 'condBlockRem' }}
 
 # This function is responsible to find the info from a given bug in the big JSON file from Defects4J dissection
 def find_info_from_bug(bug_id, manual_analysis_info):
