@@ -43,9 +43,9 @@ public class ConditionalBlockPatternDetector extends AbstractPatternDetector {
                     }
                 }
 
-                CtCase ctCase = ctElement.getParent(CtCase.class);
-                if (ctCase != null) {
-                    if (ctElement.getMetadata("new") != null) {
+                List<CtCase> caseList = ctElement.getElements(new TypeFilter<>(CtCase.class));
+                for (CtCase ctCase : caseList) {
+                    if (ctCase.getMetadata("new") != null) {
                         List<CtStatement> statements = ctCase.getStatements();
                         if (statements.size() > 0 && !RepairPatternUtils.isThereOldStatementInStatementList(statements)) {
                             String pattern = this.getVariant(ctCase, operation);
