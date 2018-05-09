@@ -3,11 +3,6 @@ package fr.inria.spirals.features.detector.repairpatterns;
 import fr.inria.spirals.entities.RepairPatterns;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
-import gumtree.spoon.diff.operations.UpdateOperation;
-import spoon.reflect.code.CtLiteral;
-import spoon.reflect.code.CtTypeAccess;
-import spoon.reflect.code.CtVariableAccess;
-import spoon.reflect.declaration.CtElement;
 
 import java.util.List;
 
