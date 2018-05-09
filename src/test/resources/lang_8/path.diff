@@ -1,0 +1,26 @@
+--- a/org/apache/commons/lang3/time/FastDatePrinter.java
++++ b/org/apache/commons/lang3/time/FastDatePrinter.java
+@@ -1095,7 +1095,6 @@ static String getTimeZoneDisplay(TimeZone tz, boolean daylight, int style, Local
+     private static class TimeZoneNameRule implements Rule {
+         private final Locale mLocale;
+         private final int mStyle;
+-        private final TimeZone zone;
+         private final String mStandard;
+         private final String mDaylight;
+ 
+@@ -1109,7 +1108,6 @@ static String getTimeZoneDisplay(TimeZone tz, boolean daylight, int style, Local
+         TimeZoneNameRule(TimeZone timeZone, Locale locale, int style) {
+             mLocale = locale;
+             mStyle = style;
+-            zone = timeZone;
+             
+             mStandard = getTimeZoneDisplay(timeZone, false, style, locale);
+             mDaylight = getTimeZoneDisplay(timeZone, true, style, locale);
+@@ -1131,6 +1129,7 @@ public int estimateLength() {
+          */
+         @Override
+         public void appendTo(StringBuffer buffer, Calendar calendar) {
++            TimeZone zone = calendar.getTimeZone();
+             if (zone.useDaylightTime()
+                     && calendar.get(Calendar.DST_OFFSET) != 0) {
+                 buffer.append(getTimeZoneDisplay(zone, true, mStyle, mLocale));

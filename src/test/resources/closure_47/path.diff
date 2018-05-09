@@ -1,0 +1,34 @@
+--- a/com/google/debugging/sourcemap/SourceMapConsumerV3.java
++++ b/com/google/debugging/sourcemap/SourceMapConsumerV3.java
+@@ -486,8 +486,8 @@ private OriginalMapping getOriginalMappingForEntry(Entry entry) {
+       // Adjust the line/column here to be start at 1.
+       Builder x = OriginalMapping.newBuilder()
+         .setOriginalFile(sources[entry.getSourceFileId()])
+-        .setLineNumber(entry.getSourceLine())
+-        .setColumnPosition(entry.getSourceColumn());
++        .setLineNumber(entry.getSourceLine() + 1)
++        .setColumnPosition(entry.getSourceColumn() + 1);
+       if (entry.getNameId() != UNMAPPED) {
+         x.setIdentifier(names[entry.getNameId()]);
+       }
+diff --git a/com/google/javascript/jscomp/SourceMap.java b/com/google/javascript/jscomp/SourceMap.java
+index 835dfa4..7192408 100644
+--- a/com/google/javascript/jscomp/SourceMap.java
++++ b/com/google/javascript/jscomp/SourceMap.java
+@@ -135,10 +135,15 @@ public void addMapping(
+     // zero based.
+     // We don't change this for the v1 or v2 source maps but for
+     // v3 we make them both 0 based.
++    int lineBaseOffset = 1;
++    if (generator instanceof SourceMapGeneratorV1
++        || generator instanceof SourceMapGeneratorV2) {
++      lineBaseOffset = 0;
++    }
+ 
+     generator.addMapping(
+         sourceFile, originalName,
+-        new FilePosition(node.getLineno(), node.getCharno()),
++        new FilePosition(node.getLineno() - lineBaseOffset, node.getCharno()),
+         outputStartPosition, outputEndPosition);
+   }
+ 
