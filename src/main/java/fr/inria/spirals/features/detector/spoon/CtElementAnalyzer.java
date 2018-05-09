@@ -171,6 +171,18 @@ public class CtElementAnalyzer {
                     }
 
                     @Override
+                    public <R> void visitCtBlock(CtBlock<R> e) {
+                        if (e.getRoleInParent() == CtRole.ELSE) {
+                            if (actionType == ACTION_TYPE.DELETE) {
+                                output.incrementFeatureCounter("condBran" + actionType.name);
+                            } else {
+                                output.incrementFeatureCounter("condBranIfElse" + actionType.name);
+                            }
+                        }
+                        super.visitCtBlock(e);
+                    }
+
+                    @Override
                     public <T> void visitCtConditional(CtConditional<T> e) {
                         if (actionType == ACTION_TYPE.DELETE) {
                             output.incrementFeatureCounter("condBran" + actionType.name);
