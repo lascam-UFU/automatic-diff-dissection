@@ -7,12 +7,11 @@ import gumtree.spoon.diff.operations.Operation;
 import java.util.List;
 
 /**
- * Created by fermadeiral
+ * Created by tdurieux
  */
-public class CodeMovePatternDetector extends AbstractPatternDetector {
+public class CodeMovingPatternDetector extends AbstractPatternDetector {
 
-
-    public CodeMovePatternDetector(List<Operation> operations) {
+    public CodeMovingPatternDetector(List<Operation> operations) {
         super(operations);
     }
 

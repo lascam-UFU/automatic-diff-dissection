@@ -11,10 +11,9 @@ import spoon.reflect.declaration.CtElement;
 import java.util.List;
 
 /**
- * Created by fermadeiral
+ * Created by tdurieux
  */
 public class ConstantChangePatternDetector extends AbstractPatternDetector {
-
 
     public ConstantChangePatternDetector(List<Operation> operations) {
         super(operations);

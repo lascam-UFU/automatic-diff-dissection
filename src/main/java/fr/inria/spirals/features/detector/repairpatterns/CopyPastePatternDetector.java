@@ -17,10 +17,9 @@ import java.util.Set;
 /**
  * Created by tdurieux
  */
-public class CopyPastPatternDetector extends AbstractPatternDetector {
+public class CopyPastePatternDetector extends AbstractPatternDetector {
 
-
-    public CopyPastPatternDetector(List<Operation> operations) {
+    public CopyPastePatternDetector(List<Operation> operations) {
         super(operations);
     }
 
