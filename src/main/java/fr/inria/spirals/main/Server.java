@@ -1,13 +1,5 @@
 package fr.inria.spirals.main;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.Logger;
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
-import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
-import com.martiansoftware.jsap.stringparsers.FileStringParser;
 import fi.iki.elonen.NanoHTTPD;
 import fr.inria.spirals.entities.FeatureList;
 import fr.inria.spirals.features.FeatureAnalyzer;
@@ -15,11 +7,9 @@ import fr.inria.spirals.features.detector.repairactions.RepairActionDetector;
 import fr.inria.spirals.features.detector.repairpatterns.RepairPatternDetector;
 import fr.inria.spirals.features.extractor.MetricExtractor;
 import org.json.JSONObject;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
