@@ -56,10 +56,21 @@ public class Server extends NanoHTTPD {
                 for (FeatureAnalyzer featureAnalyzer : featureAnalyzers) {
                     features.add(featureAnalyzer.analyze());
                 }
-                return newFixedLengthResponse(features.toJson().toString(4));
+                Response response = newFixedLengthResponse(Response.Status.OK, "application/json", features.toJson().toString(4));
+                response.addHeader("Access-Control-Allow-Origin", "*");
+                return response;
             } catch (Exception e) {
-                return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, "text", e.getMessage());
+                return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, MIME_PLAINTEXT, e.getMessage());
             }
+        } else if (session.getMethod() == Method.OPTIONS) {
+            Response response = newFixedLengthResponse(Response.Status.OK, MIME_PLAINTEXT, "");
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            response.addHeader("Access-Control-Max-Age", "3628800");
+            response.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            response.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
+            response.addHeader("Access-Control-Allow-Headers", "Authorization");
+            response.addHeader("Access-Control-Allow-Headers","*");
+            return response;
         } else {
             Response response = newFixedLengthResponse("Not supported");
             response.setStatus(Response.Status.FORBIDDEN);
