@@ -3,9 +3,11 @@ package fr.inria.spirals.main;
 import fi.iki.elonen.NanoHTTPD;
 import fr.inria.spirals.entities.FeatureList;
 import fr.inria.spirals.features.FeatureAnalyzer;
+import fr.inria.spirals.features.detector.EditScriptBasedDetector;
 import fr.inria.spirals.features.detector.repairactions.RepairActionDetector;
 import fr.inria.spirals.features.detector.repairpatterns.RepairPatternDetector;
 import fr.inria.spirals.features.extractor.MetricExtractor;
+import gumtree.spoon.diff.Diff;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -49,8 +51,10 @@ public class Server extends NanoHTTPD {
 
                 FeatureList features = new FeatureList(config);
                 List<FeatureAnalyzer> featureAnalyzers = new ArrayList<>();
-                featureAnalyzers.add(new RepairPatternDetector(config));
-                featureAnalyzers.add(new RepairActionDetector(config));
+
+                Diff diff = EditScriptBasedDetector.extractEditScript(config);
+                featureAnalyzers.add(new RepairPatternDetector(config, diff));
+                featureAnalyzers.add(new RepairActionDetector(config, diff));
                 featureAnalyzers.add(new MetricExtractor(config));
 
                 for (FeatureAnalyzer featureAnalyzer : featureAnalyzers) {
@@ -58,6 +62,7 @@ public class Server extends NanoHTTPD {
                 }
                 Response response = newFixedLengthResponse(Response.Status.OK, "application/json", features.toJson().toString(4));
                 response.addHeader("Access-Control-Allow-Origin", "*");
+	            response.addHeader("Access-Control-Allow-Headers","*");
                 return response;
             } catch (Exception e) {
                 return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, MIME_PLAINTEXT, e.getMessage());
@@ -69,7 +74,7 @@ public class Server extends NanoHTTPD {
             response.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             response.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
             response.addHeader("Access-Control-Allow-Headers", "Authorization");
-            response.addHeader("Access-Control-Allow-Headers","*");
+	        response.addHeader("Access-Control-Allow-Headers", "content-type");
             return response;
         } else {
             Response response = newFixedLengthResponse("Not supported");
