@@ -3,11 +3,9 @@ package fr.inria.spirals.main;
 import fi.iki.elonen.NanoHTTPD;
 import fr.inria.spirals.entities.FeatureList;
 import fr.inria.spirals.features.FeatureAnalyzer;
-import fr.inria.spirals.features.detector.EditScriptBasedDetector;
 import fr.inria.spirals.features.detector.repairactions.RepairActionDetector;
 import fr.inria.spirals.features.detector.repairpatterns.RepairPatternDetector;
 import fr.inria.spirals.features.extractor.MetricExtractor;
-import gumtree.spoon.diff.Diff;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -52,9 +50,8 @@ public class Server extends NanoHTTPD {
                 FeatureList features = new FeatureList(config);
                 List<FeatureAnalyzer> featureAnalyzers = new ArrayList<>();
 
-                Diff diff = EditScriptBasedDetector.extractEditScript(config);
-                featureAnalyzers.add(new RepairPatternDetector(config, diff));
-                featureAnalyzers.add(new RepairActionDetector(config, diff));
+                featureAnalyzers.add(new RepairPatternDetector(config));
+                featureAnalyzers.add(new RepairActionDetector(config));
                 featureAnalyzers.add(new MetricExtractor(config));
 
                 for (FeatureAnalyzer featureAnalyzer : featureAnalyzers) {
