@@ -23,6 +23,7 @@ public class Server extends NanoHTTPD {
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         System.out.println("\nRunning! Point your browsers to http://localhost:9888/ \n");
     }
+
     public static void main(String[] args) {
         try {
             new Server();
@@ -59,7 +60,7 @@ public class Server extends NanoHTTPD {
                 }
                 Response response = newFixedLengthResponse(Response.Status.OK, "application/json", features.toJson().toString(4));
                 response.addHeader("Access-Control-Allow-Origin", "*");
-	            response.addHeader("Access-Control-Allow-Headers","*");
+                response.addHeader("Access-Control-Allow-Headers", "*");
                 return response;
             } catch (Exception e) {
                 return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, MIME_PLAINTEXT, e.getMessage());
@@ -71,7 +72,7 @@ public class Server extends NanoHTTPD {
             response.addHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
             response.addHeader("Access-Control-Allow-Headers", "X-Requested-With");
             response.addHeader("Access-Control-Allow-Headers", "Authorization");
-	        response.addHeader("Access-Control-Allow-Headers", "content-type");
+            response.addHeader("Access-Control-Allow-Headers", "content-type");
             return response;
         } else {
             Response response = newFixedLengthResponse("Not supported");

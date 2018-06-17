@@ -10,7 +10,6 @@ import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import spoon.Launcher;
 import spoon.reflect.declaration.CtElement;
-import spoon.reflect.path.CtRole;
 
 import java.util.ArrayList;
 import java.util.List;
