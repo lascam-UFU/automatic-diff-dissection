@@ -1,5 +1,6 @@
 package fr.inria.spirals.features.detector.spoon.filter;
 
+import spoon.reflect.code.CtBlock;
 import spoon.reflect.code.CtCase;
 import spoon.reflect.code.CtIf;
 import spoon.reflect.code.CtThrow;
@@ -19,10 +20,11 @@ public class ThrowInsideConditionalFilter implements Filter<CtThrow> {
 
     @Override
     public boolean matches(CtThrow ctThrow) {
-        if (ctElement instanceof CtIf && ctThrow.getParent(CtIf.class) == ctElement) {
-            return true;
+        CtElement ctElementParent = ctThrow.getParent();
+        while (!(ctElementParent instanceof CtIf) && !(ctElementParent instanceof CtCase) && !(ctElementParent instanceof CtBlock)) {
+            ctElementParent = ctElementParent.getParent();
         }
-        if (ctElement instanceof CtCase && ctThrow.getParent(CtCase.class) == ctElement) {
+        if (ctElementParent == this.ctElement) {
             return true;
         }
         return false;

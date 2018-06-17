@@ -3,9 +3,7 @@ package fr.inria.spirals.features.detector.repairpatterns;
 import fr.inria.spirals.entities.RepairPatterns;
 import fr.inria.spirals.features.detector.spoon.RepairPatternUtils;
 import fr.inria.spirals.features.detector.spoon.SpoonHelper;
-import gumtree.spoon.diff.operations.DeleteOperation;
-import gumtree.spoon.diff.operations.InsertOperation;
-import gumtree.spoon.diff.operations.Operation;
+import gumtree.spoon.diff.operations.*;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.filter.TypeFilter;
@@ -28,16 +26,62 @@ public class ConditionalBlockPatternDetector extends AbstractPatternDetector {
                 CtElement ctElement = operation.getSrcNode();
                 SpoonHelper.printInsertOrDeleteOperation(ctElement.getFactory().getEnvironment(), ctElement, operation);
 
+                boolean wasPatternFound;
                 List<CtIf> ifList = ctElement.getElements(new TypeFilter<>(CtIf.class));
                 for (CtIf ctIf : ifList) {
-                    if (ctIf.getMetadata("new") != null) {
+                    wasPatternFound = false;
+                    if (RepairPatternUtils.isNewIf(ctIf)) {
                         CtBlock thenBlock = ctIf.getThenStatement();
-                        CtBlock elseBlock = ctIf.getElseStatement();
-                        if (thenBlock != null && !RepairPatternUtils.isThereOldStatementInStatementList(thenBlock.getStatements()) &&
-                                (elseBlock == null || (elseBlock != null && !RepairPatternUtils.isThereOldStatementInStatementList(elseBlock.getStatements())))) {
-                            String pattern = this.getVariant(ctIf, operation);
-                            if (!pattern.isEmpty()) {
-                                repairPatterns.incrementFeatureCounter(pattern);
+                        if (thenBlock != null) {
+                            if (operation instanceof InsertOperation &&
+                                    RepairPatternUtils.isThereOnlyNewAndMovedStatementsInStatementList(thenBlock.getStatements())) {
+                                wasPatternFound = true;
+                            }
+                            if (operation instanceof DeleteOperation &&
+                                    RepairPatternUtils.isThereOnlyRemovedAndMovedAwayStatementsInRemovedIf(ctIf)) {
+                                wasPatternFound = true;
+                            }
+                            if (wasPatternFound) {
+                                String pattern = this.getVariant(thenBlock, operation);
+                                if (!pattern.isEmpty()) {
+                                    repairPatterns.incrementFeatureCounter(pattern);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                List<CtBlock> blockList = ctElement.getElements(new TypeFilter<>(CtBlock.class));
+                for (CtBlock ctBlock : blockList) {
+                    if (ctBlock.getMetadata("new") != null) {
+                        if (ctBlock.getParent() instanceof CtIf) {
+                            CtIf ctIfParent = (CtIf) ctBlock.getParent();
+                            CtBlock elseBlock = ctIfParent.getElseStatement();
+                            if (ctBlock == elseBlock) {
+                                if (!ctBlock.isImplicit()) {
+                                    if (!RepairPatternUtils.isThereOldStatementInStatementList(elseBlock.getStatements())) {
+                                        String pattern = this.getVariant(ctBlock, operation);
+                                        if (!pattern.isEmpty()) {
+                                            repairPatterns.incrementFeatureCounter(pattern);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                List<CtConditional> conditionalList = ctElement.getElements(new TypeFilter<>(CtConditional.class));
+                for (CtConditional ctConditional : conditionalList) {
+                    if (ctConditional.getMetadata("new") != null) {
+                        CtExpression thenExpression = ctConditional.getThenExpression();
+                        CtExpression elseExpression = ctConditional.getElseExpression();
+                        if (thenExpression.getMetadata("new") != null &&
+                                elseExpression.getMetadata("new") != null) {
+                            if (operation instanceof InsertOperation) {
+                                repairPatterns.incrementFeatureCounter("condBlockOthersAdd");
+                            } else {
+                                repairPatterns.incrementFeatureCounter("condBlockRem");
                             }
                         }
                     }
@@ -51,6 +95,33 @@ public class ConditionalBlockPatternDetector extends AbstractPatternDetector {
                             String pattern = this.getVariant(ctCase, operation);
                             if (!pattern.isEmpty()) {
                                 repairPatterns.incrementFeatureCounter(pattern);
+                            }
+                        }
+                    }
+                }
+            } else {
+                if (operation instanceof UpdateOperation) {
+                    CtElement srcNode = operation.getSrcNode();
+                    List<CtConditional> conditionalList = srcNode.getElements(new TypeFilter<>(CtConditional.class));
+                    for (CtConditional ctConditional : conditionalList) {
+                        if (ctConditional.getMetadata("new") != null) {
+                            CtExpression thenExpression = ctConditional.getThenExpression();
+                            CtExpression elseExpression = ctConditional.getElseExpression();
+                            if (thenExpression.getMetadata("new") != null &&
+                                    elseExpression.getMetadata("new") != null) {
+                                repairPatterns.incrementFeatureCounter("condBlockRem");
+                            }
+                        }
+                    }
+                    CtElement dstNode = operation.getDstNode();
+                    conditionalList = dstNode.getElements(new TypeFilter<>(CtConditional.class));
+                    for (CtConditional ctConditional : conditionalList) {
+                        if (ctConditional.getMetadata("new") != null) {
+                            CtExpression thenExpression = ctConditional.getThenExpression();
+                            CtExpression elseExpression = ctConditional.getElseExpression();
+                            if (thenExpression.getMetadata("new") != null &&
+                                    elseExpression.getMetadata("new") != null) {
+                                repairPatterns.incrementFeatureCounter("condBlockOthersAdd");
                             }
                         }
                     }

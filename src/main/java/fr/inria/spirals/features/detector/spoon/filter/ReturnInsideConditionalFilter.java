@@ -17,10 +17,11 @@ public class ReturnInsideConditionalFilter implements Filter<CtReturn> {
 
     @Override
     public boolean matches(CtReturn ctReturn) {
-        if (this.ctElement instanceof CtIf && ctReturn.getParent(CtIf.class) == this.ctElement) {
-            return true;
+        CtElement ctElementParent = ctReturn.getParent();
+        while (!(ctElementParent instanceof CtIf) && !(ctElementParent instanceof CtCase) && !(ctElementParent instanceof CtBlock)) {
+            ctElementParent = ctElementParent.getParent();
         }
-        if (this.ctElement instanceof CtCase && ctReturn.getParent(CtCase.class) == this.ctElement) {
+        if (ctElementParent == this.ctElement) {
             return true;
         }
         return false;

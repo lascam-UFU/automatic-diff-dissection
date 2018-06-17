@@ -9,6 +9,7 @@ import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import spoon.Launcher;
+import spoon.reflect.declaration.CtElement;
 import spoon.reflect.path.CtRole;
 
 import java.util.ArrayList;
@@ -52,21 +53,25 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
         operations.addAll(editScript.getRootOperations());
         for (int i = 0; i < operations.size(); i++) {
             Operation operation = operations.get(i);
+            CtElement srcNode = operation.getSrcNode();
+            CtElement dstNode = operation.getDstNode();
             if (operation instanceof MoveOperation) {
-                if (operation.getDstNode().getRoleInParent() == CtRole.STATEMENT) {
-                    //operation.getDstNode().getParent(CtStatementList.class).removeStatement((CtStatement) operation.getDstNode());
+                /*if (dstNode.getRoleInParent() == CtRole.STATEMENT) {
+                    dstNode.getParent(CtStatementList.class).removeStatement((CtStatement) dstNode);
                 }
-                if (operation.getSrcNode().getRoleInParent() == CtRole.STATEMENT) {
-                    //operation.getSrcNode().getParent(CtStatementList.class).removeStatement((CtStatement) operation.getSrcNode());
-                }
-                operation.getSrcNode().putMetadata("isMoved", true);
-                operation.getDstNode().putMetadata("isMoved", true);
+                if (srcNode.getRoleInParent() == CtRole.STATEMENT) {
+                    srcNode.getParent(CtStatementList.class).removeStatement((CtStatement) srcNode);
+                }*/
+                srcNode.putMetadata("isMoved", true);
+                srcNode.putMetadata("movingSrc", true);
+                dstNode.putMetadata("isMoved", true);
+                dstNode.putMetadata("movingDst", true);
             } else {
-                if (operation.getSrcNode() != null) {
-                    operation.getSrcNode().putMetadata("new", true);
+                if (srcNode != null) {
+                    srcNode.putMetadata("new", true);
                 }
-                if (operation.getDstNode() != null) {
-                    operation.getDstNode().putMetadata("new", true);
+                if (dstNode != null) {
+                    dstNode.putMetadata("new", true);
                 }
             }
         }

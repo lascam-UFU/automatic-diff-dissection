@@ -64,8 +64,8 @@ public class RepairPatternDetectorTest4ConditionalBlock {
     }
 
     @Test
-    public void closure2() {
-        Config config = TestUtils.setupConfig("Closure 2");
+    public void chart14() {
+        Config config = TestUtils.setupConfig("Chart 14");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -102,6 +102,47 @@ public class RepairPatternDetectorTest4ConditionalBlock {
         RepairPatterns repairPatterns = detector.analyze();
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("condBlockRetAdd") > 0);
+    }
+
+    @Test
+    public void closure3() {
+        Config config = TestUtils.setupConfig("Closure 3");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("condBlockOthersAdd") > 0);
+        Assert.assertTrue(repairPatterns.getFeatureCounter("condBlockRetAdd") > 0);
+    }
+
+    @Test
+    public void closure66() {
+        Config config = TestUtils.setupConfig("Closure 66");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("condBlockOthersAdd") > 0);
+    }
+
+    @Test
+    public void lang49() {
+        Config config = TestUtils.setupConfig("Lang 49");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("condBlockOthersAdd") > 0);
+    }
+
+    @Test
+    public void closure11() {
+        Config config = TestUtils.setupConfig("Closure 11");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("condBlockRem") == 0);
     }
 
 }

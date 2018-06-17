@@ -53,9 +53,19 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/closure_2/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Closure 3");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_3/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_3/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Closure 5");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_5/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_5/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Closure 11");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_11/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_11/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Closure 13");
@@ -131,6 +141,11 @@ public class Constants {
         bugInfo = new BugInfo("Closure 64");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_64/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_64/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Closure 66");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_66/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_66/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Closure 68");
@@ -221,6 +236,11 @@ public class Constants {
         bugInfo = new BugInfo("Lang 45");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/lang_45/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/lang_45/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Lang 49");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/lang_49/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/lang_49/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Lang 53");

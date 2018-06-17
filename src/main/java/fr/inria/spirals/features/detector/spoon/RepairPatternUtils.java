@@ -46,6 +46,40 @@ public class RepairPatternUtils {
         return false;
     }
 
+    public static boolean isMovedStatement(CtStatement statement) {
+        if (statement.getMetadata("isMoved") != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isMovingSrcStatement(CtStatement statement) {
+        if (isMovedStatement(statement) && statement.getMetadata("movingSrc") != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isMovingDstStatement(CtStatement statement) {
+        if (isMovedStatement(statement) && statement.getMetadata("movingDst") != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isNewIf(CtIf ctIf) {
+        if (ctIf.getMetadata("new") != null) {
+            List<CtBinaryOperator> binaryOperatorList = ctIf.getCondition().getElements(new TypeFilter<>(CtBinaryOperator.class));
+            for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
+                if (!isNewBinaryOperator(ctBinaryOperator)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isThereOldStatementInStatementList(List<CtStatement> statements) {
         for (CtStatement statement : statements) {
             if (!RepairPatternUtils.isNewStatement(statement)) {
@@ -53,6 +87,29 @@ public class RepairPatternUtils {
             }
         }
         return false;
+    }
+
+    public static boolean isThereOnlyNewAndMovedStatementsInStatementList(List<CtStatement> statements) {
+        for (CtStatement statement : statements) {
+            if (!isNewStatement(statement)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isThereOnlyRemovedAndMovedAwayStatementsInRemovedIf(CtIf ctIf) {
+        CtBlock thenBlock = ctIf.getThenStatement();
+        for (CtStatement statement : thenBlock.getStatements()) {
+            if (isNewStatement(statement)) {
+                continue;
+            }
+            if (isMovingSrcStatement(statement)) {
+                continue;
+            }
+            return false;
+        }
+        return true;
     }
 
     public static CtVariable getVariableFromReferenceExpression(CtElement referenceExpression) {
