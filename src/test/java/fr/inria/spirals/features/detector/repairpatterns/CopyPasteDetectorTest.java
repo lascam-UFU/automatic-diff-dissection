@@ -24,26 +24,6 @@ public class CopyPasteDetectorTest {
     }
 
     @Test
-    public void closure47() {
-        Config config = TestUtils.setupConfig("Closure 47");
-
-        RepairPatternDetector detector = new RepairPatternDetector(config);
-        RepairPatterns repairPatterns = detector.analyze();
-
-        Assert.assertTrue(repairPatterns.getFeatureCounter("copyPaste") == 0);
-    }
-
-    @Test
-    public void closure94() {
-        Config config = TestUtils.setupConfig("Closure 94");
-
-        RepairPatternDetector detector = new RepairPatternDetector(config);
-        RepairPatterns repairPatterns = detector.analyze();
-
-        Assert.assertTrue(repairPatterns.getFeatureCounter("copyPaste") == 0);
-    }
-
-    @Test
     public void closure110() {
         Config config = TestUtils.setupConfig("Closure 110");
 

@@ -118,7 +118,6 @@ public class ExpressionFixDetectorTest {
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
 
-        Assert.assertTrue(repairPatterns.getFeatureCounter("expLogicReduce") > 0);
         Assert.assertTrue(repairPatterns.getFeatureCounter("expLogicMod") == 0);
     }
 
@@ -153,7 +152,6 @@ public class ExpressionFixDetectorTest {
         RepairPatterns repairPatterns = detector.analyze();
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("expArithMod") > 0);
-        Assert.assertTrue(repairPatterns.getFeatureCounter("expLogicExpand") == 0);
         Assert.assertTrue(repairPatterns.getFeatureCounter("expLogicMod") > 0);
     }
 }
