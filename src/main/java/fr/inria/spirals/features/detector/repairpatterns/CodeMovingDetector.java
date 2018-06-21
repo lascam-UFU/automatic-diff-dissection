@@ -12,9 +12,9 @@ import java.util.List;
 /**
  * Created by tdurieux
  */
-public class CodeMovingPatternDetector extends AbstractPatternDetector {
+public class CodeMovingDetector extends AbstractPatternDetector {
 
-    public CodeMovingPatternDetector(List<Operation> operations) {
+    public CodeMovingDetector(List<Operation> operations) {
         super(operations);
     }
 

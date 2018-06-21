@@ -11,7 +11,7 @@ import org.junit.Test;
  *
  * Tests for the features condBlockOthersAdd, condBlockRetAdd, condBlockExcAdd and condBlockRem
  */
-public class RepairPatternDetectorTest4ConditionalBlock {
+public class ConditionalBlockDetectorTest {
 
     @Test
     public void lang45() {

@@ -15,11 +15,11 @@ import java.util.List;
 /**
  * Created by fermadeiral
  */
-public class SingleLinePatternDetector extends AbstractPatternDetector {
+public class SingleLineDetector extends AbstractPatternDetector {
 
     private Config config;
 
-    public SingleLinePatternDetector(Config config, List<Operation> operations) {
+    public SingleLineDetector(Config config, List<Operation> operations) {
         super(operations);
         this.config = config;
     }

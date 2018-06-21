@@ -7,11 +7,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Created by fermadeiral
+ * Created by tdurieux
  *
- * Tests for the feature singleLine
+ * Tests for the features expLogicMod, expLogicExpand, expLogicReduce, and expArithMod
  */
-public class RepairPatternDetectorTest4LogicExpression {
+public class ExpressionFixDetectorTest {
 
     @Test
     public void chart1() {

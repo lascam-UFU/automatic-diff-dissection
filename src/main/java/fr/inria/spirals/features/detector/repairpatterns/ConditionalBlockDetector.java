@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Created by fermadeiral
  */
-public class ConditionalBlockPatternDetector extends AbstractPatternDetector {
+public class ConditionalBlockDetector extends AbstractPatternDetector {
 
-    public ConditionalBlockPatternDetector(List<Operation> operations) {
+    public ConditionalBlockDetector(List<Operation> operations) {
         super(operations);
     }
 

@@ -31,14 +31,14 @@ public class RepairPatternDetector extends EditScriptBasedDetector {
         List<Operation> operations = this.editScript.getRootOperations();
 
         List<AbstractPatternDetector> detectors = new ArrayList<>();
-        detectors.add(new MissingNullCheckPatternDetector(operations));
-        detectors.add(new SingleLinePatternDetector(this.config, operations));
-        detectors.add(new ConditionalBlockPatternDetector(operations));
-        detectors.add(new WrapsWithPatternDetector(operations));
-        detectors.add(new CopyPastePatternDetector(operations));
-        detectors.add(new ConstantChangePatternDetector(operations));
-        detectors.add(new CodeMovingPatternDetector(operations));
-        detectors.add(new LogicExpressionPatternDetector(operations));
+        detectors.add(new MissingNullCheckDetector(operations));
+        detectors.add(new SingleLineDetector(this.config, operations));
+        detectors.add(new ConditionalBlockDetector(operations));
+        detectors.add(new WrapsWithDetector(operations));
+        detectors.add(new CopyPasteDetector(operations));
+        detectors.add(new ConstantChangeDetector(operations));
+        detectors.add(new CodeMovingDetector(operations));
+        detectors.add(new ExpressionFixDetector(operations));
 
         for (AbstractPatternDetector detector : detectors) {
             detector.detect(this.repairPatterns);

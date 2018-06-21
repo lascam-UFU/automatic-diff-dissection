@@ -11,7 +11,7 @@ import org.junit.Test;
  *
  * Tests for the feature singleLine
  */
-public class RepairPatternDetectorTest4SingleLinePattern {
+public class SingleLineDetectorTest {
 
     /**
      * Single line addition

@@ -11,7 +11,7 @@ import org.junit.Test;
  * Created by tdurieux
  *
  */
-public class RepairPatternDetectorTest4CopyPastePattern {
+public class CopyPasteDetectorTest {
 
     @Test
     public void closure35() {

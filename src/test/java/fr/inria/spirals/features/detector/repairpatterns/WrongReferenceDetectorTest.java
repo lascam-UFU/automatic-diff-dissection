@@ -7,11 +7,11 @@ import org.junit.Assert;
 import org.junit.Test;
 
 /**
- * Created by fermadeiral
+ * Created by tdurieux
  *
- * Tests for the feature singleLine
+ * Tests for the features wrongVarRef and wrongMethodRef
  */
-public class RepairPatternDetectorTest4WrongRefPattern {
+public class WrongReferenceDetectorTest {
 
     @Test
     public void closure30() {

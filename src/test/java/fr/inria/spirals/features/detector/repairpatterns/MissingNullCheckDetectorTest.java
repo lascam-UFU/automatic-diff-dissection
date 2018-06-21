@@ -11,7 +11,7 @@ import org.junit.Test;
  *
  * Tests for the features missNullCheckP and missNullCheckN
  */
-public class RepairPatternDetectorTest4MissingNullCheckPattern {
+public class MissingNullCheckDetectorTest {
 
     /**
      * Addition of a null-check for an existing variable.

@@ -11,7 +11,7 @@ import org.junit.Test;
  * Created by tdurieux
  *
  */
-public class RepairPatternDetectorTest4ConstantChangePattern {
+public class ConstantChangeDetectorTest {
 
     @Test
     public void closure14() {

@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Created by fermadeiral
  */
-public class WrapsWithPatternDetector extends AbstractPatternDetector {
+public class WrapsWithDetector extends AbstractPatternDetector {
 
-    public WrapsWithPatternDetector(List<Operation> operations) {
+    public WrapsWithDetector(List<Operation> operations) {
         super(operations);
     }
 

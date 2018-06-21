@@ -12,7 +12,7 @@ import org.junit.Test;
  *
  * Tests for the features wrapsIf, wrapsIfElse, wrapsElse, wrapsTryCatch, wrapsMethod, unwrapIfElse, unwrapTryCatch and unwrapMethod
  */
-public class RepairPatternDetectorTest4WrapsWith {
+public class WrapsWithDetectorTest {
 
     @Test
     public void chart18() {

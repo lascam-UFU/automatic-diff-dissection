@@ -11,7 +11,7 @@ import org.junit.Test;
  * Created by tdurieux
  *
  */
-public class RepairPatternDetectorTest4CodeMovingPattern {
+public class CodeMovingDetectorTest {
 
     @Test
     public void closure13() {

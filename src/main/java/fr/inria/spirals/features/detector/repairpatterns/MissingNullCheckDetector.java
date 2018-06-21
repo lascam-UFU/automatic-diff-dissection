@@ -18,10 +18,10 @@ import java.util.List;
 /**
  * Created by fermadeiral
  */
-public class MissingNullCheckPatternDetector extends AbstractPatternDetector {
-    private static Logger LOGGER = LoggerFactory.getLogger(MissingNullCheckPatternDetector.class);
+public class MissingNullCheckDetector extends AbstractPatternDetector {
+    private static Logger LOGGER = LoggerFactory.getLogger(MissingNullCheckDetector.class);
 
-    public MissingNullCheckPatternDetector(List<Operation> operations) {
+    public MissingNullCheckDetector(List<Operation> operations) {
         super(operations);
     }
 

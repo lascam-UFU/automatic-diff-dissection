@@ -16,12 +16,12 @@ import java.util.List;
 /**
  * Created by tdurieux
  */
-public class WrongReferencePatternDetector extends AbstractPatternDetector {
+public class WrongReferenceDetector extends AbstractPatternDetector {
 
 
     private Config config;
 
-    public WrongReferencePatternDetector(Config config, List<Operation> operations) {
+    public WrongReferenceDetector(Config config, List<Operation> operations) {
         super(operations);
         this.config = config;
     }

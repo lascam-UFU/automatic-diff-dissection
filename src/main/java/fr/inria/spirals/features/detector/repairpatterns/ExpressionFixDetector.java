@@ -26,10 +26,10 @@ import java.util.List;
 /**
  * Created by tdurieux
  */
-public class LogicExpressionPatternDetector extends AbstractPatternDetector {
+public class ExpressionFixDetector extends AbstractPatternDetector {
 
 
-    public LogicExpressionPatternDetector(List<Operation> operations) {
+    public ExpressionFixDetector(List<Operation> operations) {
         super(operations);
     }
 

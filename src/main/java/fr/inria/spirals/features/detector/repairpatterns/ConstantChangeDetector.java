@@ -13,9 +13,9 @@ import java.util.List;
 /**
  * Created by tdurieux
  */
-public class ConstantChangePatternDetector extends AbstractPatternDetector {
+public class ConstantChangeDetector extends AbstractPatternDetector {
 
-    public ConstantChangePatternDetector(List<Operation> operations) {
+    public ConstantChangeDetector(List<Operation> operations) {
         super(operations);
     }
 

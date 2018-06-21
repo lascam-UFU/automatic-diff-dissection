@@ -46,13 +46,13 @@ public class RepairPatterns extends Feature {
     @FeatureAnnotation(key="wrapsLoop", name="Wraps-with loop")
     private int wrapsLoop = 0;
 
-    @FeatureAnnotation(key="unwrapIfElse", name="undefined")
+    @FeatureAnnotation(key="unwrapIfElse", name="Unwraps-from if-else statement")
     private int unwrapIfElse = 0;
 
-    @FeatureAnnotation(key="unwrapMethod", name="undefined")
+    @FeatureAnnotation(key="unwrapMethod", name="Unwraps-from method call")
     private int unwrapMethod = 0;
 
-    @FeatureAnnotation(key="unwrapTryCatch", name="undefined")
+    @FeatureAnnotation(key="unwrapTryCatch", name="Unwraps-from try-catch block")
     private int unwrapTryCatch = 0;
 
     @FeatureAnnotation(key="wrongVarRef", name="Wrong Variable Reference")
@@ -67,16 +67,16 @@ public class RepairPatterns extends Feature {
     @FeatureAnnotation(key="missNullCheckN", name="Missing non-null check addition")
     private int missNullCheckN = 0;
 
-    @FeatureAnnotation(key="singleLine", name="undefined")
+    @FeatureAnnotation(key="singleLine", name="Single Line")
     private int singleLine = 0;
 
-    @FeatureAnnotation(key="copyPaste", name="undefined")
+    @FeatureAnnotation(key="copyPaste", name="Copy/Paste")
     private int copyPaste = 0;
 
-    @FeatureAnnotation(key="constChange", name="undefined")
+    @FeatureAnnotation(key="constChange", name="Constant Change")
     private int constChange = 0;
 
-    @FeatureAnnotation(key="codeMove", name="undefined")
+    @FeatureAnnotation(key="codeMove", name="Code Moving")
     private int codeMove = 0;
 
     @FeatureAnnotation(key="notClassified", name="undefined")
