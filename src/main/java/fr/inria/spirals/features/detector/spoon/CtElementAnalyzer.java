@@ -68,6 +68,26 @@ public class CtElementAnalyzer {
                 }
 
                 @Override
+                public <T> void scanCtAbstractInvocation(CtAbstractInvocation<T> e) {
+                    if (dstElement instanceof CtAbstractInvocation) {
+                        if (e.getArguments().size() > ((CtAbstractInvocation) dstElement).getArguments().size()) {
+                            output.incrementFeatureCounter("mcParRem");
+                        } else if (e.getArguments().size() < ((CtAbstractInvocation) dstElement).getArguments().size()) {
+                            output.incrementFeatureCounter("mcParAdd");
+                        }
+                    }
+                    super.scanCtAbstractInvocation(e);
+                }
+
+                @Override
+                public <T> void visitCtConditional(CtConditional<T> e) {
+                    if (!(dstElement instanceof CtConditional)) {
+                        output.incrementFeatureCounter("condBranRem");
+                    }
+                    super.visitCtConditional(e);
+                }
+
+                @Override
                 public <T> void scanCtVariable(CtVariable<T> e) {
                     if (e.getModifiers().size() != ((CtModifiable) dstElement).getModifiers().size() ||
                             !e.getModifiers().containsAll(((CtModifiable) dstElement).getModifiers())) {
@@ -92,6 +112,9 @@ public class CtElementAnalyzer {
 
                 @Override
                 public <T> void scanCtExpression(CtExpression<T> expression) {
+                    if (!(expression instanceof CtConditional) && dstElement instanceof CtConditional) {
+                        output.incrementFeatureCounter("condBranIfElseAdd");
+                    }
                     if (expression.getRoleInParent() == CtRole.ARGUMENT && expression.getParent().getMetadata("new") == null) {
                         output.incrementFeatureCounter("mcParVal" + actionType.name);
                     }

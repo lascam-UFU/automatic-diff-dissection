@@ -64,6 +64,16 @@ public class RepairActionDetectorTest {
     }
 
     @Test
+    public void closure37() {
+        Config config = TestUtils.setupConfig("Closure 37");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+        System.out.println(repairActions);
+
+    }
+
+    @Test
     public void closure76() {
         Config config = TestUtils.setupConfig("Closure 76");
 
