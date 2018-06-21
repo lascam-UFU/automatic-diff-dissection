@@ -3,6 +3,9 @@ package fr.inria.spirals.features.detector.repairpatterns;
 import fr.inria.spirals.entities.RepairPatterns;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
+import spoon.reflect.code.CtBlock;
+import spoon.reflect.code.CtStatement;
+import spoon.reflect.declaration.CtElement;
 
 import java.util.List;
 
@@ -22,8 +25,25 @@ public class CodeMovingPatternDetector extends AbstractPatternDetector {
             if (!(operation instanceof MoveOperation)) {
                 continue;
             }
-            if (operation.getDstNode().getParent().getMetadata("new") == null &&
-                    operation.getSrcNode().getParent().getMetadata("new") == null) {
+            CtElement dstNode = operation.getDstNode();
+            CtElement dstParent = dstNode.getParent();
+            if (dstParent instanceof CtBlock) {
+                dstParent = dstParent.getParent();
+            }
+            CtElement srcNode = operation.getSrcNode();
+            CtElement srcParent = srcNode.getParent();
+            if (srcParent instanceof CtBlock) {
+                srcParent = srcParent.getParent();
+            }
+            if (!(dstNode instanceof CtStatement)) {
+                continue;
+            }
+            if (!(srcNode instanceof CtStatement)) {
+                continue;
+            }
+            if (dstParent.getMetadata("new") == null &&
+                    srcParent.getMetadata("new") == null
+                    && dstNode.getPosition().getSourceStart() != srcNode.getPosition().getSourceStart()) {
                 repairPatterns.incrementFeatureCounter("codeMove");
             }
         }
