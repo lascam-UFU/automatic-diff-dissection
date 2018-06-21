@@ -29,6 +29,7 @@ public class Server extends NanoHTTPD {
             new Server();
         } catch (IOException ioe) {
             System.err.println("Couldn't start server:\n" + ioe);
+            ioe.printStackTrace();
         }
     }
 
@@ -63,6 +64,7 @@ public class Server extends NanoHTTPD {
                 response.addHeader("Access-Control-Allow-Headers", "*");
                 return response;
             } catch (Exception e) {
+                e.printStackTrace();
                 return newFixedLengthResponse(Response.Status.INTERNAL_ERROR, MIME_PLAINTEXT, e.getMessage());
             }
         } else if (session.getMethod() == Method.OPTIONS) {
