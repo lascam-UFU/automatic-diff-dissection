@@ -38,6 +38,14 @@ public class RepairPatternUtils {
         return false;
     }
 
+    public static boolean isMovedCondition(CtElement binaryOperator) {
+        if (!(binaryOperator instanceof CtBinaryOperator)) {
+            return false;
+        }
+        return (((CtBinaryOperator) binaryOperator).getLeftHandOperand().getMetadata("isMoved") != null &&
+                ((CtBinaryOperator) binaryOperator).getRightHandOperand().getMetadata("isMoved")  != null);
+    }
+
     public static boolean isNewConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
         if (binaryOperator.getRightHandOperand().getMetadata("isMoved") == null ||
                 binaryOperator.getLeftHandOperand().getMetadata("isMoved") == null) {

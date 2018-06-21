@@ -32,6 +32,7 @@ public class RepairPatternDetector extends EditScriptBasedDetector {
         detectors.add(new CopyPastePatternDetector(operations));
         detectors.add(new ConstantChangePatternDetector(operations));
         detectors.add(new CodeMovingPatternDetector(operations));
+        detectors.add(new LogicExpressionPatternDetector(operations));
 
         for (AbstractPatternDetector detector : detectors) {
             detector.detect(this.repairPatterns);

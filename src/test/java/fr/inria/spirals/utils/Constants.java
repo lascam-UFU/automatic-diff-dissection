@@ -23,6 +23,11 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/chart_4/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Chart 5");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/chart_5/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/chart_5/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Chart 10");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/chart_10/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/chart_10/path.diff").getPath());
@@ -41,6 +46,11 @@ public class Constants {
         bugInfo = new BugInfo("Chart 15");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/chart_15/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/chart_15/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Chart 16");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/chart_16/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/chart_16/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Chart 18");
@@ -76,6 +86,11 @@ public class Constants {
         bugInfo = new BugInfo("Closure 5");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_5/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_5/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Closure 6");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_6/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_6/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Closure 11");
@@ -131,6 +146,11 @@ public class Constants {
         bugInfo = new BugInfo("Closure 35");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_35/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_35/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Closure 37");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_37/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_37/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Closure 40");
@@ -321,6 +341,11 @@ public class Constants {
         bugInfo = new BugInfo("Math 68");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_68/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/math_68/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Math 76");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_76/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/math_76/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Math 86");
