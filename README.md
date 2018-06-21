@@ -1,4 +1,4 @@
-# Patch Clustering [![Build Status](https://travis-ci.org/tdurieux/patch-clustering.svg?branch=master)](https://travis-ci.org/tdurieux/patch-clustering) [![Coverage Status](https://coveralls.io/repos/github/tdurieux/patch-clustering/badge.svg?branch=master)](https://coveralls.io/github/tdurieux/patch-clustering?branch=master)
+# Patch Clustering [![Build Status](https://travis-ci.org/lascam-UFU/patch-clustering.svg?branch=master)](https://travis-ci.org/lascam-UFU/patch-clustering) [![Coverage Status](https://coveralls.io/repos/github/lascam-UFU/patch-clustering/badge.svg?branch=master)](https://coveralls.io/github/lascam-UFU/patch-clustering?branch=master)
 
 This project extracts features from patches.
 
@@ -9,7 +9,7 @@ This project extracts features from patches.
 1. Clone this repository:
 
 ```bash
-$ git clone https://github.com/tdurieux/patch-clustering.git
+$ git clone https://github.com/lascam-UFU/patch-clustering.git
 ```
 
 2. Run the script `./init.sh`:
