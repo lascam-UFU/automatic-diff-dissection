@@ -22,7 +22,7 @@ def compare_feature(bug_info1, bug_info2, feature, feature_type):
     if automatic_info > 0 and manual_info:
         return "Both detected"
     if automatic_info == 0 and not manual_info:
-        return "Both didn't detect"
+        return ""
     if automatic_info == 0 and manual_info:
         return "Only manual detected"
     if automatic_info > 0 and not manual_info:
