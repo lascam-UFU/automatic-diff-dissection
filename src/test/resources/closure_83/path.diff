@@ -1,0 +1,14 @@
+--- a/com/google/javascript/jscomp/CommandLineRunner.java
++++ b/com/google/javascript/jscomp/CommandLineRunner.java
+@@ -331,7 +331,10 @@ public BooleanOptionHandler(
+ 
+       @Override
+       public int parseArguments(Parameters params) throws CmdLineException {
+-        String param = params.getParameter(0);
++        String param = null;
++        try {
++          param = params.getParameter(0);
++        } catch (CmdLineException e) {}
+ 
+         if (param == null) {
+           setter.addValue(true);

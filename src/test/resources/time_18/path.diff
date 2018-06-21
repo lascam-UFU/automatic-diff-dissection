@@ -1,0 +1,24 @@
+--- a/org/joda/time/chrono/GJChronology.java
++++ b/org/joda/time/chrono/GJChronology.java
+@@ -361,9 +361,21 @@ public long getDateTimeMillis(int year, int monthOfYear, int dayOfMonth,
+ 
+         // Assume date is Gregorian.
+         long instant;
++        try {
+             instant = iGregorianChronology.getDateTimeMillis
+                 (year, monthOfYear, dayOfMonth,
+                  hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
++        } catch (IllegalFieldValueException ex) {
++            if (monthOfYear != 2 || dayOfMonth != 29) {
++                throw ex;
++            }
++            instant = iGregorianChronology.getDateTimeMillis
++                (year, monthOfYear, 28,
++                 hourOfDay, minuteOfHour, secondOfMinute, millisOfSecond);
++            if (instant >= iCutoverMillis) {
++                throw ex;
++            }
++        }
+         if (instant < iCutoverMillis) {
+             // Maybe it's Julian.
+             instant = iJulianChronology.getDateTimeMillis

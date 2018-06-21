@@ -1,0 +1,43 @@
+--- a/org/mockito/internal/MockHandler.java
++++ b/org/mockito/internal/MockHandler.java
+@@ -17,6 +17,7 @@
+ import org.mockito.internal.stubbing.OngoingStubbingImpl;
+ import org.mockito.internal.stubbing.StubbedInvocationMatcher;
+ import org.mockito.internal.stubbing.VoidMethodStubbableImpl;
++import org.mockito.internal.verification.MockAwareVerificationMode;
+ import org.mockito.internal.verification.VerificationDataImpl;
+ import org.mockito.stubbing.Answer;
+ import org.mockito.stubbing.VoidMethodStubbable;
+@@ -73,9 +74,11 @@ public Object handle(Invocation invocation) throws Throwable {
+         if (verificationMode != null) {
+             //We need to check if verification was started on the correct mock 
+             // - see VerifyingWithAnExtraCallToADifferentMockTest
++            if (verificationMode instanceof MockAwareVerificationMode && ((MockAwareVerificationMode) verificationMode).getMock() == invocation.getMock()) {
+                 VerificationDataImpl data = new VerificationDataImpl(invocationContainerImpl.getInvocations(), invocationMatcher);            
+                 verificationMode.verify(data);
+                 return null;
++            }
+         }
+         
+         invocationContainerImpl.setInvocationForPotentialStubbing(invocationMatcher);
+diff --git a/org/mockito/internal/MockitoCore.java b/org/mockito/internal/MockitoCore.java
+index fc99ea9..ae0d72b 100755
+--- a/org/mockito/internal/MockitoCore.java
++++ b/org/mockito/internal/MockitoCore.java
+@@ -20,6 +20,7 @@
+ import org.mockito.internal.stubbing.OngoingStubbingImpl;
+ import org.mockito.internal.stubbing.StubberImpl;
+ import org.mockito.internal.util.MockUtil;
++import org.mockito.internal.verification.MockAwareVerificationMode;
+ import org.mockito.internal.verification.VerificationDataImpl;
+ import org.mockito.internal.verification.VerificationModeFactory;
+ import org.mockito.internal.verification.api.InOrderContext;
+@@ -70,7 +71,7 @@ public IOngoingStubbing stub() {
+         } else if (!mockUtil.isMock(mock)) {
+             reporter.notAMockPassedToVerify();
+         }
+-        mockingProgress.verificationStarted(mode);
++        mockingProgress.verificationStarted(new MockAwareVerificationMode(mock, mode));
+         return mock;
+     }
+     

@@ -31,6 +31,13 @@ public class RepairPatternUtils {
         return false;
     }
 
+    public static boolean isNewUnaryOperator(CtUnaryOperator unaryOperator) {
+        if (unaryOperator.getMetadata("new") != null && (Boolean) unaryOperator.getMetadata("new")) {
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isNewConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
         if (binaryOperator.getRightHandOperand().getMetadata("isMoved") == null ||
                 binaryOperator.getLeftHandOperand().getMetadata("isMoved") == null) {
@@ -72,6 +79,12 @@ public class RepairPatternUtils {
             List<CtBinaryOperator> binaryOperatorList = ctIf.getCondition().getElements(new TypeFilter<>(CtBinaryOperator.class));
             for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
                 if (!isNewBinaryOperator(ctBinaryOperator)) {
+                    return false;
+                }
+            }
+            List<CtUnaryOperator> unaryOperatorList = ctIf.getCondition().getElements(new TypeFilter<>(CtUnaryOperator.class));
+            for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
+                if (!isNewUnaryOperator(ctUnaryOperator)) {
                     return false;
                 }
             }
@@ -171,6 +184,15 @@ public class RepairPatternUtils {
     public static boolean isThereThrowInIfOrCase(CtElement ctElement) {
         List<CtThrow> throwList = ctElement.getElements(new ThrowInsideConditionalFilter(ctElement));
         return (throwList.size() > 0) ? true : false;
+    }
+
+    public static boolean isThereOnlyNewCatch(List<CtCatch> catchList) {
+        for (CtCatch ctCatch : catchList) {
+            if (!(ctCatch.getMetadata("new") != null)) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

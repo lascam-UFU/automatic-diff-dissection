@@ -1,0 +1,11 @@
+--- a/org/apache/commons/math/stat/regression/SimpleRegression.java
++++ b/org/apache/commons/math/stat/regression/SimpleRegression.java
+@@ -261,7 +261,7 @@ public double getSlope() {
+      * @return sum of squared errors associated with the regression model
+      */
+     public double getSumSquaredErrors() {
+-        return sumYY - sumXY * sumXY / sumXX;
++        return Math.max(0d, sumYY - sumXY * sumXY / sumXX);
+     }
+ 
+     /**
