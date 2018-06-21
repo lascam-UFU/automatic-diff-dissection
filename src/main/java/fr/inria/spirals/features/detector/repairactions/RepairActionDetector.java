@@ -5,6 +5,7 @@ import fr.inria.spirals.features.detector.EditScriptBasedDetector;
 import fr.inria.spirals.features.detector.spoon.CtElementAnalyzer;
 import fr.inria.spirals.features.detector.spoon.SpoonHelper;
 import fr.inria.spirals.main.Config;
+import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.DeleteOperation;
 import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.Operation;
@@ -17,6 +18,11 @@ import spoon.reflect.declaration.CtElement;
 public class RepairActionDetector extends EditScriptBasedDetector {
 
     private RepairActions repairActions;
+
+    public RepairActionDetector(Config config, Diff editScript) {
+        super(config, editScript);
+        this.repairActions = new RepairActions();
+    }
 
     public RepairActionDetector(Config config) {
         super(config);

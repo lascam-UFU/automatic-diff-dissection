@@ -13,6 +13,7 @@ import fr.inria.spirals.features.FeatureAnalyzer;
 import fr.inria.spirals.features.detector.repairactions.RepairActionDetector;
 import fr.inria.spirals.features.detector.repairpatterns.RepairPatternDetector;
 import fr.inria.spirals.features.extractor.MetricExtractor;
+import gumtree.spoon.diff.Diff;
 import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 
@@ -133,13 +134,16 @@ public class Launcher {
         FeatureList features = new FeatureList(this.config);
         List<FeatureAnalyzer> featureAnalyzers = new ArrayList<>();
 
+        Diff editScript = null;
         if (this.config.getLauncherMode() == LauncherMode.REPAIR_PATTERNS ||
                 this.config.getLauncherMode() == LauncherMode.ALL) {
-            featureAnalyzers.add(new RepairPatternDetector(this.config));
+            RepairPatternDetector detector = new RepairPatternDetector(this.config);
+            editScript = detector.getEditScript();
+            featureAnalyzers.add(detector);
         }
         if (this.config.getLauncherMode() == LauncherMode.REPAIR_ACTIONS ||
                 this.config.getLauncherMode() == LauncherMode.ALL) {
-            featureAnalyzers.add(new RepairActionDetector(this.config));
+            featureAnalyzers.add(new RepairActionDetector(this.config, editScript));
         }
         if (this.config.getLauncherMode() == LauncherMode.METRICS ||
                 this.config.getLauncherMode() == LauncherMode.ALL) {

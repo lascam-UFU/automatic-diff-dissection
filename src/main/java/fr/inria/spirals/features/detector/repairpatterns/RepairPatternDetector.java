@@ -3,6 +3,7 @@ package fr.inria.spirals.features.detector.repairpatterns;
 import fr.inria.spirals.entities.RepairPatterns;
 import fr.inria.spirals.features.detector.EditScriptBasedDetector;
 import fr.inria.spirals.main.Config;
+import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.Operation;
 
 import java.util.ArrayList;
@@ -14,6 +15,11 @@ import java.util.List;
 public class RepairPatternDetector extends EditScriptBasedDetector {
 
     private RepairPatterns repairPatterns;
+
+    public RepairPatternDetector(Config config, Diff editScript) {
+        super(config, editScript);
+        this.repairPatterns = new RepairPatterns();
+    }
 
     public RepairPatternDetector(Config config) {
         super(config);

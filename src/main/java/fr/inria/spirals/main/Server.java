@@ -52,8 +52,9 @@ public class Server extends NanoHTTPD {
                 FeatureList features = new FeatureList(config);
                 List<FeatureAnalyzer> featureAnalyzers = new ArrayList<>();
 
-                featureAnalyzers.add(new RepairPatternDetector(config));
-                featureAnalyzers.add(new RepairActionDetector(config));
+                RepairPatternDetector detector = new RepairPatternDetector(config);
+                featureAnalyzers.add(detector);
+                featureAnalyzers.add(new RepairActionDetector(config, detector.getEditScript()));
                 featureAnalyzers.add(new MetricExtractor(config));
 
                 for (FeatureAnalyzer featureAnalyzer : featureAnalyzers) {

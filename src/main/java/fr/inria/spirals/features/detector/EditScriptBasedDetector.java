@@ -6,6 +6,7 @@ import fr.inria.spirals.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import fr.inria.spirals.main.Config;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;
+import gumtree.spoon.diff.operations.DeleteOperation;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import spoon.Launcher;
@@ -22,9 +23,17 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
 
     protected Diff editScript;
 
-    public EditScriptBasedDetector(Config config) {
+    public EditScriptBasedDetector(Config config, Diff editScript) {
         super(config);
-        this.editScript = this.extractEditScript();
+        if (editScript == null) {
+            this.editScript = extractEditScript();
+        } else {
+            this.editScript = editScript;
+        }
+    }
+
+    public EditScriptBasedDetector(Config config) {
+        this(config, null);
     }
 
     private Diff extractEditScript() {
@@ -71,6 +80,14 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
                 }
                 if (dstNode != null) {
                     dstNode.putMetadata("new", true);
+                }
+                if (operation instanceof DeleteOperation) {
+                    if (operation.getSrcNode() != null) {
+                        operation.getSrcNode().putMetadata("delete", true);
+                    }
+                    if (operation.getDstNode() != null) {
+                        operation.getDstNode().putMetadata("delete", true);
+                    }
                 }
             }
         }
