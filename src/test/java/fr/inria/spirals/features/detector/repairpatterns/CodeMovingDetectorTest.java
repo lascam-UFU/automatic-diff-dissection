@@ -10,6 +10,7 @@ import org.junit.Test;
 /**
  * Created by tdurieux
  *
+ * Tests for the feature codeMove
  */
 public class CodeMovingDetectorTest {
 
@@ -44,7 +45,7 @@ public class CodeMovingDetectorTest {
     }
 
     @Test
-    public void closure107() {
+    public void closure117() {
         Config config = TestUtils.setupConfig("Closure 117");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);

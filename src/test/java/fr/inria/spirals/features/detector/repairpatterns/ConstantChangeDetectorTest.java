@@ -10,6 +10,7 @@ import org.junit.Test;
 /**
  * Created by tdurieux
  *
+ * Tests for the feature constChange
  */
 public class ConstantChangeDetectorTest {
 
