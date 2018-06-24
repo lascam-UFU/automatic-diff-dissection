@@ -101,6 +101,72 @@ public class RepairPatternUtils {
         return false;
     }
 
+    public static boolean isNewWhile(CtWhile ctWhile) {
+        if (ctWhile.getMetadata("new") != null) {
+            List<CtBinaryOperator> binaryOperatorList = ctWhile.getLoopingExpression().getElements(new TypeFilter<>(CtBinaryOperator.class));
+            for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
+                if (!isNewBinaryOperator(ctBinaryOperator)) {
+                    return false;
+                }
+            }
+            List<CtUnaryOperator> unaryOperatorList = ctWhile.getLoopingExpression().getElements(new TypeFilter<>(CtUnaryOperator.class));
+            for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
+                if (!isNewUnaryOperator(ctUnaryOperator)) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isNewFor(CtFor ctFor) {
+        if (ctFor.getMetadata("new") != null) {
+            List<CtBinaryOperator> binaryOperatorList = ctFor.getExpression().getElements(new TypeFilter<>(CtBinaryOperator.class));
+            for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
+                if (!isNewBinaryOperator(ctBinaryOperator)) {
+                    return false;
+                }
+            }
+            List<CtUnaryOperator> unaryOperatorList = ctFor.getExpression().getElements(new TypeFilter<>(CtUnaryOperator.class));
+            for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
+                if (!isNewUnaryOperator(ctUnaryOperator)) {
+                    return false;
+                }
+            }
+            if (!isThereOnlyNewStatementsInStatementList(ctFor.getForInit())) {
+                return false;
+            }
+            if (!isThereOnlyNewStatementsInStatementList(ctFor.getForUpdate())) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isNewForEach(CtForEach ctForEach) {
+        if (ctForEach.getMetadata("new") != null) {
+            if (ctForEach.getVariable().getMetadata("new") == null) {
+                return false;
+            }
+            if (ctForEach.getExpression().getMetadata("new") == null) {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isThereOnlyNewStatementsInStatementList(List<CtStatement> statements) {
+        for (CtStatement statement : statements) {
+            if (!isNewStatement(statement)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static boolean isThereOldStatementInStatementList(List<CtStatement> statements) {
         for (CtStatement statement : statements) {
             if (!RepairPatternUtils.isNewStatement(statement)) {

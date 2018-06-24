@@ -25,6 +25,7 @@ public class WrapsWithDetector extends AbstractPatternDetector {
             this.detectWrapsIf(operation, repairPatterns);
             this.detectWrapsTryCatch(operation, repairPatterns);
             this.detectWrapsMethod(operation, repairPatterns);
+            this.detectWrapsLoop(operation, repairPatterns);
         }
     }
 
@@ -153,6 +154,37 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                     for (CtExpression ctExpression : invocationArguments) {
                         if (ctExpression.getMetadata("isMoved") != null && ctExpression.getMetadata("movingSrc") != null) {
                             repairPatterns.incrementFeatureCounter("unwrapMethod");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void detectWrapsLoop(Operation operation, RepairPatterns repairPatterns) {
+        if (operation instanceof InsertOperation) {
+            CtElement ctElement = operation.getSrcNode();
+            SpoonHelper.printInsertOrDeleteOperation(ctElement.getFactory().getEnvironment(), ctElement, operation);
+
+            List<CtLoop> loopList = ctElement.getElements(new TypeFilter<>(CtLoop.class));
+            for (CtLoop ctLoop : loopList) {
+                if ((ctLoop instanceof CtFor && RepairPatternUtils.isNewFor((CtFor) ctLoop)) ||
+                        (ctLoop instanceof CtForEach && RepairPatternUtils.isNewForEach((CtForEach) ctLoop)) ||
+                        (ctLoop instanceof CtWhile && RepairPatternUtils.isNewWhile((CtWhile) ctLoop))) {
+                    if (ctLoop.getBody() instanceof CtBlock) {
+                        CtBlock bodyBlock = (CtBlock) ctLoop.getBody();
+                        if (bodyBlock != null && RepairPatternUtils.isThereOldStatementInStatementList(bodyBlock.getStatements())) {
+                            repairPatterns.incrementFeatureCounter("wrapsLoop");
+                        } else { // try to find an update inside the body of the loop
+                            for (Operation operationAux : this.operations) {
+                                if (operationAux instanceof UpdateOperation) {
+                                    CtElement ctElementDst = operationAux.getDstNode();
+                                    CtLoop ctLoopParent = ctElementDst.getParent(new TypeFilter<>(CtLoop.class));
+                                    if (ctLoopParent != null && ctLoopParent == ctLoop) {
+                                        repairPatterns.incrementFeatureCounter("wrapsLoop");
+                                    }
+                                }
+                            }
                         }
                     }
                 }

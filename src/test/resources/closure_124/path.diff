@@ -1,0 +1,12 @@
+--- a/com/google/javascript/jscomp/ExploitAssigns.java
++++ b/com/google/javascript/jscomp/ExploitAssigns.java
+@@ -210,7 +210,9 @@ private boolean isSafeReplacement(Node node, Node replacement) {
+     }
+     Preconditions.checkArgument(node.isGetProp());
+ 
++    while (node.isGetProp()) {
+       node = node.getFirstChild();
++    }
+     if (node.isName()
+         && isNameAssignedTo(node.getString(), replacement)) {
+       return false;

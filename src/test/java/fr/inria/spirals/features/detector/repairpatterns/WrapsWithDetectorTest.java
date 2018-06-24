@@ -10,7 +10,7 @@ import org.junit.Test;
 /**
  * Created by fermadeiral
  *
- * Tests for the features wrapsIf, wrapsIfElse, wrapsElse, wrapsTryCatch, wrapsMethod, unwrapIfElse, unwrapTryCatch and unwrapMethod
+ * Tests for the features wrapsIf, wrapsIfElse, wrapsElse, wrapsTryCatch, wrapsMethod, wrapsLoop, unwrapIfElse, unwrapTryCatch and unwrapMethod
  */
 public class WrapsWithDetectorTest {
 
@@ -165,6 +165,26 @@ public class WrapsWithDetectorTest {
         RepairPatterns repairPatterns = detector.analyze();
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("unwrapMethod") > 0);
+    }
+
+    @Test
+    public void closure124() {
+        Config config = TestUtils.setupConfig("Closure 124");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("wrapsLoop") > 0);
+    }
+
+    @Test
+    public void math7() {
+        Config config = TestUtils.setupConfig("Math 7");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("wrapsLoop") > 0);
     }
 
 }
