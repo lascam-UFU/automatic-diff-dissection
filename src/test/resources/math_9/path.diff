@@ -1,0 +1,12 @@
+--- a/org/apache/commons/math3/geometry/euclidean/threed/Line.java
++++ b/org/apache/commons/math3/geometry/euclidean/threed/Line.java
+@@ -84,7 +84,8 @@ public void reset(final Vector3D p1, final Vector3D p2) throws MathIllegalArgume
+      * @return a new instance, with reversed direction
+      */
+     public Line revert() {
+-        final Line reverted = new Line(zero, zero.subtract(direction));
++        final Line reverted = new Line(this);
++        reverted.direction = reverted.direction.negate();
+         return reverted;
+     }
+ 

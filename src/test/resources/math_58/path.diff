@@ -1,0 +1,11 @@
+--- a/org/apache/commons/math/optimization/fitting/GaussianFitter.java
++++ b/org/apache/commons/math/optimization/fitting/GaussianFitter.java
+@@ -118,7 +118,7 @@ public double value(double x, double[] p) {
+      */
+     public double[] fit() {
+         final double[] guess = (new ParameterGuesser(getObservations())).guess();
+-        return fit(new Gaussian.Parametric(), guess);
++        return fit(guess);
+     }
+ 
+     /**

@@ -1,0 +1,11 @@
+--- a/org/apache/commons/lang3/time/FastDateFormat.java
++++ b/org/apache/commons/lang3/time/FastDateFormat.java
+@@ -817,7 +817,7 @@ public String format(long millis) {
+      * @return the formatted string
+      */
+     public String format(Date date) {
+-        Calendar c = new GregorianCalendar(mTimeZone);
++        Calendar c = new GregorianCalendar(mTimeZone, mLocale);
+         c.setTime(date);
+         return applyRules(c, new StringBuffer(mMaxLengthEstimate)).toString();
+     }
