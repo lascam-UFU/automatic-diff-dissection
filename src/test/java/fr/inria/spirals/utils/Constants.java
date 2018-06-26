@@ -353,6 +353,11 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/math_33/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Math 46");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_46/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/math_46/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Math 48");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/math_48/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/math_48/path.diff").getPath());

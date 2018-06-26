@@ -46,6 +46,16 @@ public class WrapsWithDetectorTest {
     }
 
     @Test
+    public void lang33() {
+        Config config = TestUtils.setupConfig("Lang 33");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("wrapsIfElse") > 0);
+    }
+
+    @Test
     public void chart21() {
         Config config = TestUtils.setupConfig("Chart 21");
 
@@ -64,6 +74,16 @@ public class WrapsWithDetectorTest {
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("unwrapIfElse") > 0);
         Assert.assertTrue(repairPatterns.getFeatureCounter("unwrapMethod") > 0);
+    }
+
+    @Test
+    public void math46() {
+        Config config = TestUtils.setupConfig("Math 46");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("unwrapIfElse") > 0);
     }
 
     @Test

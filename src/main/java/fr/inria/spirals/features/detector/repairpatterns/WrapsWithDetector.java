@@ -79,6 +79,22 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                     }
                 }
             }
+
+            List<CtConditional> conditionalList = ctElement.getElements(new TypeFilter<>(CtConditional.class));
+            for (CtConditional ctConditional : conditionalList) {
+                if (ctConditional.getMetadata("new") != null) {
+                    CtExpression thenExpression = ctConditional.getThenExpression();
+                    CtExpression elseExpression = ctConditional.getElseExpression();
+                    if (thenExpression.getMetadata("new") == null ||
+                            elseExpression.getMetadata("new") == null) {
+                        if (operation instanceof InsertOperation) {
+                            repairPatterns.incrementFeatureCounter("wrapsIfElse");
+                        } else {
+                            repairPatterns.incrementFeatureCounter("unwrapIfElse");
+                        }
+                    }
+                }
+            }
         }
     }
 
