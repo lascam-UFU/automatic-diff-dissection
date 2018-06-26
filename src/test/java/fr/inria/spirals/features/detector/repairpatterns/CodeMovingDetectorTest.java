@@ -84,4 +84,14 @@ public class CodeMovingDetectorTest {
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("codeMove") > 0);
     }
+
+    @Test
+    public void chart17() {
+        Config config = TestUtils.setupConfig("Chart 17");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("codeMove") == 0);
+    }
 }
