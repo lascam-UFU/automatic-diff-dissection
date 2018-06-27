@@ -87,10 +87,29 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                     CtExpression elseExpression = ctConditional.getElseExpression();
                     if (thenExpression.getMetadata("new") == null ||
                             elseExpression.getMetadata("new") == null) {
+                        CtElement statementParent = ctConditional.getParent(new TypeFilter<>(CtStatement.class));
                         if (operation instanceof InsertOperation) {
-                            repairPatterns.incrementFeatureCounter("wrapsIfElse");
+                            if (statementParent.getMetadata("new") == null) {
+                                repairPatterns.incrementFeatureCounter("wrapsIfElse");
+                            }
                         } else {
-                            repairPatterns.incrementFeatureCounter("unwrapIfElse");
+                            if (statementParent.getMetadata("delete") == null) {
+                                repairPatterns.incrementFeatureCounter("unwrapIfElse");
+                            }
+                        }
+                    } else {
+                        if (operation instanceof InsertOperation) {
+                            for (int j = 0; j < operations.size(); j++) {
+                                Operation operation2 = operations.get(j);
+                                if (operation2 instanceof DeleteOperation) {
+                                    CtElement node2 = operation2.getSrcNode();
+                                    if (((InsertOperation) operation).getParent() != null) {
+                                        if (node2.getParent() == ((InsertOperation) operation).getParent()) {
+                                            repairPatterns.incrementFeatureCounter("wrapsIfElse");
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -165,11 +184,15 @@ public class WrapsWithDetector extends AbstractPatternDetector {
             } else {
                 if (operation instanceof DeleteOperation) {
                     CtInvocation ctInvocation = (CtInvocation) operation.getSrcNode();
-                    List<CtExpression> invocationArguments = ctInvocation.getArguments();
+                    CtStatement statementParent = ctInvocation.getParent(new TypeFilter<>(CtStatement.class));
 
-                    for (CtExpression ctExpression : invocationArguments) {
-                        if (ctExpression.getMetadata("isMoved") != null && ctExpression.getMetadata("movingSrc") != null) {
-                            repairPatterns.incrementFeatureCounter("unwrapMethod");
+                    if (statementParent.getMetadata("delete") == null) {
+                        List<CtExpression> invocationArguments = ctInvocation.getArguments();
+
+                        for (CtExpression ctExpression : invocationArguments) {
+                            if (ctExpression.getMetadata("isMoved") != null && ctExpression.getMetadata("movingSrc") != null) {
+                                repairPatterns.incrementFeatureCounter("unwrapMethod");
+                            }
                         }
                     }
                 }

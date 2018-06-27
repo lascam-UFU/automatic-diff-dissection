@@ -56,6 +56,16 @@ public class WrapsWithDetectorTest {
     }
 
     @Test
+    public void closure111() {
+        Config config = TestUtils.setupConfig("Closure 111");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("wrapsIfElse") > 0);
+    }
+
+    @Test
     public void chart21() {
         Config config = TestUtils.setupConfig("Chart 21");
 
@@ -175,6 +185,17 @@ public class WrapsWithDetectorTest {
         RepairPatterns repairPatterns = detector.analyze();
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("wrapsMethod") > 0);
+    }
+
+    @Ignore
+    @Test
+    public void math27() {
+        Config config = TestUtils.setupConfig("Math 27");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("unwrapMethod") > 0);
     }
 
     @Test

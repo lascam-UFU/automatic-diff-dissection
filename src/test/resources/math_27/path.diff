@@ -1,0 +1,11 @@
+--- a/org/apache/commons/math3/fraction/Fraction.java
++++ b/org/apache/commons/math3/fraction/Fraction.java
+@@ -594,7 +594,7 @@ public Fraction divide(final int i) {
+      * @return the fraction percentage as a <tt>double</tt>.
+      */
+     public double percentageValue() {
+-        return multiply(100).doubleValue();
++        return 100 * doubleValue();
+     }
+ 
+     /**
