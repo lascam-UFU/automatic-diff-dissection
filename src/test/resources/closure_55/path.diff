@@ -1,0 +1,12 @@
+--- a/com/google/javascript/jscomp/FunctionRewriter.java
++++ b/com/google/javascript/jscomp/FunctionRewriter.java
+@@ -114,7 +114,8 @@ public Node parseHelperCode(Reducer reducer) {
+   }
+ 
+   private static boolean isReduceableFunctionExpression(Node n) {
+-    return NodeUtil.isFunctionExpression(n);
++    return NodeUtil.isFunctionExpression(n)
++        && !NodeUtil.isGetOrSetKey(n.getParent());
+   }
+ 
+   /**

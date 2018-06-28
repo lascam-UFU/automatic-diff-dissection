@@ -7,6 +7,7 @@ import gumtree.spoon.diff.operations.Operation;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtVariable;
+import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.util.ArrayList;
@@ -52,6 +53,17 @@ public class RepairPatternUtils {
             return true;
         }
         return false;
+    }
+
+    public static boolean isStringInvolvedInBinaryOperator(CtBinaryOperator binaryOperator) {
+        boolean isStringInvolved = false;
+        List<CtTypeReference> types = binaryOperator.getElements(new TypeFilter<>(CtTypeReference.class));
+        for (CtTypeReference typeReference : types) {
+            if (typeReference.getSimpleName().equals("String")) {
+                isStringInvolved = true;
+            }
+        }
+        return isStringInvolved;
     }
 
     public static boolean wasConditionChangedInIf(CtIf ctIf) {

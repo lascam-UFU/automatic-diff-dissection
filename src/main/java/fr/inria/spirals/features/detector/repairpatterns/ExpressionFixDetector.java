@@ -6,16 +6,7 @@ import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
-import spoon.reflect.code.BinaryOperatorKind;
-import spoon.reflect.code.CtBinaryOperator;
-import spoon.reflect.code.CtBlock;
-import spoon.reflect.code.CtCase;
-import spoon.reflect.code.CtExpression;
-import spoon.reflect.code.CtFor;
-import spoon.reflect.code.CtIf;
-import spoon.reflect.code.CtUnaryOperator;
-import spoon.reflect.code.CtWhile;
-import spoon.reflect.code.UnaryOperatorKind;
+import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.path.CtRole;
 import spoon.reflect.visitor.EarlyTerminatingScanner;
@@ -36,7 +27,7 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
     @Override
     public void detect(RepairPatterns repairPatterns) {
         List<BinaryOperatorKind> mathematicOperator = Arrays.asList(BinaryOperatorKind.SL, BinaryOperatorKind.SR, BinaryOperatorKind.USR, BinaryOperatorKind.PLUS, BinaryOperatorKind.MINUS, BinaryOperatorKind.MUL, BinaryOperatorKind.DIV, BinaryOperatorKind.MOD);
-        List<UnaryOperatorKind> unaryOperators = Arrays.asList(UnaryOperatorKind.POSTDEC, UnaryOperatorKind.POSTINC, UnaryOperatorKind.POSTDEC, UnaryOperatorKind.PREDEC);
+        List<UnaryOperatorKind> unaryOperators = Arrays.asList(UnaryOperatorKind.PREINC, UnaryOperatorKind.POSTINC, UnaryOperatorKind.POSTDEC, UnaryOperatorKind.PREDEC);
         for (int i = 0; i < operations.size(); i++) {
             Operation operation = operations.get(i);
             if (operation instanceof MoveOperation) {
@@ -47,7 +38,9 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                 CtBinaryOperator binaryOperator = srcNode instanceof CtBinaryOperator? (CtBinaryOperator) srcNode :srcNode.getParent(CtBinaryOperator.class);
                 if (binaryOperator != null) {
                     if (mathematicOperator.contains(binaryOperator.getKind())) {
-                        repairPatterns.incrementFeatureCounter("expArithMod");
+                        if (!RepairPatternUtils.isStringInvolvedInBinaryOperator(binaryOperator)) {
+                            repairPatterns.incrementFeatureCounter("expArithMod");
+                        }
                     } else {
                         CtIf parent = srcNode.getParent(CtIf.class);
                         if (parent != null && parent.getMetadata("isMoved") == null  && srcNode == parent.getCondition()) {
@@ -61,83 +54,103 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                         repairPatterns.incrementFeatureCounter("expArithMod");
                     }
                 }
-                continue;
-            }
-            CtElement srcNode = operation.getSrcNode();
-            if (srcNode.isImplicit() && srcNode instanceof CtBlock && ((CtBlock) srcNode).getStatements().size() == 1) {
-                srcNode = ((CtBlock) srcNode).getLastStatement();
-            }
-
-            if (srcNode instanceof CtBinaryOperator) {
-                if (RepairPatternUtils.isMovedCondition((CtBinaryOperator) srcNode)) {
-                    continue;
+                if (srcNode.getParent() instanceof CtIf && srcNode.getRoleInParent() == CtRole.CONDITION) {
+                    repairPatterns.incrementFeatureCounter("expLogicMod");
                 }
-            }
-
-            boolean isExpLogicExOrRed = false;
-            if (srcNode instanceof CtBinaryOperator && hasMetaInIt(srcNode, "isMoved")) {
-                if (mathematicOperator.contains(((CtBinaryOperator) srcNode).getKind())) {
-                    repairPatterns.incrementFeatureCounter("expArithMod");
+            } else {
+                CtElement srcNode = operation.getSrcNode();
+                if (srcNode.isImplicit() && srcNode instanceof CtBlock && ((CtBlock) srcNode).getStatements().size() == 1) {
+                    srcNode = ((CtBlock) srcNode).getLastStatement();
                 }
-            }
-            if (srcNode instanceof CtCase) {
-                if (srcNode.getParent().getMetadata("isMoved") == null) {
-                    if (operation instanceof InsertOperation) {
-                        repairPatterns.incrementFeatureCounter("expLogicExpand");
-                    } else {
-                        // cannot delete completely the condition
-                        if (!(srcNode.getParent() instanceof CtIf)) {
-                            repairPatterns.incrementFeatureCounter("expLogicReduce");
+
+                boolean isExpLogicExOrRed = false;
+                if (srcNode instanceof CtBinaryOperator) {
+                    if (RepairPatternUtils.isMovedCondition((CtBinaryOperator) srcNode)) {
+                        continue;
+                    }
+
+                    if (hasMetaInIt(srcNode, "isMoved")) {
+                        if (mathematicOperator.contains(((CtBinaryOperator) srcNode).getKind())) {
+                            if (!RepairPatternUtils.isStringInvolvedInBinaryOperator((CtBinaryOperator) srcNode)) {
+                                repairPatterns.incrementFeatureCounter("expArithMod");
+                            }
                         }
                     }
-                    isExpLogicExOrRed = true;
+
+                    if (isInCondition(srcNode)) {
+                        if (srcNode.getParent().getMetadata("isMoved") == null) {
+                            if (operation instanceof InsertOperation) {
+                                repairPatterns.incrementFeatureCounter("expLogicExpand");
+                                isExpLogicExOrRed = true;
+                            } else {
+                                // cannot delete completely the condition
+                                if (!(srcNode.getParent() instanceof CtIf) || hasMetaInIt(srcNode, "isMoved")) {
+                                    repairPatterns.incrementFeatureCounter("expLogicReduce");
+                                    isExpLogicExOrRed = true;
+                                }
+                            }
+                        }
+                    } else {
+                        CtBinaryOperator ctBinaryOperator = (CtBinaryOperator) srcNode;
+                        if ((ctBinaryOperator.getLeftHandOperand().getMetadata("isMoved") != null &&
+                                ctBinaryOperator.getRightHandOperand().getMetadata("new") != null) ||
+                                (ctBinaryOperator.getLeftHandOperand().getMetadata("new") != null &&
+                                        ctBinaryOperator.getRightHandOperand().getMetadata("isMoved") != null)) {
+                            if (operation instanceof InsertOperation) {
+                                repairPatterns.incrementFeatureCounter("expLogicExpand");
+                                isExpLogicExOrRed = true;
+                            }
+                        }
+                    }
                 }
-            }
-            if (srcNode instanceof CtBinaryOperator) {
-                if (isInCondition(srcNode)) {
+
+                if (srcNode instanceof CtCase) {
                     if (srcNode.getParent().getMetadata("isMoved") == null) {
                         if (operation instanceof InsertOperation) {
                             repairPatterns.incrementFeatureCounter("expLogicExpand");
+                            isExpLogicExOrRed = true;
                         } else {
                             // cannot delete completely the condition
                             if (!(srcNode.getParent() instanceof CtIf) || hasMetaInIt(srcNode, "isMoved")) {
                                 repairPatterns.incrementFeatureCounter("expLogicReduce");
+                                isExpLogicExOrRed = true;
                             }
                         }
-                        isExpLogicExOrRed = true;
                     }
                 }
-            }
-            if (srcNode instanceof CtIf) {
-                // add an else if
-                if (srcNode.getParent().getRoleInParent() == CtRole.ELSE && operation instanceof InsertOperation) {
-                    repairPatterns.incrementFeatureCounter("expLogicExpand");
-                }
-                CtExpression<Boolean> condition = ((CtIf) srcNode).getCondition();
-                if (hasMetaInIt(condition, "isMoved") && condition.getMetadata("isMoved") == null && !RepairPatternUtils.isMovedCondition(condition)) {
-                    if (operation instanceof InsertOperation) {
+                if (srcNode instanceof CtIf) {
+                    // add an else if
+                    if (srcNode.getParent().getRoleInParent() == CtRole.ELSE && operation instanceof InsertOperation) {
                         repairPatterns.incrementFeatureCounter("expLogicExpand");
                         isExpLogicExOrRed = true;
                     }
-                }
-            }
-
-            if (srcNode instanceof CtExpression && operation instanceof InsertOperation && !isExpLogicExOrRed) {
-                CtIf parent = srcNode.getParent(CtIf.class);
-                CtBinaryOperator binary = srcNode.getParent(CtBinaryOperator.class);
-                if (parent != null && isInCondition(binary)
-                        && parent.getMetadata("isMoved") == null) {
-                    repairPatterns.incrementFeatureCounter("expLogicMod");
+                    CtExpression<Boolean> condition = ((CtIf) srcNode).getCondition();
+                    if (hasMetaInIt(condition, "isMoved") && condition.getMetadata("isMoved") == null && !RepairPatternUtils.isMovedCondition(condition)) {
+                        if (operation instanceof InsertOperation) {
+                            repairPatterns.incrementFeatureCounter("expLogicExpand");
+                            isExpLogicExOrRed = true;
+                        }
+                    }
                 }
 
-            }
-            CtBinaryOperator binaryOperator = srcNode.getParent(CtBinaryOperator.class);
-            if (binaryOperator != null) {
-                if (mathematicOperator.contains(binaryOperator.getKind())) {
-                    repairPatterns.incrementFeatureCounter("expArithMod");
+                if (srcNode instanceof CtExpression && operation instanceof InsertOperation && !isExpLogicExOrRed) {
+                    CtIf parent = srcNode.getParent(CtIf.class);
+                    CtBinaryOperator binary = srcNode.getParent(CtBinaryOperator.class);
+                    if (parent != null && isInCondition(binary)
+                            && parent.getMetadata("isMoved") == null) {
+                        repairPatterns.incrementFeatureCounter("expLogicMod");
+                    }
+
+                }
+                CtBinaryOperator binaryOperator = srcNode.getParent(CtBinaryOperator.class);
+                if (binaryOperator != null) {
+                    if (mathematicOperator.contains(binaryOperator.getKind())) {
+                        if (!RepairPatternUtils.isStringInvolvedInBinaryOperator(binaryOperator)) {
+                            repairPatterns.incrementFeatureCounter("expArithMod");
+                        }
+                    }
                 }
             }
-
         }
     }
 

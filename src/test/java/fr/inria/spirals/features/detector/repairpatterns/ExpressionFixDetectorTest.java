@@ -24,6 +24,26 @@ public class ExpressionFixDetectorTest {
     }
 
     @Test
+    public void closure4() {
+        Config config = TestUtils.setupConfig("Closure 4");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("expLogicMod") > 0);
+    }
+
+    @Test
+    public void closure55() {
+        Config config = TestUtils.setupConfig("Closure 55");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("expLogicExpand") > 0);
+    }
+
+    @Test
     public void chart5() {
         Config config = TestUtils.setupConfig("Chart 5");
 
@@ -153,5 +173,15 @@ public class ExpressionFixDetectorTest {
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("expArithMod") > 0);
         Assert.assertTrue(repairPatterns.getFeatureCounter("expLogicMod") > 0);
+    }
+
+    @Test
+    public void chart10() {
+        Config config = TestUtils.setupConfig("Chart 10");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("expArithMod") == 0);
     }
 }
