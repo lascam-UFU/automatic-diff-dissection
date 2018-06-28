@@ -438,6 +438,11 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/mockito_23/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Time 7");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/time_7/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/time_7/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Time 8");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/time_8/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/time_8/path.diff").getPath());

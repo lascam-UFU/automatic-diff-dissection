@@ -54,6 +54,23 @@ public class RepairPatternUtils {
         return false;
     }
 
+    public static boolean wasConditionChangedInIf(CtIf ctIf) {
+        boolean wasConditionChanged = false;
+        List<CtBinaryOperator> binaryOperatorList = ctIf.getCondition().getElements(new TypeFilter<>(CtBinaryOperator.class));
+        for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
+            if (RepairPatternUtils.isNewBinaryOperator(ctBinaryOperator)) {
+                wasConditionChanged = true;
+            }
+        }
+        List<CtUnaryOperator> unaryOperatorList = ctIf.getCondition().getElements(new TypeFilter<>(CtUnaryOperator.class));
+        for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
+            if (RepairPatternUtils.isNewUnaryOperator(ctUnaryOperator)) {
+                wasConditionChanged = true;
+            }
+        }
+        return wasConditionChanged;
+    }
+
     public static boolean isNewStatement(CtStatement statement) {
         if (statement.getMetadata("new") != null) {
             return true;
@@ -267,6 +284,17 @@ public class RepairPatternUtils {
             }
         }
         return true;
+    }
+
+    public static boolean isThereChangesInChildren(CtElement ctElement) {
+        boolean isThereChanges = false;
+        List<CtElement> children = ctElement.getElements(new TypeFilter<>(CtElement.class));
+        for (CtElement child : children) {
+            if (child.getMetadata("new") != null) {
+                isThereChanges = true;
+            }
+        }
+        return isThereChanges;
     }
 
 }

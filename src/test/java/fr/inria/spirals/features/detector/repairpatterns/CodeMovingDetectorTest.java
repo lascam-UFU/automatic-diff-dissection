@@ -94,4 +94,34 @@ public class CodeMovingDetectorTest {
 
         Assert.assertTrue(repairPatterns.getFeatureCounter("codeMove") == 0);
     }
+
+    @Test
+    public void chart21() {
+        Config config = TestUtils.setupConfig("Chart 21");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("codeMove") == 0);
+    }
+
+    @Test
+    public void time7() {
+        Config config = TestUtils.setupConfig("Time 7");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("codeMove") == 0);
+    }
+
+    @Test
+    public void closure76() {
+        Config config = TestUtils.setupConfig("Closure 76");
+
+        RepairPatternDetector detector = new RepairPatternDetector(config);
+        RepairPatterns repairPatterns = detector.analyze();
+
+        Assert.assertTrue(repairPatterns.getFeatureCounter("codeMove") == 0);
+    }
 }
