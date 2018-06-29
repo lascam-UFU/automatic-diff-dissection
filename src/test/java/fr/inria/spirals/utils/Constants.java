@@ -173,6 +173,11 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/closure_40/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Closure 44");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_44/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_44/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Closure 47");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_47/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_47/path.diff").getPath());
@@ -213,6 +218,11 @@ public class Constants {
         bugInfo.setDiffPath(Constants.class.getResource("/closure_76/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
+        bugInfo = new BugInfo("Closure 80");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_80/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_80/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
         bugInfo = new BugInfo("Closure 81");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_81/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_81/path.diff").getPath());
@@ -231,6 +241,11 @@ public class Constants {
         bugInfo = new BugInfo("Closure 102");
         bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_102/buggy-version").getPath());
         bugInfo.setDiffPath(Constants.class.getResource("/closure_102/path.diff").getPath());
+        tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
+
+        bugInfo = new BugInfo("Closure 104");
+        bugInfo.setBuggySourceDirectoryPath(Constants.class.getResource("/closure_104/buggy-version").getPath());
+        bugInfo.setDiffPath(Constants.class.getResource("/closure_104/path.diff").getPath());
         tmpBugIdToInfoMap.put(bugInfo.getBugId(), bugInfo);
 
         bugInfo = new BugInfo("Closure 109");

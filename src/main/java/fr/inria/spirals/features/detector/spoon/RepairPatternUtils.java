@@ -32,8 +32,22 @@ public class RepairPatternUtils {
         return false;
     }
 
+    public static boolean isDeletedBinaryOperator(CtBinaryOperator binaryOperator) {
+        if (binaryOperator.getMetadata("delete") != null && (Boolean) binaryOperator.getMetadata("delete")) {
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isNewUnaryOperator(CtUnaryOperator unaryOperator) {
         if (unaryOperator.getMetadata("new") != null && (Boolean) unaryOperator.getMetadata("new")) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isDeletedUnaryOperator(CtUnaryOperator unaryOperator) {
+        if (unaryOperator.getMetadata("delete") != null && (Boolean) unaryOperator.getMetadata("delete")) {
             return true;
         }
         return false;
@@ -50,6 +64,51 @@ public class RepairPatternUtils {
     public static boolean isNewConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
         if (binaryOperator.getRightHandOperand().getMetadata("isMoved") == null ||
                 binaryOperator.getLeftHandOperand().getMetadata("isMoved") == null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isDeletedConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
+        if (binaryOperator.getRightHandOperand().getMetadata("delete") != null ||
+                binaryOperator.getLeftHandOperand().getMetadata("delete") != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isUpdatedConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
+        if (binaryOperator.getRightHandOperand().getMetadata("update") != null ||
+                binaryOperator.getLeftHandOperand().getMetadata("update") != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isNewConditionInUnaryOperator(CtUnaryOperator unaryOperator) {
+        if (unaryOperator.getOperand().getMetadata("isMoved") == null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isUpdatedConditionInUnaryOperator(CtUnaryOperator unaryOperator) {
+        if (unaryOperator.getOperand().getMetadata("update") != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isExistingConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
+        if (binaryOperator.getRightHandOperand().getMetadata("isMoved") != null ||
+                binaryOperator.getLeftHandOperand().getMetadata("isMoved") != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean isExistingConditionInUnaryOperator(CtUnaryOperator unaryOperator) {
+        if (unaryOperator.getOperand().getMetadataKeys().size() == 0) {
             return true;
         }
         return false;

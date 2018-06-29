@@ -10,6 +10,8 @@ import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.path.CtRole;
 import spoon.reflect.visitor.EarlyTerminatingScanner;
+import spoon.reflect.visitor.filter.LineFilter;
+import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +30,8 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
     public void detect(RepairPatterns repairPatterns) {
         List<BinaryOperatorKind> mathematicOperator = Arrays.asList(BinaryOperatorKind.SL, BinaryOperatorKind.SR, BinaryOperatorKind.USR, BinaryOperatorKind.PLUS, BinaryOperatorKind.MINUS, BinaryOperatorKind.MUL, BinaryOperatorKind.DIV, BinaryOperatorKind.MOD);
         List<UnaryOperatorKind> unaryOperators = Arrays.asList(UnaryOperatorKind.PREINC, UnaryOperatorKind.POSTINC, UnaryOperatorKind.POSTDEC, UnaryOperatorKind.PREDEC);
+        List<BinaryOperatorKind> logicOperators = Arrays.asList(BinaryOperatorKind.OR, BinaryOperatorKind.AND, BinaryOperatorKind.BITOR, BinaryOperatorKind.BITXOR, BinaryOperatorKind.BITAND, BinaryOperatorKind.EQ, BinaryOperatorKind.NE, BinaryOperatorKind.LT, BinaryOperatorKind.GT, BinaryOperatorKind.LE, BinaryOperatorKind.GE);
+        List<BinaryOperatorKind> conditionalOperators = Arrays.asList(BinaryOperatorKind.AND, BinaryOperatorKind.OR);
         for (int i = 0; i < operations.size(); i++) {
             Operation operation = operations.get(i);
             if (operation instanceof MoveOperation) {
@@ -42,9 +46,20 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                             repairPatterns.incrementFeatureCounter("expArithMod");
                         }
                     } else {
-                        CtIf parent = srcNode.getParent(CtIf.class);
-                        if (parent != null && parent.getMetadata("isMoved") == null  && srcNode == parent.getCondition()) {
-                            repairPatterns.incrementFeatureCounter("expLogicMod");
+                        CtElement parent = binaryOperator.getParent(new LineFilter());
+                        if (parent != null && parent instanceof CtIf) {
+                            CtIf parentIf = (CtIf) parent;
+                            if (parentIf.getMetadata("isMoved") == null) {
+                                repairPatterns.incrementFeatureCounter("expLogicMod");
+                            }
+                        } else {
+                            CtBinaryOperator parentBinaryOperator = binaryOperator;
+                            while (parentBinaryOperator.getParent() instanceof CtBinaryOperator) {
+                                parentBinaryOperator = (CtBinaryOperator) parentBinaryOperator.getParent();
+                            }
+                            if (hasMetaInIt(parentBinaryOperator, "update")) {
+                                repairPatterns.incrementFeatureCounter("expLogicMod");
+                            }
                         }
                     }
                 }
@@ -77,8 +92,83 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                         }
                     }
 
+                    CtBinaryOperator ctBinaryOperator = (CtBinaryOperator) srcNode;
+                    CtBinaryOperator parentBinaryOperator = ctBinaryOperator.getParent(CtBinaryOperator.class);
+                    if (parentBinaryOperator == null) {
+                        parentBinaryOperator = ctBinaryOperator;
+                    }
+                    boolean isThereOldCondition = false;
+                    boolean isThereNewCondition = false;
+                    boolean isThereDeletedCondition = false;
+                    boolean isThereChangedCondition = false;
+                    List<CtBinaryOperator> binaryOperatorList = parentBinaryOperator.getElements(new TypeFilter<>(CtBinaryOperator.class));
+                    for (CtBinaryOperator binaryOperator : binaryOperatorList) {
+                        if (conditionalOperators.contains(ctBinaryOperator.getKind())) {
+                            if (RepairPatternUtils.isNewBinaryOperator(binaryOperator) &&
+                                    !RepairPatternUtils.isDeletedBinaryOperator(binaryOperator) &&
+                                    RepairPatternUtils.isNewConditionInBinaryOperator(binaryOperator)) {
+                                isThereNewCondition = true;
+                            }
+                            if (RepairPatternUtils.isExistingConditionInBinaryOperator(binaryOperator)) {
+                                isThereOldCondition = true;
+                            }
+                            if (RepairPatternUtils.isDeletedBinaryOperator(binaryOperator) &&
+                                    RepairPatternUtils.isDeletedConditionInBinaryOperator(binaryOperator)) {
+                                isThereDeletedCondition = true;
+                            }
+                            if (RepairPatternUtils.isUpdatedConditionInBinaryOperator(binaryOperator)) {
+                                isThereChangedCondition = true;
+                            }
+                        }
+                    }
+                    List<CtUnaryOperator> unaryOperatorList = parentBinaryOperator.getElements(new TypeFilter<>(CtUnaryOperator.class));
+                    for (CtUnaryOperator unaryOperator : unaryOperatorList) {
+                        //if (logicOperators.contains(ctBinaryOperator.getKind()))
+                        if (RepairPatternUtils.isNewUnaryOperator(unaryOperator) &&
+                                !RepairPatternUtils.isDeletedUnaryOperator(unaryOperator) &&
+                                RepairPatternUtils.isNewConditionInUnaryOperator(unaryOperator)) {
+                            isThereNewCondition = true;
+                        }
+                        if (RepairPatternUtils.isExistingConditionInUnaryOperator(unaryOperator)) {
+                            isThereOldCondition = true;
+                        }
+                        if (RepairPatternUtils.isDeletedUnaryOperator(unaryOperator)) {
+                            isThereDeletedCondition = true;
+                        }
+                        if (RepairPatternUtils.isUpdatedConditionInUnaryOperator(unaryOperator)) {
+                            isThereChangedCondition = true;
+                        }
+                    }
+                    if (isThereChangedCondition) {
+                        repairPatterns.incrementFeatureCounter("expLogicMod");
+                        isExpLogicExOrRed = true;
+                    }
+                    if (isThereOldCondition && isThereNewCondition) {
+                        repairPatterns.incrementFeatureCounter("expLogicExpand");
+                        isExpLogicExOrRed = true;
+                    }
+                    if (isThereOldCondition && isThereDeletedCondition) {
+                        repairPatterns.incrementFeatureCounter("expLogicReduce");
+                        isExpLogicExOrRed = true;
+                    }
+                }
+
+                if (srcNode instanceof CtUnaryOperator) {
                     if (isInCondition(srcNode)) {
                         if (srcNode.getParent().getMetadata("isMoved") == null) {
+                            if (operation instanceof InsertOperation) {
+                                if (hasMetaInIt(((InsertOperation) operation).getParent(), "delete")) {
+                                    repairPatterns.incrementFeatureCounter("expLogicMod");
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if (srcNode instanceof CtCase) {
+                    CtCase ctCase = (CtCase) srcNode;
+                    if (ctCase.getParent().getMetadata("isMoved") == null) {
+                        if (ctCase.getStatements().size() == 0) {
                             if (operation instanceof InsertOperation) {
                                 repairPatterns.incrementFeatureCounter("expLogicExpand");
                                 isExpLogicExOrRed = true;
@@ -89,50 +179,24 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                                     isExpLogicExOrRed = true;
                                 }
                             }
-                        }
-                    } else {
-                        CtBinaryOperator ctBinaryOperator = (CtBinaryOperator) srcNode;
-                        if ((ctBinaryOperator.getLeftHandOperand().getMetadata("isMoved") != null &&
-                                ctBinaryOperator.getRightHandOperand().getMetadata("new") != null) ||
-                                (ctBinaryOperator.getLeftHandOperand().getMetadata("new") != null &&
-                                        ctBinaryOperator.getRightHandOperand().getMetadata("isMoved") != null)) {
-                            if (operation instanceof InsertOperation) {
-                                repairPatterns.incrementFeatureCounter("expLogicExpand");
-                                isExpLogicExOrRed = true;
-                            }
-                        }
-                    }
-                }
-
-                if (srcNode instanceof CtCase) {
-                    if (srcNode.getParent().getMetadata("isMoved") == null) {
-                        if (operation instanceof InsertOperation) {
-                            repairPatterns.incrementFeatureCounter("expLogicExpand");
-                            isExpLogicExOrRed = true;
                         } else {
-                            // cannot delete completely the condition
-                            if (!(srcNode.getParent() instanceof CtIf) || hasMetaInIt(srcNode, "isMoved")) {
-                                repairPatterns.incrementFeatureCounter("expLogicReduce");
-                                isExpLogicExOrRed = true;
+                            if (RepairPatternUtils.isThereOldStatementInStatementList(ctCase.getStatements())) {
+                                for (int j = 0; j < operations.size(); j++) {
+                                    Operation operation2 = operations.get(j);
+                                    if (operation2 instanceof MoveOperation) {
+                                        CtElement movedSrcNode = operation2.getSrcNode();
+                                        if (movedSrcNode.getParent() instanceof CtCase) {
+                                            if (operation instanceof InsertOperation) {
+                                                repairPatterns.incrementFeatureCounter("expLogicExpand");
+                                                isExpLogicExOrRed = true;
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
-                if (srcNode instanceof CtIf) {
-                    // add an else if
-                    if (srcNode.getParent().getRoleInParent() == CtRole.ELSE && operation instanceof InsertOperation) {
-                        repairPatterns.incrementFeatureCounter("expLogicExpand");
-                        isExpLogicExOrRed = true;
-                    }
-                    CtExpression<Boolean> condition = ((CtIf) srcNode).getCondition();
-                    if (hasMetaInIt(condition, "isMoved") && condition.getMetadata("isMoved") == null && !RepairPatternUtils.isMovedCondition(condition)) {
-                        if (operation instanceof InsertOperation) {
-                            repairPatterns.incrementFeatureCounter("expLogicExpand");
-                            isExpLogicExOrRed = true;
-                        }
-                    }
-                }
-
                 if (srcNode instanceof CtExpression && operation instanceof InsertOperation && !isExpLogicExOrRed) {
                     CtIf parent = srcNode.getParent(CtIf.class);
                     CtBinaryOperator binary = srcNode.getParent(CtBinaryOperator.class);
@@ -140,7 +204,6 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                             && parent.getMetadata("isMoved") == null) {
                         repairPatterns.incrementFeatureCounter("expLogicMod");
                     }
-
                 }
                 CtBinaryOperator binaryOperator = srcNode.getParent(CtBinaryOperator.class);
                 if (binaryOperator != null) {

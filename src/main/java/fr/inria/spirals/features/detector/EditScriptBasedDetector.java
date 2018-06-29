@@ -9,6 +9,7 @@ import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.DeleteOperation;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
+import gumtree.spoon.diff.operations.UpdateOperation;
 import spoon.Launcher;
 import spoon.reflect.declaration.CtElement;
 
@@ -87,6 +88,14 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
                     }
                     if (operation.getDstNode() != null) {
                         operation.getDstNode().putMetadata("delete", true);
+                    }
+                }
+                if (operation instanceof UpdateOperation) {
+                    if (operation.getSrcNode() != null) {
+                        operation.getSrcNode().putMetadata("update", true);
+                    }
+                    if (operation.getDstNode() != null) {
+                        operation.getDstNode().putMetadata("update", true);
                     }
                 }
             }
