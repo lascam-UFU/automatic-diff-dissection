@@ -1,6 +1,9 @@
 package br.ufu.lascam.features.detector.repairpatterns;
 
 import br.ufu.lascam.entities.RepairPatterns;
+import br.ufu.lascam.features.detector.spoon.RepairPatternUtils;
+import gumtree.spoon.diff.operations.DeleteOperation;
+import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
 import spoon.reflect.code.CtLiteral;
@@ -23,27 +26,41 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
     public void detect(RepairPatterns repairPatterns) {
         for (int i = 0; i < operations.size(); i++) {
             Operation operation = operations.get(i);
-            if (!(operation instanceof UpdateOperation)) {
-                continue;
-            }
-            CtElement srcNode = operation.getSrcNode();
-            if (operation.getSrcNode().getParent().getMetadata("new") != null ||
-                    operation.getSrcNode().getParent().getMetadata("isMoved") != null) {
-                continue;
-            }
-            if (srcNode instanceof CtLiteral) {
-                repairPatterns.incrementFeatureCounter("constChange");
-            }
-            if (srcNode instanceof CtVariableAccess) {
-                String simpleName = ((CtVariableAccess) srcNode).getVariable().getSimpleName();
-                if (simpleName.toUpperCase().equals(simpleName)) {
+            if ((operation instanceof UpdateOperation)) {
+                CtElement srcNode = operation.getSrcNode();
+                if (operation.getSrcNode().getParent().getMetadata("new") != null ||
+                        operation.getSrcNode().getParent().getMetadata("isMoved") != null) {
+                    continue;
+                }
+                if (srcNode instanceof CtLiteral) {
                     repairPatterns.incrementFeatureCounter("constChange");
                 }
-            }
-            if (srcNode instanceof CtTypeAccess) {
-                String simpleName = ((CtTypeAccess) srcNode).getAccessedType().getSimpleName();
-                if (simpleName.toUpperCase().equals(simpleName)) {
+                if (srcNode instanceof CtVariableAccess &&
+                        RepairPatternUtils.isConstantVariableAccess((CtVariableAccess) srcNode)) {
                     repairPatterns.incrementFeatureCounter("constChange");
+                }
+                if (srcNode instanceof CtTypeAccess &&
+                        RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode)) {
+                    repairPatterns.incrementFeatureCounter("constChange");
+                }
+            } else {
+                if (operation instanceof DeleteOperation && operation.getSrcNode() instanceof CtLiteral) {
+                    CtLiteral ctLiteral = (CtLiteral) operation.getSrcNode();
+                    // try to search a replacement for the literal
+                    for (int j = 0; j < operations.size(); j++) {
+                        Operation operation2 = operations.get(j);
+                        if (operation2 instanceof InsertOperation) {
+                            CtElement ctElement = operation2.getSrcNode();
+                            boolean isConstantVariable = false;
+                            if ((ctElement instanceof CtVariableAccess && RepairPatternUtils.isConstantVariableAccess((CtVariableAccess) ctElement)) ||
+                                    (ctElement instanceof CtTypeAccess && RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) ctElement))) {
+                                isConstantVariable = true;
+                            }
+                            if (((InsertOperation) operation2).getParent() == ctLiteral.getParent() && isConstantVariable) {
+                                repairPatterns.incrementFeatureCounter("constChange");
+                            }
+                        }
+                    }
                 }
             }
         }

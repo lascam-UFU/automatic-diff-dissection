@@ -7,11 +7,13 @@ import gumtree.spoon.diff.operations.Operation;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtVariable;
+import spoon.reflect.declaration.ModifierKind;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.filter.TypeFilter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by fermadeiral
@@ -366,6 +368,32 @@ public class RepairPatternUtils {
             }
         }
         return isThereChanges;
+    }
+
+    public static boolean isConstantVariableAccess(CtVariableAccess ctVariableAccess) {
+        Set<ModifierKind> modifiers = ctVariableAccess.getVariable().getModifiers();
+        if (modifiers.contains(ModifierKind.FINAL)) {
+            return true;
+        } else {
+            String simpleName = ctVariableAccess.getVariable().getSimpleName();
+            if (simpleName.toUpperCase().equals(simpleName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isConstantTypeAccess(CtTypeAccess ctTypeAccess) {
+        Set<ModifierKind> modifiers = ctTypeAccess.getType().getModifiers();
+        if (modifiers.contains(ModifierKind.FINAL)) {
+            return true;
+        } else {
+            String simpleName = ctTypeAccess.getAccessedType().getSimpleName();
+            if (simpleName.toUpperCase().equals(simpleName)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

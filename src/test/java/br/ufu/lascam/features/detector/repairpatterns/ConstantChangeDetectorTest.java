@@ -56,7 +56,6 @@ public class ConstantChangeDetectorTest {
         Assert.assertTrue(repairPatterns.getFeatureCounter("constChange") == 0);
     }
 
-
     @Test
     @Ignore
     public void time8() {
@@ -69,7 +68,6 @@ public class ConstantChangeDetectorTest {
     }
 
     @Test
-    @Ignore
     public void time10() {
         Config config = TestUtils.setupConfig("Time 10");
 
