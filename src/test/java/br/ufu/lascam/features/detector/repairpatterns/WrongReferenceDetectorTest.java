@@ -75,7 +75,6 @@ public class WrongReferenceDetectorTest {
         Assert.assertTrue(repairPatterns.getFeatureCounter("wrongMethodRef") > 0);
     }
 
-    @Ignore
     @Test
     public void closure3() {
         Config config = TestUtils.setupConfig("Closure 3");

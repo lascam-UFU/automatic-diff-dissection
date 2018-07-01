@@ -8,7 +8,10 @@ import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
+import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.declaration.CtParameter;
 import spoon.reflect.path.CtRole;
+import spoon.reflect.reference.CtTypeReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,30 +113,80 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                 }
 
                 if (dstNode instanceof CtInvocation || dstNode instanceof CtConstructorCall) {
-                    String srcMethodName;
-                    int srcArguments;
+                    boolean wasMethodDefUpdated = false;
+
+                    //CtTypeReference srcTypeReference;
+                    String srcCallMethodName;
+                    List<CtTypeReference> srcCallArguments;
                     if (srcNode instanceof CtInvocation) {
-                        srcMethodName = ((CtInvocation) srcNode).getExecutable().getSimpleName();
-                        srcArguments = ((CtInvocation) srcNode).getArguments().size();
+                        //srcTypeReference = ((CtInvocation) srcNode).getTarget().getType();
+                        srcCallMethodName = ((CtInvocation) srcNode).getExecutable().getSimpleName();
+                        srcCallArguments = ((CtInvocation) srcNode).getExecutable().getParameters();
                     } else {
-                        srcMethodName = ((CtConstructorCall) srcNode).getExecutable().getSimpleName();
-                        srcArguments = ((CtConstructorCall) srcNode).getArguments().size();
+                        srcCallMethodName = ((CtConstructorCall) srcNode).getExecutable().getSimpleName();
+                        srcCallArguments = ((CtConstructorCall) srcNode).getExecutable().getParameters();
                     }
-                    String dstMethodName;
-                    int dstArguments;
+                    String dstCallMethodName;
+                    List<CtTypeReference> dstCallArguments;
                     if (dstNode instanceof CtInvocation) {
-                        dstMethodName = ((CtInvocation) dstNode).getExecutable().getSimpleName();
-                        dstArguments = ((CtInvocation) dstNode).getArguments().size();
+                        dstCallMethodName = ((CtInvocation) dstNode).getExecutable().getSimpleName();
+                        dstCallArguments = ((CtInvocation) dstNode).getExecutable().getParameters();
                     } else {
-                        dstMethodName = ((CtConstructorCall) dstNode).getExecutable().getSimpleName();
-                        dstArguments = ((CtConstructorCall) dstNode).getArguments().size();
+                        dstCallMethodName = ((CtConstructorCall) dstNode).getExecutable().getSimpleName();
+                        dstCallArguments = ((CtConstructorCall) dstNode).getExecutable().getParameters();
                     }
 
-                    if (!srcMethodName.equals(dstMethodName)) {
-                        repairPatterns.incrementFeatureCounter("wrongMethodRef");
-                    } else {
-                        if (srcArguments != dstArguments) {
+                    for (Operation operation2 : operations) {
+                        if (operation2 instanceof InsertOperation) {
+                            CtElement insertedNode = operation2.getSrcNode();
+                            if (insertedNode instanceof CtParameter) {
+                                CtElement ctElement = ((InsertOperation) operation2).getParent();
+                                if (ctElement instanceof CtMethod) {
+                                    CtMethod oldMethod = (CtMethod) ctElement;
+                                    CtMethod newMethod = insertedNode.getParent(CtMethod.class);
+
+                                    if (oldMethod.getSimpleName().equals(srcCallMethodName) &&
+                                            newMethod.getSimpleName().equals(dstCallMethodName)) {
+                                        boolean oldParEquals = true;
+                                        List<CtParameter> oldMethodPars = oldMethod.getParameters();
+                                        for (int k = 0; k < oldMethodPars.size(); k++) {
+                                            CtTypeReference methodParType = oldMethodPars.get(k).getType();
+                                            CtTypeReference methodCallArgType = srcCallArguments.get(k);
+                                            if (!methodParType.getQualifiedName().
+                                                    equals(methodCallArgType.getQualifiedName())) {
+                                                oldParEquals = false;
+                                                break;
+                                            }
+                                        }
+                                        if (oldParEquals) {
+                                            boolean newParEquals = true;
+                                            List<CtParameter> newMethodPars = newMethod.getParameters();
+                                            for (int k = 0; k < newMethodPars.size(); k++) {
+                                                CtTypeReference methodParType = newMethodPars.get(k).getType();
+                                                CtTypeReference methodCallArgType = dstCallArguments.get(k);
+                                                if (!methodParType.getQualifiedName().
+                                                        equals(methodCallArgType.getQualifiedName())) {
+                                                    newParEquals = false;
+                                                    break;
+                                                }
+                                            }
+                                            if (newParEquals) {
+                                                wasMethodDefUpdated = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    if (!wasMethodDefUpdated) {
+                        if (!srcCallMethodName.equals(dstCallMethodName)) {
                             repairPatterns.incrementFeatureCounter("wrongMethodRef");
+                        } else {
+                            if (srcCallArguments.size() != dstCallArguments.size()) {
+                                repairPatterns.incrementFeatureCounter("wrongMethodRef");
+                            }
                         }
                     }
                 }
