@@ -69,7 +69,8 @@ $ git clone https://github.com/tdurieux/pattern-detector-experiment.git
 
 2. Change the configuration in `/automatic-diff-dissection/scripts/defects4j/run-tool-on-defects4j/config.cfg` file:
 
-- `checkout` must be set with the path of the repository cloned in Step 1 plus `/benchmark/defects4j`.
+- `checkout` must be set with the path of the repository cloned in step 1 plus `/benchmark/defects4j`.
+
 - `output` should be set with an existing path to output the extracted features as a JSON file (optional).
 
 3. Enter in the directory where this project was cloned and compile this project:
@@ -84,7 +85,4 @@ $ mvn package -DskipTests
 $ python scripts/defects4j/run-tool-on-defects4j/Launch.py <REPAIR_PATTERNS;REPAIR_ACTIONS;METRICS;ALL>
 ```
 
-Output:
-```csv
-TODO
-```
+5. Check out the folder you set `output` to in step 2.
