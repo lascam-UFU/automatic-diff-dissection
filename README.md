@@ -1,40 +1,40 @@
-# Patch Clustering [![Build Status](https://travis-ci.org/lascam-UFU/patch-clustering.svg?branch=master)](https://travis-ci.org/lascam-UFU/patch-clustering) [![Coverage Status](https://coveralls.io/repos/github/lascam-UFU/patch-clustering/badge.svg?branch=master)](https://coveralls.io/github/lascam-UFU/patch-clustering?branch=master)
+# ADD; Automatic Diff Dissection [![Build Status](https://travis-ci.org/lascam-UFU/automatic-diff-dissection.svg?branch=master)](https://travis-ci.org/lascam-UFU/automatic-diff-dissection) [![Coverage Status](https://coveralls.io/repos/github/lascam-UFU/automatic-diff-dissection/badge.svg?branch=master)](https://coveralls.io/github/lascam-UFU/automatic-diff-dissection?branch=master)
 
-This project extracts features from patches.
+This project extracts features from patches such as repair patterns.
 
 ## Usage
 
-### Setup Patch Clustering
+### Setup ADD
 
 1. Clone this repository:
 
 ```bash
-$ git clone https://github.com/lascam-UFU/patch-clustering.git
+$ git clone https://github.com/lascam-UFU/automatic-diff-dissection.git
 ```
 
 2. Run the script `./init.sh`:
 
 ```bash
-$ cd patch-clustering
+$ cd automatic-diff-dissection
 $ chmod +x ./scripts/*.sh
 $ ./scripts/init.sh
 ```
 
-### Running Patch Clustering
+### Running ADD
 
-To run Patch Clustering, you need to compile it, to locate the .jar file, and to call it:
+To run ADD, you need to compile it, to locate the .jar file, and to call it:
 
 ```bash
-$ cd patch-clustering
+$ cd automatic-diff-dissection
 $ mvn package -DskipTests
 $ ls target/*jar
-target/patchclustering-0.1-SNAPSHOT.jar
-target/patchclustering-0.1-SNAPSHOT-jar-with-dependencies.jar
-target/patchclustering-0.1-SNAPSHOT-sources.jar
-$ java -jar target/patchclustering-0.1-SNAPSHOT-jar-with-dependencies.jar <arguments>
+target/automatic-diff-dissection-0.1-SNAPSHOT.jar
+target/automatic-diff-dissection-0.1-SNAPSHOT-jar-with-dependencies.jar
+target/automatic-diff-dissection-0.1-SNAPSHOT-sources.jar
+$ java -jar target/automatic-diff-dissection-0.1-SNAPSHOT-jar-with-dependencies.jar <arguments>
 ```
 
-Note that Patch Clustering receives a set of arguments to run. The argument options are:
+Note that ADD receives a set of arguments to run. The argument options are:
 
 ```bash
   (-m|--launcherMode) <REPAIR_PATTERNS;REPAIR_ACTIONS;METRICS;ALL>
@@ -67,7 +67,7 @@ TODO: to show an usage case with one bug.
 $ git clone https://github.com/tdurieux/pattern-detector-experiment.git
 ```
 
-2. Change the configuration in `/patch-clustering/scripts/defects4j/run-tool-on-defects4j/config.cfg` file:
+2. Change the configuration in `/automatic-diff-dissection/scripts/defects4j/run-tool-on-defects4j/config.cfg` file:
 
 - `checkout` must be set with the path of the repository cloned in Step 1 plus `/benchmark/defects4j`.
 - `output` should be set with an existing path to output the extracted features as a JSON file (optional).

@@ -3,9 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.ufu.lascam</groupId>
-    <artifactId>patchclustering</artifactId>
+    <artifactId>automatic-diff-dissection</artifactId>
     <version>0.1-SNAPSHOT</version>
-    <name>patchclustering</name>
+    <name>automatic-diff-dissection</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -155,7 +155,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                fr.inria.spirals.main.Launcher
+                                add.main.Launcher
                             </mainClass>
                         </manifest>
                     </archive>
