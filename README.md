@@ -2,6 +2,20 @@
 
 This project extracts features from patches such as repair patterns.
 
+## PPD; Patch Pattern Detector
+
+PPD is the part of this project responsible for the detection of repair patterns in patches.
+
+```bibtex
+@inproceedings{Madeiral2018,
+  author = {Fernanda Madeiral and Thomas Durieux and Victor Sobreira and Marcelo Maia},
+  title = {Towards an automated approach for bug fix pattern detection},
+  booktitle = {Proceedings of the VI Workshop on Software Visualization, Evolution and Maintenance (VEM '18)},
+  year = {2018},
+  url = {https://arxiv.org/abs/1807.11286}
+}
+```
+
 ## Usage
 
 ### Setup ADD
