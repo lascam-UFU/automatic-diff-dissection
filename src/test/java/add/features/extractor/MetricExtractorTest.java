@@ -196,8 +196,8 @@ public class MetricExtractorTest {
         Metrics metrics = extractor.analyze();
         assertEquals(0, metrics.getFeatureCounter("addedLines"));
         assertEquals(0, metrics.getFeatureCounter("removedLines"));
-        assertEquals(1, metrics.getFeatureCounter("modifiedLines"));
-        assertEquals(1, metrics.getFeatureCounter("patchSize"));
+        assertEquals(2, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(2, metrics.getFeatureCounter("patchSize"));
     }
 
     @Test
