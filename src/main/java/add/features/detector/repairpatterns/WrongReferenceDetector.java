@@ -39,7 +39,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                 if (srcNode instanceof CtVariableAccess || srcNode instanceof CtTypeAccess) {
                     if (srcNode.getMetadata("delete") != null) {
                         CtElement statementParent = srcNode.getParent(CtStatement.class);
-                        if (statementParent.getMetadata("delete") == null) {
+                        if (statementParent != null && statementParent.getMetadata("delete") == null) {
                             // skip when it's a wrap with method call
                             boolean wasVariableWrapped = false;
                             for (int j = 0; j < operations.size(); j++) {

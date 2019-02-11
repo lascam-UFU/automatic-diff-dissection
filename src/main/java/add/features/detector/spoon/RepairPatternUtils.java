@@ -4,7 +4,9 @@ import add.features.detector.spoon.filter.ReturnInsideConditionalFilter;
 import add.features.detector.spoon.filter.ThrowInsideConditionalFilter;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
+import spoon.SpoonException;
 import spoon.reflect.code.*;
+import spoon.reflect.cu.position.NoSourcePosition;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtVariable;
 import spoon.reflect.declaration.ModifierKind;
@@ -212,16 +214,19 @@ public class RepairPatternUtils {
 
     public static boolean isNewFor(CtFor ctFor) {
         if (ctFor.getMetadata("new") != null) {
-            List<CtBinaryOperator> binaryOperatorList = ctFor.getExpression().getElements(new TypeFilter<>(CtBinaryOperator.class));
-            for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
-                if (!isNewBinaryOperator(ctBinaryOperator)) {
-                    return false;
+            CtExpression<Boolean> expression = ctFor.getExpression();
+            if (expression != null) {
+                List<CtBinaryOperator> binaryOperatorList = expression.getElements(new TypeFilter<>(CtBinaryOperator.class));
+                for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
+                    if (!isNewBinaryOperator(ctBinaryOperator)) {
+                        return false;
+                    }
                 }
-            }
-            List<CtUnaryOperator> unaryOperatorList = ctFor.getExpression().getElements(new TypeFilter<>(CtUnaryOperator.class));
-            for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
-                if (!isNewUnaryOperator(ctUnaryOperator)) {
-                    return false;
+                List<CtUnaryOperator> unaryOperatorList = expression.getElements(new TypeFilter<>(CtUnaryOperator.class));
+                for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
+                    if (!isNewUnaryOperator(ctUnaryOperator)) {
+                        return false;
+                    }
                 }
             }
             if (!isThereOnlyNewStatementsInStatementList(ctFor.getForInit())) {
@@ -330,8 +335,17 @@ public class RepairPatternUtils {
 
     public static boolean areAllOperationsAtTheSamePosition(List<Operation> operations) {
         boolean allSamePosition = true;
+        if (operations.isEmpty()) {
+            return false;
+        }
+        if (operations.get(0).getSrcNode().getPosition() instanceof NoSourcePosition) {
+            return false;
+        }
         int position = operations.get(0).getSrcNode().getPosition().getLine();
         for (int i = 1; i < operations.size(); i++) {
+            if (operations.get(i).getSrcNode().getPosition() instanceof NoSourcePosition) {
+                return false;
+            }
             if (operations.get(i).getSrcNode().getPosition().getLine() != position) {
                 allSamePosition = false;
                 break;
@@ -371,14 +385,18 @@ public class RepairPatternUtils {
     }
 
     public static boolean isConstantVariableAccess(CtVariableAccess ctVariableAccess) {
-        Set<ModifierKind> modifiers = ctVariableAccess.getVariable().getModifiers();
-        if (modifiers.contains(ModifierKind.FINAL)) {
-            return true;
-        } else {
-            String simpleName = ctVariableAccess.getVariable().getSimpleName();
-            if (simpleName.toUpperCase().equals(simpleName)) {
+        try {
+            Set<ModifierKind> modifiers = ctVariableAccess.getVariable().getModifiers();
+            if (modifiers.contains(ModifierKind.FINAL)) {
                 return true;
+            } else {
+                String simpleName = ctVariableAccess.getVariable().getSimpleName();
+                if (simpleName.toUpperCase().equals(simpleName)) {
+                    return true;
+                }
             }
+        } catch (SpoonException e) {
+            return false;
         }
         return false;
     }
