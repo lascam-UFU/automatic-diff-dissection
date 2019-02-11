@@ -47,7 +47,7 @@ public class MetricExtractor extends FeatureAnalyzer {
         int nbModifiedMethods = 0;
 
         Pattern packagePattern = Pattern.compile("package\\s+([\\w\\.]+);");
-        Pattern classDefinitionPattern = Pattern.compile("(^.*class\\s+((\\w+)(\\s*<[\\w.,\\s]+>)?)(\\s+extends\\s+((\\w+)(\\s*<[\\w.,\\s]+>)?))?(\\s+implements\\s+(((\\w+\\s*(<[\\w.,\\s]+>)?)[,\\s]*)+))?\\s*\\{)", Pattern.MULTILINE);
+        Pattern classDefinitionPattern = Pattern.compile("(^.*class\\s+(\\w+))", Pattern.MULTILINE);
         Pattern methodDefinitionPattern = Pattern.compile("(((public|private|protected|static|final|native|synchronized|abstract|transient)+\\s)+[\\$_\\w\\<\\>\\w\\s\\[\\]]*\\s+[\\$_\\w]+\\([^\\)]*\\)?\\s*)", Pattern.MULTILINE);
 
         Map<String, List<String>> modifiedClassesAndMethods = new HashMap<>();
