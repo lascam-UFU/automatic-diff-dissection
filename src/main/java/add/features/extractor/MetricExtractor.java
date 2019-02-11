@@ -33,7 +33,7 @@ public class MetricExtractor extends FeatureAnalyzer {
 
         this.computeNbModifiedClassesAndMethods(changes, jgitDiffAnalyzer);
 
-        this.computePatchSize(changes);
+        this.computePatchSize(changes, jgitDiffAnalyzer);
 
         this.computeNbChunks(changes);
 
@@ -124,14 +124,20 @@ public class MetricExtractor extends FeatureAnalyzer {
     /**
      * Count the number of lines added, removed and modified in the patch
      */
-    public void computePatchSize(Changes changes) {
+    public void computePatchSize(Changes changes, JGitBasedDiffAnalyzer jgitDiffAnalyzer) {
         int patchAddedLines = 0;
         int patchRemovedLines = 0;
         int patchModifiedLines = 0;
 
+        Map<String, List<String>> originalFiles = jgitDiffAnalyzer.getOriginalFiles(this.config.getBuggySourceDirectoryPath());
+        Map<String, List<String>> patchedFiles = jgitDiffAnalyzer.getPatchedFiles(this.config.getBuggySourceDirectoryPath());
+
         for (Change change : changes.getNewChanges()) {
             int addedLines = change.getLength();
             int removedLines = change.getAssociateChange().getLength();
+
+            addedLines -= this.countEmptyAndCommentLines(change, patchedFiles);
+            removedLines -= this.countEmptyAndCommentLines(change.getAssociateChange(), originalFiles);
 
             int chunkAddedLines = 0;
             int chunkRemovedLines = 0;
@@ -308,6 +314,28 @@ public class MetricExtractor extends FeatureAnalyzer {
                 s.startsWith("/*") ||
                 s.startsWith("*/") ||
                 s.startsWith("*");
+    }
+
+    private int countEmptyAndCommentLines(Change change, Map<String, List<String>> files) {
+        String changedFile = change.getFile();
+        List<String> fileContent = null;
+        for (String file : files.keySet()) {
+            if (file.endsWith(changedFile)) {
+                fileContent = files.get(file);
+                break;
+            }
+        }
+        if (fileContent == null) {
+            return 0;
+        }
+        int count = 0;
+        for (int i = change.getLine() - 1; i < change.getEndLine(); i++) {
+            String line = fileContent.get(i);
+            if (line.isEmpty() || isComment(line)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private String putFileContentInString(List<String> fileContent, int lineLimit) {

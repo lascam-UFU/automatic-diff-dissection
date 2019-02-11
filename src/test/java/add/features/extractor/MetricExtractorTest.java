@@ -141,6 +141,66 @@ public class MetricExtractorTest {
     }
 
     @Test
+    public void accumulo13eb19c2() {
+        Config config = TestUtils.setupConfig("accumulo_13eb19c2");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(7, metrics.getFeatureCounter("addedLines"));
+        assertEquals(0, metrics.getFeatureCounter("removedLines"));
+        assertEquals(1, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(8, metrics.getFeatureCounter("patchSize"));
+    }
+
+    @Test
+    public void accumulo17344890() {
+        Config config = TestUtils.setupConfig("accumulo_17344890");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(3, metrics.getFeatureCounter("addedLines"));
+        assertEquals(4, metrics.getFeatureCounter("removedLines"));
+        assertEquals(3, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(10, metrics.getFeatureCounter("patchSize"));
+    }
+
+    @Test
+    public void bears5() {
+        Config config = TestUtils.setupConfig("bears_5");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(3, metrics.getFeatureCounter("addedLines"));
+        assertEquals(3, metrics.getFeatureCounter("removedLines"));
+        assertEquals(0, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(6, metrics.getFeatureCounter("patchSize"));
+    }
+
+    @Test
+    public void bears140() {
+        Config config = TestUtils.setupConfig("bears_140");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(12, metrics.getFeatureCounter("addedLines"));
+        assertEquals(0, metrics.getFeatureCounter("removedLines"));
+        assertEquals(2, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(14, metrics.getFeatureCounter("patchSize"));
+    }
+
+    @Test
+    public void bears144() {
+        Config config = TestUtils.setupConfig("bears_144");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(0, metrics.getFeatureCounter("addedLines"));
+        assertEquals(0, metrics.getFeatureCounter("removedLines"));
+        assertEquals(1, metrics.getFeatureCounter("modifiedLines"));
+        assertEquals(1, metrics.getFeatureCounter("patchSize"));
+    }
+
+    @Test
     public void testNbModifiedClassesClosure30() {
         Config config = TestUtils.setupConfig("closure_30");
 
