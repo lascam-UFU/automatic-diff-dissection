@@ -32,7 +32,7 @@ public class SpoonHelper {
             String fileContent = String.join(Constants.LINE_BREAK, files.get(path))
                     .replace("import javax.annotation.Nullable", "// import javax.annotation.Nullable")
                     .replace("import javax.annotation.CheckForNull", "// import javax.annotation.CheckForNull");
-            VirtualFile virtualFile = new VirtualFile(fileContent, new File(path).getName());
+            VirtualFile virtualFile = new VirtualFile(fileContent, new File(path).getAbsolutePath());
             spoon.getModelBuilder().addInputSource(virtualFile);
         }
         spoon.buildModel();
