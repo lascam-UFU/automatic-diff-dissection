@@ -1,0 +1,12 @@
+--- a/org/apache/commons/lang/math/NumberUtils.java
++++ b/org/apache/commons/lang/math/NumberUtils.java
+@@ -451,8 +451,7 @@ public static Number createNumber(String str) throws NumberFormatException {
+                 case 'L' :
+                     if (dec == null
+                         && exp == null
+-                        && isDigits(numeric.substring(1))
+-                        && (numeric.charAt(0) == '-' || Character.isDigit(numeric.charAt(0)))) {
++                        && (numeric.charAt(0) == '-' && isDigits(numeric.substring(1)) || isDigits(numeric))) {
+                         try {
+                             return createLong(numeric);
+                         } catch (NumberFormatException nfe) {

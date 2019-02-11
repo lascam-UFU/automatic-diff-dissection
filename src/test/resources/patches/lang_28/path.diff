@@ -1,0 +1,16 @@
+--- a/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
++++ b/org/apache/commons/lang3/text/translate/NumericEntityUnescaper.java
+@@ -60,7 +60,13 @@ public int translate(CharSequence input, int index, Writer out) throws IOExcepti
+                 return 0;
+             }
+ 
++            if(entityValue > 0xFFFF) {
++                char[] chrs = Character.toChars(entityValue);
++                out.write(chrs[0]);
++                out.write(chrs[1]);
++            } else {
+                 out.write(entityValue);
++            }
+             return 2 + (end - start) + (isHex ? 1 : 0) + 1;
+         }
+         return 0;

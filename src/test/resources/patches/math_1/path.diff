@@ -1,0 +1,26 @@
+--- a/org/apache/commons/math3/fraction/BigFraction.java
++++ b/org/apache/commons/math3/fraction/BigFraction.java
+@@ -303,6 +303,9 @@ private BigFraction(final double value, final double epsilon,
+             if ((p2 > overflow) || (q2 > overflow)) {
+                 // in maxDenominator mode, if the last fraction was very close to the actual value
+                 // q2 may overflow in the next iteration; in this case return the last one.
++                if (epsilon == 0.0 && FastMath.abs(q1) < maxDenominator) {
++                    break;
++                }
+                 throw new FractionConversionException(value, p2, q2);
+             }
+ 
+diff --git a/org/apache/commons/math3/fraction/Fraction.java b/org/apache/commons/math3/fraction/Fraction.java
+index 8065885..002dae9 100644
+--- a/org/apache/commons/math3/fraction/Fraction.java
++++ b/org/apache/commons/math3/fraction/Fraction.java
+@@ -212,6 +212,9 @@ private Fraction(double value, double epsilon, int maxDenominator, int maxIterat
+             if ((FastMath.abs(p2) > overflow) || (FastMath.abs(q2) > overflow)) {
+                 // in maxDenominator mode, if the last fraction was very close to the actual value
+                 // q2 may overflow in the next iteration; in this case return the last one.
++                if (epsilon == 0.0 && FastMath.abs(q1) < maxDenominator) {
++                    break;
++                }
+                 throw new FractionConversionException(value, p2, q2);
+             }
+ 

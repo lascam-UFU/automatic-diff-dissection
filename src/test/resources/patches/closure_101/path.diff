@@ -1,0 +1,14 @@
+--- a/com/google/javascript/jscomp/CommandLineRunner.java
++++ b/com/google/javascript/jscomp/CommandLineRunner.java
+@@ -430,10 +430,8 @@ protected CompilerOptions createOptions() {
+     for (FormattingOption formattingOption : flags.formatting) {
+       formattingOption.applyToOptions(options);
+     }
+-    if (flags.process_closure_primitives) {
+-      options.closurePass = true;
+-    }
+ 
++    options.closurePass = flags.process_closure_primitives;
+     initOptionsFromFlags(options);
+     return options;
+   }

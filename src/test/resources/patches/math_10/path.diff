@@ -1,0 +1,10 @@
+--- a/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
++++ b/org/apache/commons/math3/analysis/differentiation/DSCompiler.java
+@@ -1416,6 +1416,7 @@ public void atan2(final double[] y, final int yOffset,
+         }
+ 
+         // fix value to take special cases (+0/+0, +0/-0, -0/+0, -0/-0, +/-infinity) correctly
++        result[resultOffset] = FastMath.atan2(y[yOffset], x[xOffset]);
+ 
+     }
+ 

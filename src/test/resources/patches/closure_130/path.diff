@@ -1,0 +1,11 @@
+--- a/com/google/javascript/jscomp/CollapseProperties.java
++++ b/com/google/javascript/jscomp/CollapseProperties.java
+@@ -169,7 +169,7 @@ private void inlineAliases(GlobalNamespace namespace) {
+         continue;
+       }
+ 
+-      if (name.globalSets == 1 && name.localSets == 0 &&
++      if (!name.inExterns && name.globalSets == 1 && name.localSets == 0 &&
+           name.aliasingGets > 0) {
+         // {@code name} meets condition (b). Find all of its local aliases
+         // and try to inline them.

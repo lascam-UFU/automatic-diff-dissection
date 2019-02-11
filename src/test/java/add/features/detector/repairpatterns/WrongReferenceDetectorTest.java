@@ -16,7 +16,7 @@ public class WrongReferenceDetectorTest {
 
     @Test
     public void closure30() {
-        Config config = TestUtils.setupConfig("Closure 30");
+        Config config = TestUtils.setupConfig("closure_30");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -26,7 +26,7 @@ public class WrongReferenceDetectorTest {
 
     @Test
     public void closure37() {
-        Config config = TestUtils.setupConfig("Closure 37");
+        Config config = TestUtils.setupConfig("closure_37");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -37,7 +37,7 @@ public class WrongReferenceDetectorTest {
     @Ignore
     @Test
     public void closure109() {
-        Config config = TestUtils.setupConfig("Closure 109");
+        Config config = TestUtils.setupConfig("closure_109");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -47,7 +47,7 @@ public class WrongReferenceDetectorTest {
 
     @Test
     public void lang26() {
-        Config config = TestUtils.setupConfig("Lang 26");
+        Config config = TestUtils.setupConfig("lang_26");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -57,7 +57,7 @@ public class WrongReferenceDetectorTest {
 
     @Test
     public void math9() {
-        Config config = TestUtils.setupConfig("Math 9");
+        Config config = TestUtils.setupConfig("math_9");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -67,7 +67,7 @@ public class WrongReferenceDetectorTest {
 
     @Test
     public void math58() {
-        Config config = TestUtils.setupConfig("Math 58");
+        Config config = TestUtils.setupConfig("math_58");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -77,7 +77,7 @@ public class WrongReferenceDetectorTest {
 
     @Test
     public void closure3() {
-        Config config = TestUtils.setupConfig("Closure 3");
+        Config config = TestUtils.setupConfig("closure_3");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -87,7 +87,7 @@ public class WrongReferenceDetectorTest {
 
     @Test
     public void chart8() {
-        Config config = TestUtils.setupConfig("Chart 8");
+        Config config = TestUtils.setupConfig("chart_8");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -98,7 +98,7 @@ public class WrongReferenceDetectorTest {
     @Ignore
     @Test
     public void math33() {
-        Config config = TestUtils.setupConfig("Math 33");
+        Config config = TestUtils.setupConfig("math_33");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -108,7 +108,7 @@ public class WrongReferenceDetectorTest {
 
     @Test
     public void math64() {
-        Config config = TestUtils.setupConfig("Math 64");
+        Config config = TestUtils.setupConfig("math_64");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -118,7 +118,7 @@ public class WrongReferenceDetectorTest {
 
     @Test
     public void chart10() {
-        Config config = TestUtils.setupConfig("Chart 10");
+        Config config = TestUtils.setupConfig("chart_10");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();

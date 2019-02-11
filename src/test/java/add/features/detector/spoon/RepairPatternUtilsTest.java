@@ -22,7 +22,7 @@ public class RepairPatternUtilsTest {
 
     @Test
     public void TestIsNewVariableWithNewLocalVariable() {
-        Config config = TestUtils.setupConfig("Chart 25");
+        Config config = TestUtils.setupConfig("chart_25");
 
         String variableName = "n"; // new local variable
 
@@ -40,7 +40,7 @@ public class RepairPatternUtilsTest {
 
     @Test
     public void TestIsNewVariableWithNewParameterInMethodDefinition() {
-        Config config = TestUtils.setupConfig("Closure 64");
+        Config config = TestUtils.setupConfig("closure_64");
 
         String variableName = "firstOutput"; // new parameter in method definition
 
@@ -58,7 +58,7 @@ public class RepairPatternUtilsTest {
 
     @Test
     public void TestIsNewVariableWithNewFieldInClassDefinition() {
-        Config config = TestUtils.setupConfig("Closure 26");
+        Config config = TestUtils.setupConfig("closure_26");
 
         String variableName = "modulesWithExports"; // new field in class definition
 
@@ -76,7 +76,7 @@ public class RepairPatternUtilsTest {
 
     @Test
     public void TestIsNewVariableWithNonNewLocalVariable() {
-        Config config = TestUtils.setupConfig("Chart 1");
+        Config config = TestUtils.setupConfig("chart_1");
 
         String variableName = "dataset"; // existing local variable
 
@@ -94,7 +94,7 @@ public class RepairPatternUtilsTest {
 
     @Test
     public void TestIsNewVariableWithNonNewParameterInMethodDefinition() {
-        Config config = TestUtils.setupConfig("Chart 18");
+        Config config = TestUtils.setupConfig("chart_18");
 
         String variableName = "columnKey"; // existing parameter in method definition
 
@@ -112,7 +112,7 @@ public class RepairPatternUtilsTest {
 
     @Test
     public void TestIsNewVariableWithNonNewFieldInClassDefinition() {
-        Config config = TestUtils.setupConfig("Chart 15");
+        Config config = TestUtils.setupConfig("chart_15");
 
         String variableName = "dataset"; // existing field in class definition
 
@@ -130,7 +130,7 @@ public class RepairPatternUtilsTest {
 
     @Test
     public void TestIsNewVariableWithNonNewFieldInSuperClassDefinition() {
-        Config config = TestUtils.setupConfig("Math 68");
+        Config config = TestUtils.setupConfig("math_68");
 
         String variableName = "checker"; // existing field in super class definition
 

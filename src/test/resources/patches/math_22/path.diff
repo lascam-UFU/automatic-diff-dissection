@@ -1,0 +1,24 @@
+--- a/org/apache/commons/math3/distribution/FDistribution.java
++++ b/org/apache/commons/math3/distribution/FDistribution.java
+@@ -272,7 +272,7 @@ public double getSupportUpperBound() {
+ 
+     /** {@inheritDoc} */
+     public boolean isSupportLowerBoundInclusive() {
+-        return true;
++        return false;
+     }
+ 
+     /** {@inheritDoc} */
+diff --git a/org/apache/commons/math3/distribution/UniformRealDistribution.java b/org/apache/commons/math3/distribution/UniformRealDistribution.java
+index 5d32f6e..0d279de 100644
+--- a/org/apache/commons/math3/distribution/UniformRealDistribution.java
++++ b/org/apache/commons/math3/distribution/UniformRealDistribution.java
+@@ -181,7 +181,7 @@ public boolean isSupportLowerBoundInclusive() {
+ 
+     /** {@inheritDoc} */
+     public boolean isSupportUpperBoundInclusive() {
+-        return false;
++        return true;
+     }
+ 
+     /**

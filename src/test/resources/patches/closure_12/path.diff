@@ -1,0 +1,15 @@
+--- a/com/google/javascript/jscomp/MaybeReachingVariableUse.java
++++ b/com/google/javascript/jscomp/MaybeReachingVariableUse.java
+@@ -157,6 +157,12 @@ ReachingUses flowThrough(Node n, ReachingUses input) {
+   }
+ 
+   private boolean hasExceptionHandler(Node cfgNode) {
++    List<DiGraphEdge<Node, Branch>> branchEdges = getCfg().getOutEdges(cfgNode);
++    for (DiGraphEdge<Node, Branch> edge : branchEdges) {
++      if (edge.getValue() == Branch.ON_EX) {
++        return true;
++      }
++    }
+     return false;
+   }
+ 

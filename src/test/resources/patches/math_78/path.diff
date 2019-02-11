@@ -1,0 +1,28 @@
+--- a/org/apache/commons/math/ode/events/EventState.java
++++ b/org/apache/commons/math/ode/events/EventState.java
+@@ -188,6 +188,7 @@ public boolean evaluateStep(final StepInterpolator interpolator)
+                 if (g0Positive ^ (gb >= 0)) {
+                     // there is a sign change: an event is expected during this step
+ 
++                    if (ga * gb > 0) {
+                         // this is a corner case:
+                         // - there was an event near ta,
+                         // - there is another event between ta and tb
+@@ -195,7 +196,17 @@ public boolean evaluateStep(final StepInterpolator interpolator)
+                         // this implies that the real sign of ga is the same as gb, so we need to slightly
+                         // shift ta to make sure ga and gb get opposite signs and the solver won't complain
+                         // about bracketing
++                        final double epsilon = (forward ? 0.25 : -0.25) * convergence;
++                        for (int k = 0; (k < 4) && (ga * gb > 0); ++k) {
++                            ta += epsilon;
++                            interpolator.setInterpolatedTime(ta);
++                            ga = handler.g(ta, interpolator.getInterpolatedState());
++                        }
++                        if (ga * gb > 0) {
+                             // this should never happen
++                            throw MathRuntimeException.createInternalError(null);
++                        }
++                    }
+                          
+                     // variation direction, with respect to the integration direction
+                     increasing = gb >= ga;

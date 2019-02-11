@@ -1,0 +1,10 @@
+--- a/org/apache/commons/lang/text/ExtendedMessageFormat.java
++++ b/org/apache/commons/lang/text/ExtendedMessageFormat.java
+@@ -419,6 +419,7 @@ private StringBuffer appendQuotedString(String pattern, ParsePosition pos,
+         int start = pos.getIndex();
+         char[] c = pattern.toCharArray();
+         if (escapingOn && c[start] == QUOTE) {
++            next(pos);
+             return appendTo == null ? null : appendTo.append(QUOTE);
+         }
+         int lastHold = start;

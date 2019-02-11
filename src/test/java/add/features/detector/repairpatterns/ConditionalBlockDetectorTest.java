@@ -15,7 +15,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void lang45() {
-        Config config = TestUtils.setupConfig("Lang 45");
+        Config config = TestUtils.setupConfig("lang_45");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -25,7 +25,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void closure5() {
-        Config config = TestUtils.setupConfig("Closure 5");
+        Config config = TestUtils.setupConfig("closure_5");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -35,7 +35,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void math48() {
-        Config config = TestUtils.setupConfig("Math 48");
+        Config config = TestUtils.setupConfig("math_48");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -45,7 +45,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void math50() {
-        Config config = TestUtils.setupConfig("Math 50");
+        Config config = TestUtils.setupConfig("math_50");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -55,7 +55,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void chart4() {
-        Config config = TestUtils.setupConfig("Chart 4");
+        Config config = TestUtils.setupConfig("chart_4");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -65,7 +65,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void chart14() {
-        Config config = TestUtils.setupConfig("Chart 14");
+        Config config = TestUtils.setupConfig("chart_14");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -75,7 +75,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void closure61() {
-        Config config = TestUtils.setupConfig("Closure 61");
+        Config config = TestUtils.setupConfig("closure_61");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -86,7 +86,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void closure19() {
-        Config config = TestUtils.setupConfig("Closure 19");
+        Config config = TestUtils.setupConfig("closure_19");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -96,7 +96,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void closure60() {
-        Config config = TestUtils.setupConfig("Closure 60");
+        Config config = TestUtils.setupConfig("closure_60");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -106,7 +106,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void closure3() {
-        Config config = TestUtils.setupConfig("Closure 3");
+        Config config = TestUtils.setupConfig("closure_3");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -117,7 +117,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void closure66() {
-        Config config = TestUtils.setupConfig("Closure 66");
+        Config config = TestUtils.setupConfig("closure_66");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -127,7 +127,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void lang49() {
-        Config config = TestUtils.setupConfig("Lang 49");
+        Config config = TestUtils.setupConfig("lang_49");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -137,7 +137,7 @@ public class ConditionalBlockDetectorTest {
 
     @Test
     public void closure11() {
-        Config config = TestUtils.setupConfig("Closure 11");
+        Config config = TestUtils.setupConfig("closure_11");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();

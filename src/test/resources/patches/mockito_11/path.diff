@@ -1,0 +1,24 @@
+--- a/org/mockito/internal/creation/DelegatingMethod.java
++++ b/org/mockito/internal/creation/DelegatingMethod.java
+@@ -52,11 +52,19 @@ public boolean isAbstract() {
+      */
+     @Override
+     public boolean equals(Object o) {
++        if (this == o) {
++            return true;
++        }
++        if (o instanceof DelegatingMethod) {
++            DelegatingMethod that = (DelegatingMethod) o;
++            return method.equals(that.method);
++        } else {
+             return method.equals(o);
++        }
+     }
+ 
+     @Override
+     public int hashCode() {
+-        return 1;
++        return method.hashCode();
+     }
+ }
+\ No newline at end of file

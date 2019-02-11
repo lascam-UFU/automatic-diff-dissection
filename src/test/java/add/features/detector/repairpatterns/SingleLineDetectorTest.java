@@ -18,7 +18,7 @@ public class SingleLineDetectorTest {
      */
     @Test
     public void lang38() {
-        Config config = TestUtils.setupConfig("Lang 38");
+        Config config = TestUtils.setupConfig("lang_38");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -31,7 +31,7 @@ public class SingleLineDetectorTest {
      */
     @Test
     public void closure31() {
-        Config config = TestUtils.setupConfig("Closure 31");
+        Config config = TestUtils.setupConfig("closure_31");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -44,7 +44,7 @@ public class SingleLineDetectorTest {
      */
     @Test
     public void chart1() {
-        Config config = TestUtils.setupConfig("Chart 1");
+        Config config = TestUtils.setupConfig("chart_1");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -57,7 +57,7 @@ public class SingleLineDetectorTest {
      */
     @Test
     public void closure20() {
-        Config config = TestUtils.setupConfig("Closure 20");
+        Config config = TestUtils.setupConfig("closure_20");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -70,7 +70,7 @@ public class SingleLineDetectorTest {
      */
     @Test
     public void closure13() {
-        Config config = TestUtils.setupConfig("Closure 13");
+        Config config = TestUtils.setupConfig("closure_13");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -80,7 +80,7 @@ public class SingleLineDetectorTest {
 
     @Test
     public void closure102() {
-        Config config = TestUtils.setupConfig("Closure 102");
+        Config config = TestUtils.setupConfig("closure_102");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -90,7 +90,7 @@ public class SingleLineDetectorTest {
 
     @Test
     public void closure111() {
-        Config config = TestUtils.setupConfig("Closure 111");
+        Config config = TestUtils.setupConfig("closure_111");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -100,7 +100,7 @@ public class SingleLineDetectorTest {
 
     @Test
     public void closure121() {
-        Config config = TestUtils.setupConfig("Closure 121");
+        Config config = TestUtils.setupConfig("closure_121");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -110,7 +110,7 @@ public class SingleLineDetectorTest {
 
     @Test
     public void chart4() {
-        Config config = TestUtils.setupConfig("Chart 4");
+        Config config = TestUtils.setupConfig("chart_4");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -120,7 +120,7 @@ public class SingleLineDetectorTest {
 
     @Test
     public void closure1() {
-        Config config = TestUtils.setupConfig("Closure 1");
+        Config config = TestUtils.setupConfig("closure_1");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -130,7 +130,7 @@ public class SingleLineDetectorTest {
 
     @Test
     public void closure81() {
-        Config config = TestUtils.setupConfig("Closure 81");
+        Config config = TestUtils.setupConfig("closure_81");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -140,7 +140,7 @@ public class SingleLineDetectorTest {
 
     @Test
     public void closure109() {
-        Config config = TestUtils.setupConfig("Closure 109");
+        Config config = TestUtils.setupConfig("closure_109");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -150,7 +150,7 @@ public class SingleLineDetectorTest {
 
     @Test
     public void closure117() {
-        Config config = TestUtils.setupConfig("Closure 117");
+        Config config = TestUtils.setupConfig("closure_117");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();

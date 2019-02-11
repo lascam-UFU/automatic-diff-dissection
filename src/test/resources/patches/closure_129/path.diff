@@ -1,0 +1,12 @@
+--- a/com/google/javascript/jscomp/PrepareAst.java
++++ b/com/google/javascript/jscomp/PrepareAst.java
+@@ -163,6 +163,9 @@ private void annotateCalls(Node n) {
+       Node first = n.getFirstChild();
+ 
+       // ignore cast nodes.
++      while (first.isCast()) {
++        first = first.getFirstChild();
++      }
+ 
+       if (!NodeUtil.isGet(first)) {
+         n.putBooleanProp(Node.FREE_CALL, true);

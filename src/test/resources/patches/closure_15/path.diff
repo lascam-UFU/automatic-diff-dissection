@@ -1,0 +1,12 @@
+--- a/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java
++++ b/com/google/javascript/jscomp/FlowSensitiveInlineVariables.java
+@@ -99,6 +99,9 @@ public boolean apply(Node n) {
+           return true;
+         }
+ 
++        if (n.isDelProp()) {
++          return true;
++        }
+ 
+         for (Node c = n.getFirstChild(); c != null; c = c.getNext()) {
+           if (!ControlFlowGraph.isEnteringNewCfgNode(c) && apply(c)) {

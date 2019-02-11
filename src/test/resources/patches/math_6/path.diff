@@ -1,0 +1,151 @@
+--- a/org/apache/commons/math3/optim/BaseOptimizer.java
++++ b/org/apache/commons/math3/optim/BaseOptimizer.java
+@@ -48,7 +48,7 @@ protected BaseOptimizer(ConvergenceChecker<PAIR> checker) {
+         this.checker = checker;
+ 
+         evaluations = new Incrementor(0, new MaxEvalCallback());
+-        iterations = new Incrementor(0, new MaxIterCallback());
++        iterations = new Incrementor(Integer.MAX_VALUE, new MaxIterCallback());
+     }
+ 
+     /**
+diff --git a/org/apache/commons/math3/optim/nonlinear/scalar/gradient/NonLinearConjugateGradientOptimizer.java b/org/apache/commons/math3/optim/nonlinear/scalar/gradient/NonLinearConjugateGradientOptimizer.java
+index e010781..bd12b54 100644
+--- a/org/apache/commons/math3/optim/nonlinear/scalar/gradient/NonLinearConjugateGradientOptimizer.java
++++ b/org/apache/commons/math3/optim/nonlinear/scalar/gradient/NonLinearConjugateGradientOptimizer.java
+@@ -211,16 +211,15 @@ protected PointValuePair doOptimize() {
+         }
+ 
+         PointValuePair current = null;
+-        int iter = 0;
+         int maxEval = getMaxEvaluations();
+         while (true) {
+-            ++iter;
++            incrementIterationCount();
+ 
+             final double objective = computeObjectiveValue(point);
+             PointValuePair previous = current;
+             current = new PointValuePair(point, objective);
+             if (previous != null) {
+-                if (checker.converged(iter, previous, current)) {
++                if (checker.converged(getIterations(), previous, current)) {
+                     // We have found an optimum.
+                     return current;
+                 }
+@@ -274,7 +273,7 @@ protected PointValuePair doOptimize() {
+             steepestDescent = newSteepestDescent;
+ 
+             // Compute conjugate search direction.
+-            if (iter % n == 0 ||
++            if (getIterations() % n == 0 ||
+                 beta < 0) {
+                 // Break conjugation: reset search direction.
+                 searchDirection = steepestDescent.clone();
+diff --git a/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/CMAESOptimizer.java b/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/CMAESOptimizer.java
+index 0303041..fed67b1 100644
+--- a/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/CMAESOptimizer.java
++++ b/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/CMAESOptimizer.java
+@@ -385,6 +385,7 @@ protected PointValuePair doOptimize() {
+ 
+         generationLoop:
+         for (iterations = 1; iterations <= maxIterations; iterations++) {
++            incrementIterationCount();
+ 
+             // Generate and evaluate lambda offspring
+             final RealMatrix arz = randn1(dimension, lambda);
+diff --git a/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/PowellOptimizer.java b/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/PowellOptimizer.java
+index 9572820..afe8d2f 100644
+--- a/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/PowellOptimizer.java
++++ b/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/PowellOptimizer.java
+@@ -188,9 +188,8 @@ protected PointValuePair doOptimize() {
+         double[] x = guess;
+         double fVal = computeObjectiveValue(x);
+         double[] x1 = x.clone();
+-        int iter = 0;
+         while (true) {
+-            ++iter;
++            incrementIterationCount();
+ 
+             double fX = fVal;
+             double fX2 = 0;
+@@ -224,7 +223,7 @@ protected PointValuePair doOptimize() {
+             final PointValuePair current = new PointValuePair(x, fVal);
+             if (!stop) { // User-defined stopping criteria.
+                 if (checker != null) {
+-                    stop = checker.converged(iter, previous, current);
++                    stop = checker.converged(getIterations(), previous, current);
+                 }
+             }
+             if (stop) {
+diff --git a/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/SimplexOptimizer.java b/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/SimplexOptimizer.java
+index 9ea2324..0dd644e 100644
+--- a/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/SimplexOptimizer.java
++++ b/org/apache/commons/math3/optim/nonlinear/scalar/noderiv/SimplexOptimizer.java
+@@ -155,7 +155,7 @@ public int compare(final PointValuePair o1,
+         int iteration = 0;
+         final ConvergenceChecker<PointValuePair> checker = getConvergenceChecker();
+         while (true) {
+-            if (iteration > 0) {
++            if (getIterations() > 0) {
+                 boolean converged = true;
+                 for (int i = 0; i < simplex.getSize(); i++) {
+                     PointValuePair prev = previous[i];
+@@ -172,7 +172,7 @@ public int compare(final PointValuePair o1,
+             previous = simplex.getPoints();
+             simplex.iterate(evalFunc, comparator);
+ 
+-			++iteration;
++            incrementIterationCount();
+         }
+     }
+ 
+diff --git a/org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer.java b/org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer.java
+index a2834f2..844ed22 100644
+--- a/org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer.java
++++ b/org/apache/commons/math3/optim/nonlinear/vector/jacobian/GaussNewtonOptimizer.java
+@@ -103,9 +103,8 @@ public PointVectorValuePair doOptimize() {
+ 
+         // iterate until convergence is reached
+         PointVectorValuePair current = null;
+-        int iter = 0;
+         for (boolean converged = false; !converged;) {
+-            ++iter;
++            incrementIterationCount();
+ 
+             // evaluate the objective function and its jacobian
+             PointVectorValuePair previous = current;
+@@ -157,7 +156,7 @@ public PointVectorValuePair doOptimize() {
+ 
+             // Check convergence.
+             if (previous != null) {
+-                converged = checker.converged(iter, previous, current);
++                converged = checker.converged(getIterations(), previous, current);
+                 if (converged) {
+                     setCost(computeCost(currentResiduals));
+                     return current;
+diff --git a/org/apache/commons/math3/optim/nonlinear/vector/jacobian/LevenbergMarquardtOptimizer.java b/org/apache/commons/math3/optim/nonlinear/vector/jacobian/LevenbergMarquardtOptimizer.java
+index ca2d138..4016131 100644
+--- a/org/apache/commons/math3/optim/nonlinear/vector/jacobian/LevenbergMarquardtOptimizer.java
++++ b/org/apache/commons/math3/optim/nonlinear/vector/jacobian/LevenbergMarquardtOptimizer.java
+@@ -319,10 +319,10 @@ protected PointVectorValuePair doOptimize() {
+         // Outer loop.
+         lmPar = 0;
+         boolean firstIteration = true;
+-        int iter = 0;
+         final ConvergenceChecker<PointVectorValuePair> checker = getConvergenceChecker();
+         while (true) {
+-            ++iter;
++            incrementIterationCount();
++
+             final PointVectorValuePair previous = current;
+ 
+             // QR decomposition of the jacobian matrix
+@@ -486,7 +486,7 @@ protected PointVectorValuePair doOptimize() {
+                     // tests for convergence.
+                     if (checker != null) {
+                         // we use the vectorial convergence checker
+-                        if (checker.converged(iter, previous, current)) {
++                        if (checker.converged(getIterations(), previous, current)) {
+                             setCost(currentCost);
+                             return current;
+                         }

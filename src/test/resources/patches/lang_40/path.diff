@@ -1,0 +1,18 @@
+--- a/org/apache/commons/lang/StringUtils.java
++++ b/org/apache/commons/lang/StringUtils.java
+@@ -1045,7 +1045,14 @@ public static boolean containsIgnoreCase(String str, String searchStr) {
+         if (str == null || searchStr == null) {
+             return false;
+         }
+-        return contains(str.toUpperCase(), searchStr.toUpperCase());
++        int len = searchStr.length();
++        int max = str.length() - len;
++        for (int i = 0; i <= max; i++) {
++            if (str.regionMatches(true, i, searchStr, 0, len)) {
++                return true;
++            }
++        }
++        return false;
+     }
+ 
+     // IndexOfAny chars

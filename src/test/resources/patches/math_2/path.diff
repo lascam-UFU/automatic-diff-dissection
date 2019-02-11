@@ -1,0 +1,11 @@
+--- a/org/apache/commons/math3/distribution/HypergeometricDistribution.java
++++ b/org/apache/commons/math3/distribution/HypergeometricDistribution.java
+@@ -265,7 +265,7 @@ private double innerCumulativeProbability(int x0, int x1, int dx) {
+      * size {@code n}, the mean is {@code n * m / N}.
+      */
+     public double getNumericalMean() {
+-        return (double) (getSampleSize() * getNumberOfSuccesses()) / (double) getPopulationSize();
++        return getSampleSize() * (getNumberOfSuccesses() / (double) getPopulationSize());
+     }
+ 
+     /**

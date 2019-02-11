@@ -1,0 +1,25 @@
+--- a/com/google/javascript/jscomp/FunctionTypeBuilder.java
++++ b/com/google/javascript/jscomp/FunctionTypeBuilder.java
+@@ -181,7 +181,7 @@ public boolean apply(JSType type) {
+       // create interfaces JSType, ObjectType, FunctionType etc and have
+       // separate implementation instead of the class hierarchy, so that
+       // union types can also be object types, etc.
+-      if (!type.isSubtype(
++      if (!type.restrictByNotNullOrUndefined().isSubtype(
+               typeRegistry.getNativeType(OBJECT_TYPE))) {
+         reportWarning(THIS_TYPE_NON_OBJECT, type.toString());
+         return false;
+diff --git a/com/google/javascript/rhino/jstype/FunctionType.java b/com/google/javascript/rhino/jstype/FunctionType.java
+index 3f0d245..de1d1c2 100644
+--- a/com/google/javascript/rhino/jstype/FunctionType.java
++++ b/com/google/javascript/rhino/jstype/FunctionType.java
+@@ -877,6 +877,9 @@ JSType resolveInternal(ErrorReporter t, StaticScope<JSType> scope) {
+     // mean "nullable Foo". For certain tags (like @extends) we de-nullify
+     // the name for them.
+     JSType maybeTypeOfThis = safeResolve(typeOfThis, t, scope);
++    if (maybeTypeOfThis != null) {
++      maybeTypeOfThis = maybeTypeOfThis.restrictByNotNullOrUndefined();
++    }
+     if (maybeTypeOfThis instanceof ObjectType) {
+       typeOfThis = (ObjectType) maybeTypeOfThis;
+     }

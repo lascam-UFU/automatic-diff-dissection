@@ -1,0 +1,12 @@
+--- a/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
++++ b/org/apache/commons/math3/optimization/direct/CMAESOptimizer.java
+@@ -918,7 +918,8 @@ public FitnessFunction() {
+          * @return the original objective variables, possibly repaired.
+          */
+         public double[] repairAndDecode(final double[] x) {
+-            return
++            return boundaries != null && isRepairMode ?
++                decode(repair(x)) :
+                 decode(x);
+         }
+ 

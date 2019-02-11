@@ -1,0 +1,10 @@
+--- a/org/mockito/internal/util/reflection/GenericMetadataSupport.java
++++ b/org/mockito/internal/util/reflection/GenericMetadataSupport.java
+@@ -376,6 +376,7 @@ private void readTypeVariables() {
+             for (Type type : typeVariable.getBounds()) {
+                 registerTypeVariablesOn(type);
+             }
++            registerTypeParametersOn(new TypeVariable[] { typeVariable });
+             registerTypeVariablesOn(getActualTypeArgumentFor(typeVariable));
+         }
+ 

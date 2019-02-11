@@ -1,0 +1,13 @@
+--- a/org/apache/commons/lang/StringEscapeUtils.java
++++ b/org/apache/commons/lang/StringEscapeUtils.java
+@@ -233,6 +233,10 @@ private static void escapeJavaStyleString(Writer out, String str, boolean escape
+                         out.write('\\');
+                         out.write('\\');
+                         break;
++                    case '/':
++                        out.write('\\');
++                        out.write('/');
++                        break;
+                     default :
+                         out.write(ch);
+                         break;

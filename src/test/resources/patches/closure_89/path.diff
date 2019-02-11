@@ -1,0 +1,25 @@
+--- a/com/google/javascript/jscomp/CollapseProperties.java
++++ b/com/google/javascript/jscomp/CollapseProperties.java
+@@ -481,6 +481,9 @@ private void updateSimpleDeclaration(String alias, Name refName, Ref ref) {
+     Node greatGramps = gramps.getParent();
+     Node greatGreatGramps = greatGramps.getParent();
+ 
++    if (rvalue != null && rvalue.getType() == Token.FUNCTION) {
++      checkForHosedThisReferences(rvalue, refName.docInfo, refName);
++    }
+ 
+     // Create the new alias node.
+     Node nameNode = NodeUtil.newName(
+diff --git a/com/google/javascript/jscomp/GlobalNamespace.java b/com/google/javascript/jscomp/GlobalNamespace.java
+index 311e343..8268339 100644
+--- a/com/google/javascript/jscomp/GlobalNamespace.java
++++ b/com/google/javascript/jscomp/GlobalNamespace.java
+@@ -917,7 +917,7 @@ boolean canCollapseUnannotatedChildNames() {
+       }
+ 
+       // If this is aliased, then its properties can't be collapsed either.
+-      if (type != Type.FUNCTION && aliasingGets > 0) {
++      if (aliasingGets > 0) {
+         return false;
+       }
+ 

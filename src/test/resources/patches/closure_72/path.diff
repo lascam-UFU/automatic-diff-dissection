@@ -1,0 +1,24 @@
+--- a/com/google/javascript/jscomp/FunctionToBlockMutator.java
++++ b/com/google/javascript/jscomp/FunctionToBlockMutator.java
+@@ -149,6 +149,8 @@ private void makeLocalNamesUnique(Node fnNode, boolean isCallInLoop) {
+                 "inline_",
+                 isCallInLoop)));
+     // Make label names unique to this instance.
++    new RenameLabels(compiler, new LabelNameSupplier(idSupplier), false)
++        .process(null, fnNode);
+   }
+ 
+   static class LabelNameSupplier implements Supplier<String> {
+diff --git a/com/google/javascript/jscomp/RenameLabels.java b/com/google/javascript/jscomp/RenameLabels.java
+index a2f53cf..28e52ee 100644
+--- a/com/google/javascript/jscomp/RenameLabels.java
++++ b/com/google/javascript/jscomp/RenameLabels.java
+@@ -212,7 +212,7 @@ private void visitLabel(Node node, Node parent) {
+       String name = nameNode.getString();
+       LabelInfo li = getLabelInfo(name);
+       // This is a label...
+-      if (li.referenced) {
++      if (li.referenced || !removeUnused) {
+         String newName = getNameForId(li.id);
+         if (!name.equals(newName)) {
+           // ... and it is used, give it the short name.

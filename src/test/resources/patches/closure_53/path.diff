@@ -1,0 +1,20 @@
+--- a/com/google/javascript/jscomp/InlineObjectLiterals.java
++++ b/com/google/javascript/jscomp/InlineObjectLiterals.java
+@@ -328,6 +328,9 @@ private void replaceAssignmentExpression(Var v, Reference ref,
+       }
+ 
+       Node replacement;
++      if (nodes.isEmpty()) {
++        replacement = new Node(Token.TRUE);
++      } else {
+         // All assignments evaluate to true, so make sure that the
+         // expr statement evaluates to true in case it matters.
+         nodes.add(new Node(Token.TRUE));
+@@ -347,6 +350,7 @@ private void replaceAssignmentExpression(Var v, Reference ref,
+         }
+         cur.addChildToFront(nodes.get(i));
+         cur.addChildToFront(nodes.get(i + 1));
++      }
+ 
+       Node replace = ref.getParent();
+       replacement.copyInformationFromForTree(replace);

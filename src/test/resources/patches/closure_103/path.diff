@@ -1,0 +1,31 @@
+--- a/com/google/javascript/jscomp/ControlFlowAnalysis.java
++++ b/com/google/javascript/jscomp/ControlFlowAnalysis.java
+@@ -891,6 +891,7 @@ private static boolean mayThrowException(Node n) {
+       case Token.ASSIGN:
+       case Token.INC:
+       case Token.DEC:
++      case Token.INSTANCEOF:
+         return true;
+       case Token.FUNCTION:
+         return false;
+diff --git a/com/google/javascript/jscomp/DisambiguateProperties.java b/com/google/javascript/jscomp/DisambiguateProperties.java
+index 4937879..ca5edbd 100644
+--- a/com/google/javascript/jscomp/DisambiguateProperties.java
++++ b/com/google/javascript/jscomp/DisambiguateProperties.java
+@@ -760,9 +760,16 @@ public JSTypeSystem(AbstractCompiler compiler) {
+       }
+       // If the property does not exist on the referenced type but the original
+       // type is an object type, see if any subtype has the property.
++      if (foundType == null) {
++        ObjectType maybeType = ObjectType.cast(
++            registry.getGreatestSubtypeWithProperty(type, field));
+         // getGreatestSubtypeWithProperty does not guarantee that the property
+         // is defined on the returned type, it just indicates that it might be,
+         // so we have to double check.
++        if (maybeType != null && maybeType.hasOwnProperty(field)) {
++          foundType = maybeType;
++        }
++      }
+       return foundType;
+     }
+ 

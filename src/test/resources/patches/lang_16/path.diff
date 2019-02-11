@@ -1,0 +1,11 @@
+--- a/org/apache/commons/lang3/math/NumberUtils.java
++++ b/org/apache/commons/lang3/math/NumberUtils.java
+@@ -455,7 +455,7 @@ public static Number createNumber(String str) throws NumberFormatException {
+             // a wrong value.
+             return null;
+         }
+-        if (str.startsWith("0x") || str.startsWith("-0x")) {
++        if (str.startsWith("0x") || str.startsWith("-0x") || str.startsWith("0X") || str.startsWith("-0X")) {
+             return createInteger(str);
+         }   
+         char lastChar = str.charAt(str.length() - 1);

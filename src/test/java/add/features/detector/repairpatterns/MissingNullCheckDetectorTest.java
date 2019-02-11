@@ -20,7 +20,7 @@ public class MissingNullCheckDetectorTest {
      */
     @Test
     public void chart4() {
-        Config config = TestUtils.setupConfig("Chart 4");
+        Config config = TestUtils.setupConfig("chart_4");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -35,7 +35,7 @@ public class MissingNullCheckDetectorTest {
      */
     @Test
     public void chart14() {
-        Config config = TestUtils.setupConfig("Chart 14");
+        Config config = TestUtils.setupConfig("chart_14");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -51,7 +51,7 @@ public class MissingNullCheckDetectorTest {
      */
     @Test
     public void chart15() {
-        Config config = TestUtils.setupConfig("Chart 15");
+        Config config = TestUtils.setupConfig("chart_15");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -67,7 +67,7 @@ public class MissingNullCheckDetectorTest {
      */
     @Test
     public void chart25() {
-        Config config = TestUtils.setupConfig("Chart 25");
+        Config config = TestUtils.setupConfig("chart_25");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -83,7 +83,7 @@ public class MissingNullCheckDetectorTest {
      */
     @Test
     public void lang33() {
-        Config config = TestUtils.setupConfig("Lang 33");
+        Config config = TestUtils.setupConfig("lang_33");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -98,7 +98,7 @@ public class MissingNullCheckDetectorTest {
      */
     @Test
     public void math68() {
-        Config config = TestUtils.setupConfig("Math 68");
+        Config config = TestUtils.setupConfig("math_68");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -113,7 +113,7 @@ public class MissingNullCheckDetectorTest {
      */
     @Test
     public void mockito4() {
-        Config config = TestUtils.setupConfig("Mockito 4");
+        Config config = TestUtils.setupConfig("mockito_4");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -123,7 +123,7 @@ public class MissingNullCheckDetectorTest {
 
     @Test
     public void closure20() {
-        Config config = TestUtils.setupConfig("Closure 20");
+        Config config = TestUtils.setupConfig("closure_20");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -134,7 +134,7 @@ public class MissingNullCheckDetectorTest {
 
     @Test
     public void closure23() {
-        Config config = TestUtils.setupConfig("Closure 23");
+        Config config = TestUtils.setupConfig("closure_23");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -144,7 +144,7 @@ public class MissingNullCheckDetectorTest {
 
     @Test
     public void closure125() {
-        Config config = TestUtils.setupConfig("Closure 125");
+        Config config = TestUtils.setupConfig("closure_125");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -154,7 +154,7 @@ public class MissingNullCheckDetectorTest {
 
     @Test
     public void mockito22() {
-        Config config = TestUtils.setupConfig("Mockito 22");
+        Config config = TestUtils.setupConfig("mockito_22");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();

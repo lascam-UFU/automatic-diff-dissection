@@ -17,7 +17,7 @@ public class JGitBasedDiffAnalyzerTest {
 
     @Test
     public void testFixedVersionCreation() {
-        Config config = TestUtils.setupConfig("Time 12");
+        Config config = TestUtils.setupConfig("time_12");
         String fixedSourceDirectoryPath = config.getBuggySourceDirectoryPath().replace("buggy", "fixed");
         JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(config.getDiffPath());
         Map<String, List<String>> fixedFiles = jgitDiffAnalyzer.getOriginalFiles(fixedSourceDirectoryPath);
@@ -31,7 +31,7 @@ public class JGitBasedDiffAnalyzerTest {
 
     @Test
     public void testMethodAnalyze() {
-        Config config = TestUtils.setupConfig("Closure 24");
+        Config config = TestUtils.setupConfig("closure_24");
 
         JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(config.getDiffPath());
         Changes changes = jgitDiffAnalyzer.analyze();
@@ -42,7 +42,7 @@ public class JGitBasedDiffAnalyzerTest {
 
     @Test
     public void testMethodGetOriginalFilesToReturnOneFile() {
-        Config config = TestUtils.setupConfig("Chart 1");
+        Config config = TestUtils.setupConfig("chart_1");
 
         String buggySourcePath = config.getBuggySourceDirectoryPath();
         List<String> expectedBuggyFilePaths = new ArrayList<>(
@@ -63,7 +63,7 @@ public class JGitBasedDiffAnalyzerTest {
 
     @Test
     public void testMethodGetOriginalFilesToReturnMoreThanOneFile() {
-        Config config = TestUtils.setupConfig("Chart 18");
+        Config config = TestUtils.setupConfig("chart_18");
 
         String buggySourcePath = config.getBuggySourceDirectoryPath();
         List<String> expectedBuggyFilePaths = new ArrayList<>(

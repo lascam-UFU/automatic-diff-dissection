@@ -13,7 +13,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void chart1() {
-        Config config = TestUtils.setupConfig("Chart 1");
+        Config config = TestUtils.setupConfig("chart_1");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -23,7 +23,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void chart4() {
-        Config config = TestUtils.setupConfig("Chart 4");
+        Config config = TestUtils.setupConfig("chart_4");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -33,7 +33,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void chart18() {
-        Config config = TestUtils.setupConfig("Chart 18");
+        Config config = TestUtils.setupConfig("chart_18");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -51,7 +51,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void closure24() {
-        Config config = TestUtils.setupConfig("Closure 24");
+        Config config = TestUtils.setupConfig("closure_24");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -65,7 +65,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void closure37() {
-        Config config = TestUtils.setupConfig("Closure 37");
+        Config config = TestUtils.setupConfig("closure_37");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -75,7 +75,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void closure76() {
-        Config config = TestUtils.setupConfig("Closure 76");
+        Config config = TestUtils.setupConfig("closure_76");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -93,7 +93,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void math4() {
-        Config config = TestUtils.setupConfig("Math 4");
+        Config config = TestUtils.setupConfig("math_4");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -104,7 +104,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void time12() {
-        Config config = TestUtils.setupConfig("Time 12");
+        Config config = TestUtils.setupConfig("time_12");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -122,7 +122,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void time23() {
-        Config config = TestUtils.setupConfig("Time 23");
+        Config config = TestUtils.setupConfig("time_23");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -134,7 +134,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void jackrabbit002c5845() {
-        Config config = TestUtils.setupConfig("Jackrabbit 002c5845");
+        Config config = TestUtils.setupConfig("jackrabbit-oak_002c5845");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -144,7 +144,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void jackrabbit999097e1() {
-        Config config = TestUtils.setupConfig("Jackrabbit 999097e1");
+        Config config = TestUtils.setupConfig("jackrabbit-oak_999097e1");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();
@@ -156,7 +156,7 @@ public class RepairActionDetectorTest {
 
     @Test
     public void wicket34634266() {
-        Config config = TestUtils.setupConfig("Wicket 34634266");
+        Config config = TestUtils.setupConfig("wicket_34634266");
 
         RepairActionDetector detector = new RepairActionDetector(config);
         RepairActions repairActions = detector.analyze();

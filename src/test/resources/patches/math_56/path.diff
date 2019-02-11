@@ -1,0 +1,17 @@
+--- a/org/apache/commons/math/util/MultidimensionalCounter.java
++++ b/org/apache/commons/math/util/MultidimensionalCounter.java
+@@ -234,13 +234,7 @@ public int getDimension() {
+             indices[i] = idx;
+         }
+ 
+-        int idx = 1;
+-        while (count < index) {
+-            count += idx;
+-            ++idx;
+-        }
+-        --idx;
+-        indices[last] = idx;
++        indices[last] = index - count;
+ 
+         return indices;
+     }

@@ -14,7 +14,7 @@ public class MetricExtractorTest {
 
     @Test
     public void chart1() {
-        Config config = TestUtils.setupConfig("Chart 1");
+        Config config = TestUtils.setupConfig("chart_1");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -30,7 +30,7 @@ public class MetricExtractorTest {
 
     @Test
     public void chart4() {
-        Config config = TestUtils.setupConfig("Chart 4");
+        Config config = TestUtils.setupConfig("chart_4");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -46,7 +46,7 @@ public class MetricExtractorTest {
 
     @Test
     public void chart18() {
-        Config config = TestUtils.setupConfig("Chart 18");
+        Config config = TestUtils.setupConfig("chart_18");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -62,7 +62,7 @@ public class MetricExtractorTest {
 
     @Test
     public void closure24() {
-        Config config = TestUtils.setupConfig("Closure 24");
+        Config config = TestUtils.setupConfig("closure_24");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -78,7 +78,7 @@ public class MetricExtractorTest {
 
     @Test
     public void closure76() {
-        Config config = TestUtils.setupConfig("Closure 76");
+        Config config = TestUtils.setupConfig("closure_76");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -94,7 +94,7 @@ public class MetricExtractorTest {
 
     @Test
     public void math4() {
-        Config config = TestUtils.setupConfig("Math 4");
+        Config config = TestUtils.setupConfig("math_4");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -110,7 +110,7 @@ public class MetricExtractorTest {
 
     @Test
     public void time12() {
-        Config config = TestUtils.setupConfig("Time 12");
+        Config config = TestUtils.setupConfig("time_12");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -126,7 +126,7 @@ public class MetricExtractorTest {
 
     @Test
     public void time23() {
-        Config config = TestUtils.setupConfig("Time 23");
+        Config config = TestUtils.setupConfig("time_23");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -142,7 +142,7 @@ public class MetricExtractorTest {
 
     @Test
     public void testNbModifiedClassesClosure30() {
-        Config config = TestUtils.setupConfig("Closure 30");
+        Config config = TestUtils.setupConfig("closure_30");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -151,7 +151,7 @@ public class MetricExtractorTest {
 
     @Test
     public void testNbModifiedClassesClosure120() {
-        Config config = TestUtils.setupConfig("Closure 120");
+        Config config = TestUtils.setupConfig("closure_120");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -160,7 +160,7 @@ public class MetricExtractorTest {
 
     @Test
     public void testNbModifiedClassesMath4() {
-        Config config = TestUtils.setupConfig("Math 4");
+        Config config = TestUtils.setupConfig("math_4");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -169,7 +169,7 @@ public class MetricExtractorTest {
 
     @Test
     public void testNbModifiedClassesMath12() {
-        Config config = TestUtils.setupConfig("Math 12");
+        Config config = TestUtils.setupConfig("math_12");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -178,7 +178,7 @@ public class MetricExtractorTest {
 
     @Test
     public void testNbModifiedClassesMockito23() {
-        Config config = TestUtils.setupConfig("Mockito 23");
+        Config config = TestUtils.setupConfig("mockito_23");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -187,7 +187,7 @@ public class MetricExtractorTest {
 
     @Test
     public void testNbModifiedMethodsMath12() {
-        Config config = TestUtils.setupConfig("Math 12");
+        Config config = TestUtils.setupConfig("math_12");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -196,7 +196,7 @@ public class MetricExtractorTest {
 
     @Test
     public void testNbModifiedMethodsMath104() {
-        Config config = TestUtils.setupConfig("Math 104");
+        Config config = TestUtils.setupConfig("math_104");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
@@ -205,7 +205,7 @@ public class MetricExtractorTest {
 
     @Test
     public void testNbModifiedMethodsMockito21() {
-        Config config = TestUtils.setupConfig("Mockito 21");
+        Config config = TestUtils.setupConfig("mockito_21");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();

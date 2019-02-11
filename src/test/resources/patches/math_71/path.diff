@@ -1,0 +1,27 @@
+--- a/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
++++ b/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
+@@ -297,6 +297,10 @@ public double integrate(final FirstOrderDifferentialEquations equations,
+                   // it is so small (much probably exactly 0 due to limited accuracy)
+                   // that the code above would fail handling it.
+                   // So we set up an artificial 0 size step by copying states
++                  interpolator.storeTime(stepStart);
++                  System.arraycopy(y, 0, yTmp, 0, y0.length);
++                  hNew     = 0;
++                  stepSize = 0;
+                   loop     = false;
+               } else {
+                   // reject the step to match exactly the next switch time
+diff --git a/org/apache/commons/math/ode/nonstiff/RungeKuttaIntegrator.java b/org/apache/commons/math/ode/nonstiff/RungeKuttaIntegrator.java
+index 255b1f4..b61b0b1 100644
+--- a/org/apache/commons/math/ode/nonstiff/RungeKuttaIntegrator.java
++++ b/org/apache/commons/math/ode/nonstiff/RungeKuttaIntegrator.java
+@@ -177,6 +177,9 @@ public double integrate(final FirstOrderDifferentialEquations equations,
+                 // it is so small (much probably exactly 0 due to limited accuracy)
+                 // that the code above would fail handling it.
+                 // So we set up an artificial 0 size step by copying states
++                interpolator.storeTime(stepStart);
++                System.arraycopy(y, 0, yTmp, 0, y0.length);
++                stepSize = 0;
+                 loop     = false;
+             } else {
+                 // reject the step to match exactly the next switch time

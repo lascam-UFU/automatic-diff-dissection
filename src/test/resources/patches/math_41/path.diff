@@ -1,0 +1,11 @@
+--- a/org/apache/commons/math/stat/descriptive/moment/Variance.java
++++ b/org/apache/commons/math/stat/descriptive/moment/Variance.java
+@@ -517,7 +517,7 @@ public double evaluate(final double[] values, final double[] weights,
+                 }
+ 
+                 double sumWts = 0;
+-                for (int i = 0; i < weights.length; i++) {
++                for (int i = begin; i < begin + length; i++) {
+                     sumWts += weights[i];
+                 }
+ 

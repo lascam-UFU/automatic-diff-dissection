@@ -1,0 +1,13 @@
+--- a/org/apache/commons/lang3/RandomStringUtils.java
++++ b/org/apache/commons/lang3/RandomStringUtils.java
+@@ -242,6 +242,10 @@ public static String random(int count, int start, int end, boolean letters, bool
+                     start = ' ';                
+                 }
+             }
++        } else {
++            if (end <= start) {
++                throw new IllegalArgumentException("Parameter end (" + end + ") must be greater than start (" + start + ")");
++            }
+         }
+ 
+         char[] buffer = new char[count];

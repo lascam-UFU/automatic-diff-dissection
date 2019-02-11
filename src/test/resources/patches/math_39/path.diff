@@ -1,0 +1,18 @@
+--- a/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
++++ b/org/apache/commons/math/ode/nonstiff/EmbeddedRungeKuttaIntegrator.java
+@@ -247,6 +247,15 @@ public void integrate(final ExpandableStatefulODE equations, final double t)
+         }
+ 
+         stepSize = hNew;
++        if (forward) {
++            if (stepStart + stepSize >= t) {
++                stepSize = t - stepStart;
++            }
++        } else {
++            if (stepStart + stepSize <= t) {
++                stepSize = t - stepStart;
++            }
++        }
+ 
+         // next stages
+         for (int k = 1; k < stages; ++k) {

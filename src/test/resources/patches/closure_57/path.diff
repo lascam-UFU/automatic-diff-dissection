@@ -1,0 +1,11 @@
+--- a/com/google/javascript/jscomp/ClosureCodingConvention.java
++++ b/com/google/javascript/jscomp/ClosureCodingConvention.java
+@@ -194,7 +194,7 @@ private static String extractClassNameIfGoog(Node node, Node parent,
+         String qualifiedName = callee.getQualifiedName();
+         if (functionName.equals(qualifiedName)) {
+           Node target = callee.getNext();
+-          if (target != null) {
++          if (target != null && target.getType() == Token.STRING) {
+             className = target.getString();
+           }
+         }

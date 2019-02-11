@@ -14,7 +14,7 @@ output_path = config.get('path', 'output')
 
 
 def start_detector_service():
-    jar = os.path.join(root, "target", "patchclustering-0.1-SNAPSHOT-jar-with-dependencies.jar")
+    jar = os.path.join(root, "target", "automatic-diff-dissection-1.0-jar-with-dependencies.jar")
     cmd = "java -cp %s add.main.Server" % (jar)
     # , stdout=subprocess.PIPE
     pro = subprocess.Popen(cmd, shell=True, preexec_fn=os.setsid)

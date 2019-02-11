@@ -1,0 +1,11 @@
+--- a/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java
++++ b/org/mockito/internal/stubbing/defaultanswers/ReturnsEmptyValues.java
+@@ -84,6 +84,8 @@ Object returnValueFor(Class<?> type) {
+             return Primitives.defaultValueForPrimitiveOrWrapper(type);
+             //new instances are used instead of Collections.emptyList(), etc.
+             //to avoid UnsupportedOperationException if code under test modifies returned collection
++        } else if (type == Iterable.class) {
++            return new ArrayList<Object>(0);
+         } else if (type == Collection.class) {
+             return new LinkedList<Object>();
+         } else if (type == Set.class) {

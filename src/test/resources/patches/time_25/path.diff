@@ -1,0 +1,18 @@
+--- a/org/joda/time/DateTimeZone.java
++++ b/org/joda/time/DateTimeZone.java
+@@ -896,6 +896,15 @@ public int getOffsetFromLocal(long instantLocal) {
+                     return offsetLocal;
+                 }
+             }
++        } else if (offsetLocal > 0) {
++            long prev = previousTransition(instantAdjusted);
++            if (prev < instantAdjusted) {
++                int offsetPrev = getOffset(prev);
++                int diff = offsetPrev - offsetLocal;
++                if (instantAdjusted - prev <= diff) {
++                    return offsetPrev;
++                }
++            }
+         }
+         return offsetAdjusted;
+     }

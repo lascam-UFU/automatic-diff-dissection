@@ -1,0 +1,20 @@
+--- a/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java
++++ b/org/mockito/internal/stubbing/defaultanswers/ReturnsSmartNulls.java
+@@ -6,6 +6,7 @@
+ 
+ import java.io.Serializable;
+ import java.lang.reflect.Method;
++import java.util.Arrays;
+ 
+ import org.mockito.Mockito;
+ import org.mockito.cglib.proxy.MethodInterceptor;
+@@ -57,7 +58,8 @@ public Object intercept(Object obj, Method method, Object[] args, MethodProxy pr
+         }
+ 
+ 		private String formatMethodCall() {
+-			return invocation.getMethod().getName() + "()";
++			String args = Arrays.toString(invocation.getArguments());
++			return invocation.getMethod().getName() + "(" + args.substring(1, args.length() - 1) +	")";
+ 		}
+     }
+ 

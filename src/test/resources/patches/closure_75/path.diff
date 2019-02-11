@@ -1,0 +1,22 @@
+--- a/com/google/javascript/jscomp/NodeUtil.java
++++ b/com/google/javascript/jscomp/NodeUtil.java
+@@ -310,7 +310,10 @@ static Double getNumberValue(Node n) {
+   }
+ 
+   static Double getStringNumberValue(String rawJsString) {
++    if (rawJsString.contains("\u000b")) {
+       // vertical tab is not always whitespace
++      return null;
++    }
+ 
+     String s = trimJsWhiteSpace(rawJsString);
+     // return ScriptRuntime.toNumber(s);
+@@ -372,7 +375,7 @@ static String trimJsWhiteSpace(String s) {
+   static TernaryValue isStrWhiteSpaceChar(int c) {
+     switch (c) {
+       case '\u000B': // <VT>
+-        return TernaryValue.TRUE;
++        return TernaryValue.UNKNOWN;  // IE says "no", EcmaScript says "yes"
+       case ' ': // <SP>
+       case '\n': // <LF>
+       case '\r': // <CR>

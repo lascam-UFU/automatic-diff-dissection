@@ -15,7 +15,7 @@ public class CopyPasteDetectorTest {
 
     @Test
     public void closure35() {
-        Config config = TestUtils.setupConfig("Closure 35");
+        Config config = TestUtils.setupConfig("closure_35");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -25,7 +25,7 @@ public class CopyPasteDetectorTest {
 
     @Test
     public void closure110() {
-        Config config = TestUtils.setupConfig("Closure 110");
+        Config config = TestUtils.setupConfig("closure_110");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -35,7 +35,7 @@ public class CopyPasteDetectorTest {
 
     @Test
     public void closure131() {
-        Config config = TestUtils.setupConfig("Closure 131");
+        Config config = TestUtils.setupConfig("closure_131");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -45,7 +45,7 @@ public class CopyPasteDetectorTest {
 
     @Test
     public void lang8() {
-        Config config = TestUtils.setupConfig("Lang 8");
+        Config config = TestUtils.setupConfig("lang_8");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();

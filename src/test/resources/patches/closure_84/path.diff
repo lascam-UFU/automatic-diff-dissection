@@ -1,0 +1,50 @@
+--- a/com/google/javascript/jscomp/parsing/IRFactory.java
++++ b/com/google/javascript/jscomp/parsing/IRFactory.java
+@@ -338,6 +338,13 @@ Node processArrayLiteral(ArrayLiteral literalNode) {
+     @Override
+     Node processAssignment(Assignment assignmentNode) {
+       Node assign = processInfixExpression(assignmentNode);
++      Node target = assign.getFirstChild();
++      if (!validAssignmentTarget(target)) {
++        errorReporter.error(
++          "invalid assignment target",
++          sourceName,
++          target.getLineno(), "", 0);
++      }
+       return assign;
+     }
+ 
+@@ -794,6 +801,17 @@ Node processUnaryExpression(UnaryExpression exprNode) {
+         operand.setDouble(-operand.getDouble());
+         return operand;
+       } else {
++        if (type == Token.INC || type == Token.DEC) {
++          if (!validAssignmentTarget(operand)) {
++            String msg = (type == Token.INC)
++                ? "invalid increment target"
++                : "invalid decrement target";
++            errorReporter.error(
++              msg,
++              sourceName,
++              operand.getLineno(), "", 0);
++          }
++        }
+ 
+         Node node = newNode(type, operand);
+         if (exprNode.isPostfix()) {
+@@ -803,6 +821,15 @@ Node processUnaryExpression(UnaryExpression exprNode) {
+       }
+     }
+ 
++    private boolean validAssignmentTarget(Node target) {
++      switch (target.getType()) {
++        case Token.NAME:
++        case Token.GETPROP:
++        case Token.GETELEM:
++          return true;
++      }
++      return false;
++    }
+ 
+     @Override
+     Node processVariableDeclaration(VariableDeclaration declarationNode) {

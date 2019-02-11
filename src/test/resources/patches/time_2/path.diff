@@ -1,0 +1,35 @@
+--- a/org/joda/time/Partial.java
++++ b/org/joda/time/Partial.java
+@@ -215,7 +215,7 @@ public Partial(DateTimeFieldType[] types, int[] values, Chronology chronology) {
+             DurationField loopUnitField = loopType.getDurationType().getField(iChronology);
+             if (i > 0) {
+                 int compare = lastUnitField.compareTo(loopUnitField);
+-                if (compare < 0 || (compare != 0 && loopUnitField.isSupported() == false)) {
++                if (compare < 0) {
+                     throw new IllegalArgumentException("Types array must be in order largest-smallest: " +
+                             types[i - 1].getName() + " < " + loopType.getName());
+                 } else if (compare == 0) {
+@@ -446,6 +446,9 @@ public Partial with(DateTimeFieldType fieldType, int value) {
+                         if (compare > 0) {
+                             break;
+                         } else if (compare == 0) {
++                            if (fieldType.getRangeDurationType() == null) {
++                                break;
++                            }
+                             DurationField rangeField = fieldType.getRangeDurationType().getField(iChronology);
+                             DurationField loopRangeField = loopType.getRangeDurationType().getField(iChronology);
+                             if (rangeField.compareTo(loopRangeField) > 0) {
+diff --git a/org/joda/time/field/UnsupportedDurationField.java b/org/joda/time/field/UnsupportedDurationField.java
+index bf44e01..7e0ce57 100644
+--- a/org/joda/time/field/UnsupportedDurationField.java
++++ b/org/joda/time/field/UnsupportedDurationField.java
+@@ -224,6 +224,9 @@ public long getUnitMillis() {
+      * @return zero always
+      */
+     public int compareTo(DurationField durationField) {
++        if (durationField.isSupported()) {
++            return 1;
++        }
+         return 0;
+     }
+ 

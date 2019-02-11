@@ -1,0 +1,23 @@
+--- a/com/google/javascript/jscomp/Normalize.java
++++ b/com/google/javascript/jscomp/Normalize.java
+@@ -119,7 +119,7 @@ private void reportCodeChange(String changeDescription) {
+   public void process(Node externs, Node root) {
+     new NodeTraversal(
+         compiler, new NormalizeStatements(compiler, assertOnChange))
+-        .traverse(root);
++        .traverseRoots(externs, root);
+     if (MAKE_LOCAL_NAMES_UNIQUE) {
+       MakeDeclaredNamesUnique renamer = new MakeDeclaredNamesUnique();
+       NodeTraversal t = new NodeTraversal(compiler, renamer);
+diff --git a/com/google/javascript/jscomp/VarCheck.java b/com/google/javascript/jscomp/VarCheck.java
+index c8196b1..f8ebfa3 100644
+--- a/com/google/javascript/jscomp/VarCheck.java
++++ b/com/google/javascript/jscomp/VarCheck.java
+@@ -218,6 +218,7 @@ private void createSynthesizedExternVar(String varName) {
+     getSynthesizedExternsRoot().addChildToBack(
+         new Node(Token.VAR, nameNode));
+     varsToDeclareInExterns.remove(varName);
++    compiler.reportCodeChange();
+   }
+ 
+   /**

@@ -1,0 +1,11 @@
+--- a/org/mockito/internal/matchers/Same.java
++++ b/org/mockito/internal/matchers/Same.java
+@@ -26,7 +26,7 @@ public boolean matches(Object actual) {
+     public void describeTo(Description description) {
+         description.appendText("same(");
+         appendQuoting(description);
+-        description.appendText(wanted.toString());
++        description.appendText(wanted == null ? "null" : wanted.toString());
+         appendQuoting(description);
+         description.appendText(")");
+     }

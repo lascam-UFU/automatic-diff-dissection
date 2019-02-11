@@ -1,0 +1,11 @@
+--- a/com/google/javascript/jscomp/CodeConsumer.java
++++ b/com/google/javascript/jscomp/CodeConsumer.java
+@@ -238,7 +238,7 @@ void addNumber(double x) {
+       add(" ");
+     }
+ 
+-    if ((long) x == x) {
++    if ((long) x == x && !isNegativeZero(x)) {
+       long value = (long) x;
+       long mantissa = value;
+       int exp = 0;

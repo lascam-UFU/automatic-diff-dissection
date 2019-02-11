@@ -1,0 +1,26 @@
+--- a/com/google/javascript/jscomp/UnreachableCodeElimination.java
++++ b/com/google/javascript/jscomp/UnreachableCodeElimination.java
+@@ -167,13 +167,22 @@ private void tryRemoveUnconditionalBranching(Node n) {
+                 outEdges.get(0).getValue() == Branch.UNCOND);
+             Node fallThrough = computeFollowing(n);
+             Node nextCfgNode = outEdges.get(0).getDestination().getValue();
+-            if (nextCfgNode == fallThrough) {
++            if (nextCfgNode == fallThrough && !inFinally(n.getParent(), n)) {
+               removeNode(n);
+             }
+           }
+       }
+     }
+ 
++    private boolean inFinally(Node parent, Node child) {
++      if (parent == null || parent.isFunction()) {
++        return false;
++      } else if (NodeUtil.isTryFinallyNode(parent, child)) {
++        return true;
++      } else {
++        return inFinally(parent.getParent(), parent);
++      }
++    }
+ 
+     private Node computeFollowing(Node n) {
+       Node next = ControlFlowAnalysis.computeFollowNode(n);

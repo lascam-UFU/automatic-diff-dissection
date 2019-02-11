@@ -16,7 +16,7 @@ public class CodeMovingDetectorTest {
 
     @Test
     public void closure13() {
-        Config config = TestUtils.setupConfig("Closure 13");
+        Config config = TestUtils.setupConfig("closure_13");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -26,7 +26,7 @@ public class CodeMovingDetectorTest {
 
     @Test
     public void closure68() {
-        Config config = TestUtils.setupConfig("Closure 68");
+        Config config = TestUtils.setupConfig("closure_68");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -36,7 +36,7 @@ public class CodeMovingDetectorTest {
 
     @Test
     public void closure102() {
-        Config config = TestUtils.setupConfig("Closure 102");
+        Config config = TestUtils.setupConfig("closure_102");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -46,7 +46,7 @@ public class CodeMovingDetectorTest {
 
     @Test
     public void closure117() {
-        Config config = TestUtils.setupConfig("Closure 117");
+        Config config = TestUtils.setupConfig("closure_117");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -56,7 +56,7 @@ public class CodeMovingDetectorTest {
 
     @Test
     public void lang53() {
-        Config config = TestUtils.setupConfig("Lang 53");
+        Config config = TestUtils.setupConfig("lang_53");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -66,7 +66,7 @@ public class CodeMovingDetectorTest {
 
     @Test
     public void math64() {
-        Config config = TestUtils.setupConfig("Math 64");
+        Config config = TestUtils.setupConfig("math_64");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -77,7 +77,7 @@ public class CodeMovingDetectorTest {
     @Test
     @Ignore
     public void math86() {
-        Config config = TestUtils.setupConfig("Math 86");
+        Config config = TestUtils.setupConfig("math_86");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -87,7 +87,7 @@ public class CodeMovingDetectorTest {
 
     @Test
     public void chart17() {
-        Config config = TestUtils.setupConfig("Chart 17");
+        Config config = TestUtils.setupConfig("chart_17");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -97,7 +97,7 @@ public class CodeMovingDetectorTest {
 
     @Test
     public void chart21() {
-        Config config = TestUtils.setupConfig("Chart 21");
+        Config config = TestUtils.setupConfig("chart_21");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -107,7 +107,7 @@ public class CodeMovingDetectorTest {
 
     @Test
     public void time7() {
-        Config config = TestUtils.setupConfig("Time 7");
+        Config config = TestUtils.setupConfig("time_7");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();
@@ -117,7 +117,7 @@ public class CodeMovingDetectorTest {
 
     @Test
     public void closure76() {
-        Config config = TestUtils.setupConfig("Closure 76");
+        Config config = TestUtils.setupConfig("closure_76");
 
         RepairPatternDetector detector = new RepairPatternDetector(config);
         RepairPatterns repairPatterns = detector.analyze();

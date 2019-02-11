@@ -11,7 +11,7 @@ public class LauncherTest {
 
     @Test
     public void chart1() {
-        Config config = TestUtils.setupConfig("Chart 1");
+        Config config = TestUtils.setupConfig("chart_1");
 
         String[] args = new String[] {"-m", LauncherMode.ALL.name(),
                 "-b", config.getBugId(),
@@ -31,7 +31,7 @@ public class LauncherTest {
 
     @Test
     public void closure114() {
-        Config config = TestUtils.setupConfig("Closure 114");
+        Config config = TestUtils.setupConfig("closure_114");
 
         String[] args = new String[] {"-m", LauncherMode.ALL.name(),
                 "-b", config.getBugId(),
@@ -51,7 +51,7 @@ public class LauncherTest {
 
     @Test
     public void mockito21() {
-        Config config = TestUtils.setupConfig("Mockito 21");
+        Config config = TestUtils.setupConfig("mockito_21");
 
         String[] args = new String[] {"-m", LauncherMode.ALL.name(),
                 "-b", config.getBugId(),

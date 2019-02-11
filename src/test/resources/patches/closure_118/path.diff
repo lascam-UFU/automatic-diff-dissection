@@ -1,0 +1,12 @@
+--- a/com/google/javascript/jscomp/DisambiguateProperties.java
++++ b/com/google/javascript/jscomp/DisambiguateProperties.java
+@@ -492,6 +492,9 @@ private void handleObjectLit(NodeTraversal t, Node n) {
+           child != null;
+           child = child.getNext()) {
+         // Maybe STRING, GET, SET
++        if (child.isQuotedString()) {
++          continue;
++        }
+ 
+         // We should never see a mix of numbers and strings.
+         String name = child.getString();

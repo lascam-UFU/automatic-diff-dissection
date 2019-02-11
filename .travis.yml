@@ -1,10 +1,16 @@
 language: java
+
 before_install:
  - git clone https://github.com/SpoonLabs/gumtree-spoon-ast-diff.git
  - cd gumtree-spoon-ast-diff
  - mvn install -Dmaven.test.skip=true -DskipTests=true
  - cd ..
-script:
- - mvn test
-after_success:
- - mvn clean test jacoco:report coveralls:report
+
+jobs:
+  include:
+    - stage: Test
+      script: mvn test -Dtest=!ppd.PPDTest
+      after_success:
+       - mvn clean test jacoco:report coveralls:report
+    - stage: Test
+      script: mvn test -Dtest=ppd.PPDTest

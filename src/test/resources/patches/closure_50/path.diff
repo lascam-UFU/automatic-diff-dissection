@@ -1,0 +1,24 @@
+--- a/com/google/javascript/jscomp/PeepholeReplaceKnownMethods.java
++++ b/com/google/javascript/jscomp/PeepholeReplaceKnownMethods.java
+@@ -373,7 +373,7 @@ private Node tryFoldArrayJoin(Node n) {
+ 
+     Node right = callTarget.getNext();
+     if (right != null) {
+-      if (!NodeUtil.isImmutableValue(right)) {
++      if (right.getNext() != null || !NodeUtil.isImmutableValue(right)) {
+         return n;
+       }
+     }
+@@ -386,7 +386,12 @@ private Node tryFoldArrayJoin(Node n) {
+       return n;
+     }
+ 
++    if (right != null && right.getType() == Token.STRING
++        && ",".equals(right.getString())) {
+       // "," is the default, it doesn't need to be explicit
++      n.removeChild(right);
++      reportCodeChange();
++    }
+ 
+     String joinString = (right == null) ? "," : NodeUtil.getStringValue(right);
+     List<Node> arrayFoldedChildren = Lists.newLinkedList();

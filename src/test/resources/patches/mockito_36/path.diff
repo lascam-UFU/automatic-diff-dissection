@@ -1,0 +1,20 @@
+--- a/org/mockito/internal/invocation/Invocation.java
++++ b/org/mockito/internal/invocation/Invocation.java
+@@ -8,6 +8,7 @@
+ 
+ import org.hamcrest.Matcher;
+ import org.mockito.exceptions.PrintableInvocation;
++import org.mockito.exceptions.Reporter;
+ import org.mockito.internal.debugging.Location;
+ import org.mockito.internal.invocation.realmethod.RealMethod;
+ import org.mockito.internal.matchers.*;
+@@ -199,6 +200,9 @@ public int getArgumentsCount() {
+     }
+ 
+     public Object callRealMethod() throws Throwable {
++        if (this.getMethod().getDeclaringClass().isInterface()) {
++            new Reporter().cannotCallRealMethodOnInterface();
++        }
+         return realMethod.invoke(mock, rawArguments);
+     }
+ 

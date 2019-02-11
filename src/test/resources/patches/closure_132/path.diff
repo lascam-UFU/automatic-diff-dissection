@@ -1,0 +1,13 @@
+--- a/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java
++++ b/com/google/javascript/jscomp/PeepholeSubstituteAlternateSyntax.java
+@@ -779,7 +779,9 @@ private Node tryMinimizeIf(Node n) {
+               // evaluates LHS before cond]
+               // NOTE - there are some circumstances where we can
+               // proceed even if there are side effects...
+-              !mayEffectMutableState(lhs)) {
++              !mayEffectMutableState(lhs) &&
++              (!mayHaveSideEffects(cond) ||
++                  (thenOp.isAssign() && thenOp.getFirstChild().isName()))) {
+ 
+             n.removeChild(cond);
+             Node assignName = thenOp.removeFirstChild();
