@@ -7,7 +7,6 @@ import spoon.reflect.path.CtRole;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.CtInheritanceScanner;
 import spoon.reflect.visitor.CtScanner;
-import spoon.support.reflect.code.CtConstructorCallImpl;
 
 /**
  * Created by tdurieux
