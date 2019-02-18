@@ -58,7 +58,6 @@ public class RepairActions extends Feature {
     @FeatureAnnotation(key = "mcRepl", name = "Method call replacement")
     private int mcRepl = 0;
 
-    // TODO
     @FeatureAnnotation(key = "mcMove", name = "Method call moving")
     private int mcMove = 0;
 

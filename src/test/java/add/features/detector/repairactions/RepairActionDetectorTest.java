@@ -32,6 +32,36 @@ public class RepairActionDetectorTest {
     }
 
     @Test
+    public void chart7() {
+        Config config = TestUtils.setupConfig("chart_7");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("varReplVar") > 0);
+    }
+
+    @Test
+    public void chart11() {
+        Config config = TestUtils.setupConfig("chart_11");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("varReplVar") > 0);
+    }
+
+    @Test
+    public void chart13() {
+        Config config = TestUtils.setupConfig("chart_13");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("mcParValChange") > 0);
+    }
+
+    @Test
     public void chart18() {
         Config config = TestUtils.setupConfig("chart_18");
 
@@ -47,6 +77,36 @@ public class RepairActionDetectorTest {
         Assert.assertTrue(repairActions.getFeatureCounter("exThrowsAdd") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("retRem") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("varAdd") > 0);
+    }
+
+    @Test
+    public void chart21() {
+        Config config = TestUtils.setupConfig("chart_21");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("condBranElseAdd") > 0);
+    }
+
+    @Test
+    public void chart22() {
+        Config config = TestUtils.setupConfig("chart_22");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("retExpChange") > 0);
+    }
+
+    @Test
+    public void closure13() {
+        Config config = TestUtils.setupConfig("closure_13");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("mcMove") > 0);
     }
 
     @Test
@@ -92,6 +152,36 @@ public class RepairActionDetectorTest {
     }
 
     @Test
+    public void lang29() {
+        Config config = TestUtils.setupConfig("lang_29");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("mdRetTyChange") > 0);
+    }
+
+    @Test
+    public void lang30() {
+        Config config = TestUtils.setupConfig("lang_30");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("mdParTyChange") > 0);
+    }
+
+    @Test
+    public void lang64() {
+        Config config = TestUtils.setupConfig("lang_64");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("mdParAdd") == 0);
+    }
+
+    @Test
     public void math4() {
         Config config = TestUtils.setupConfig("math_4");
 
@@ -100,6 +190,38 @@ public class RepairActionDetectorTest {
 
         Assert.assertTrue(repairActions.getFeatureCounter("condBranIfAdd") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("retBranchAdd") > 0);
+    }
+
+    @Test
+    public void mockito5() {
+        Config config = TestUtils.setupConfig("mockito_5");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("varTyChange") > 0);
+    }
+
+    @Test
+    public void mockito27() {
+        Config config = TestUtils.setupConfig("mockito_27");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("assignAdd") == 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("assignRem") > 0);
+        //Assert.assertTrue(repairActions.getFeatureCounter("assignExpChange") > 0);
+    }
+
+    @Test
+    public void time4() {
+        Config config = TestUtils.setupConfig("time_4");
+
+        RepairActionDetector detector = new RepairActionDetector(config);
+        RepairActions repairActions = detector.analyze();
+
+        Assert.assertTrue(repairActions.getFeatureCounter("mcParSwap") > 0);
     }
 
     @Test
@@ -116,7 +238,7 @@ public class RepairActionDetectorTest {
         Assert.assertTrue(repairActions.getFeatureCounter("objInstAdd") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("retBranchAdd") > 0);
         Assert.assertTrue(repairActions.getFeatureCounter("varAdd") > 0);
-        //Assert.assertTrue(repairActions.getFeatureCounter("mcParValChange") > 0);
+        Assert.assertTrue(repairActions.getFeatureCounter("mcParValChange") > 0);
 
     }
 
