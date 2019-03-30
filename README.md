@@ -18,7 +18,7 @@ PPD is the part of this project responsible for the detection of repair patterns
 
 ## Usage
 
-### Setup ADD
+### Running ADD
 
 1. Clone this repository:
 
@@ -26,26 +26,21 @@ PPD is the part of this project responsible for the detection of repair patterns
 $ git clone https://github.com/lascam-UFU/automatic-diff-dissection.git
 ```
 
-2. Run the script `./init.sh`:
-
-```bash
-$ cd automatic-diff-dissection
-$ chmod +x ./scripts/*.sh
-$ ./scripts/init.sh
-```
-
-### Running ADD
-
-To run ADD, you need to compile it, to locate the .jar file, and to call it:
+2. Compile the project:
 
 ```bash
 $ cd automatic-diff-dissection
 $ mvn package -DskipTests
+```
+
+3. Locate the .jar file and call it:
+
+```bash
 $ ls target/*jar
-target/automatic-diff-dissection-0.1-SNAPSHOT.jar
-target/automatic-diff-dissection-0.1-SNAPSHOT-jar-with-dependencies.jar
-target/automatic-diff-dissection-0.1-SNAPSHOT-sources.jar
-$ java -jar target/automatic-diff-dissection-0.1-SNAPSHOT-jar-with-dependencies.jar <arguments>
+target/automatic-diff-dissection-1.1-SNAPSHOT.jar
+target/automatic-diff-dissection-1.1-SNAPSHOT-jar-with-dependencies.jar
+target/automatic-diff-dissection-1.1-SNAPSHOT-sources.jar
+$ java -jar target/automatic-diff-dissection-1.1-SNAPSHOT-jar-with-dependencies.jar <arguments>
 ```
 
 Note that ADD receives a set of arguments to run. The argument options are:
