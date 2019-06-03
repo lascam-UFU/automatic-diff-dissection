@@ -33,7 +33,7 @@ public class SingleLineDetector extends AbstractPatternDetector {
 
         MetricExtractor extractor = new MetricExtractor(this.config);
         Metrics metrics = extractor.analyze();
-        if (metrics.getFeatureCounter("patchSize") == 1) {
+        if (metrics.getFeatureCounter("patchSizeCodeOnly") == 1) {
             wasPatternFound = true;
         } else {
             if (metrics.getFeatureCounter("spreadingCodeOnly") == 0) {
@@ -67,7 +67,7 @@ public class SingleLineDetector extends AbstractPatternDetector {
                 if (this.operations.size() == 1 && this.operations.get(0) instanceof MoveOperation) {
                     CtElement srcNode = this.operations.get(0).getSrcNode();
                     List<CtStatement> statements = srcNode.getElements(new LineFilter());
-                    if (statements.size() == 1 || metrics.getFeatureCounter("patchSize") == 2) {
+                    if (statements.size() == 1 || metrics.getFeatureCounter("patchSizeCodeOnly") == 2) {
                         wasPatternFound = true;
                     }
                 }
