@@ -8,9 +8,17 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
 /**
- * Created by tdurieux
+ * Created by fermadeiral
+ *
+ * Tests for the features:
+ *  - nbChunks
+ *  - spreadingAllLines
+ *  - spreadingCodeOnly
+ *  - nbFiles
+ *  - nbModifiedClasses
+ *  - nbModifiedMethods
  */
-public class MetricExtractorTest {
+public class PatchSpreadingMetricsTest {
 
     @Test
     public void chart1() {
@@ -19,10 +27,6 @@ public class MetricExtractorTest {
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(1, metrics.getFeatureCounter("nbFiles"));
-        assertEquals(0, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(1, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(1, metrics.getFeatureCounter("patchSizeAllLines"));
         assertEquals(1, metrics.getFeatureCounter("nbChunks"));
         assertEquals(0, metrics.getFeatureCounter("spreadingAllLines"));
         assertEquals(0, metrics.getFeatureCounter("spreadingCodeOnly"));
@@ -35,10 +39,6 @@ public class MetricExtractorTest {
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(1, metrics.getFeatureCounter("nbFiles"));
-        assertEquals(2, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(2, metrics.getFeatureCounter("patchSizeAllLines"));
         assertEquals(2, metrics.getFeatureCounter("nbChunks"));
         assertEquals(8, metrics.getFeatureCounter("spreadingAllLines"));
         assertEquals(8, metrics.getFeatureCounter("spreadingCodeOnly"));
@@ -51,10 +51,6 @@ public class MetricExtractorTest {
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(2, metrics.getFeatureCounter("nbFiles"));
-        assertEquals(10, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(2, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(1, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(13, metrics.getFeatureCounter("patchSizeAllLines"));
         assertEquals(6, metrics.getFeatureCounter("nbChunks"));
         assertEquals(19, metrics.getFeatureCounter("spreadingAllLines"));
         assertEquals(9, metrics.getFeatureCounter("spreadingCodeOnly"));
@@ -67,10 +63,6 @@ public class MetricExtractorTest {
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(1, metrics.getFeatureCounter("nbFiles"));
-        assertEquals(2, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(1, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(2, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(5, metrics.getFeatureCounter("patchSizeAllLines"));
         assertEquals(4, metrics.getFeatureCounter("nbChunks"));
         assertEquals(15, metrics.getFeatureCounter("spreadingAllLines"));
         assertEquals(9, metrics.getFeatureCounter("spreadingCodeOnly"));
@@ -83,10 +75,6 @@ public class MetricExtractorTest {
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(1, metrics.getFeatureCounter("nbFiles"));
-        assertEquals(37, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(6, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(43, metrics.getFeatureCounter("patchSizeAllLines"));
         assertEquals(11, metrics.getFeatureCounter("nbChunks"));
         assertEquals(73, metrics.getFeatureCounter("spreadingAllLines"));
         assertEquals(48, metrics.getFeatureCounter("spreadingCodeOnly"));
@@ -99,10 +87,6 @@ public class MetricExtractorTest {
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(2, metrics.getFeatureCounter("nbFiles"));
-        assertEquals(6, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(6, metrics.getFeatureCounter("patchSizeAllLines"));
         assertEquals(2, metrics.getFeatureCounter("nbChunks"));
         assertEquals(0, metrics.getFeatureCounter("spreadingAllLines"));
         assertEquals(0, metrics.getFeatureCounter("spreadingCodeOnly"));
@@ -115,10 +99,6 @@ public class MetricExtractorTest {
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(2, metrics.getFeatureCounter("nbFiles"));
-        assertEquals(12, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(2, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(14, metrics.getFeatureCounter("patchSizeAllLines"));
         assertEquals(8, metrics.getFeatureCounter("nbChunks"));
         assertEquals(70, metrics.getFeatureCounter("spreadingAllLines"));
         assertEquals(26, metrics.getFeatureCounter("spreadingCodeOnly"));
@@ -131,73 +111,9 @@ public class MetricExtractorTest {
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
         assertEquals(1, metrics.getFeatureCounter("nbFiles"));
-        assertEquals(5, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(4, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(4, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(13, metrics.getFeatureCounter("patchSizeAllLines"));
         assertEquals(8, metrics.getFeatureCounter("nbChunks"));
         assertEquals(17, metrics.getFeatureCounter("spreadingAllLines"));
         assertEquals(17, metrics.getFeatureCounter("spreadingCodeOnly"));
-    }
-
-    @Test
-    public void accumulo13eb19c2() {
-        Config config = TestUtils.setupConfig("accumulo_13eb19c2");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(7, metrics.getFeatureCounter("addedLinesCodeOnly"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesCodeOnly"));
-        assertEquals(1, metrics.getFeatureCounter("modifiedLinesCodeOnly"));
-        assertEquals(8, metrics.getFeatureCounter("patchSizeCodeOnly"));
-    }
-
-    @Test
-    public void accumulo17344890() {
-        Config config = TestUtils.setupConfig("accumulo_17344890");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(3, metrics.getFeatureCounter("addedLinesCodeOnly"));
-        assertEquals(4, metrics.getFeatureCounter("removedLinesCodeOnly"));
-        assertEquals(3, metrics.getFeatureCounter("modifiedLinesCodeOnly"));
-        assertEquals(10, metrics.getFeatureCounter("patchSizeCodeOnly"));
-    }
-
-    @Test
-    public void bears5() {
-        Config config = TestUtils.setupConfig("bears_5");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(3, metrics.getFeatureCounter("addedLinesCodeOnly"));
-        assertEquals(3, metrics.getFeatureCounter("removedLinesCodeOnly"));
-        assertEquals(0, metrics.getFeatureCounter("modifiedLinesCodeOnly"));
-        assertEquals(6, metrics.getFeatureCounter("patchSizeCodeOnly"));
-    }
-
-    @Test
-    public void bears140() {
-        Config config = TestUtils.setupConfig("bears_140");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(12, metrics.getFeatureCounter("addedLinesCodeOnly"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesCodeOnly"));
-        assertEquals(2, metrics.getFeatureCounter("modifiedLinesCodeOnly"));
-        assertEquals(14, metrics.getFeatureCounter("patchSizeCodeOnly"));
-    }
-
-    @Test
-    public void bears144() {
-        Config config = TestUtils.setupConfig("bears_144");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(0, metrics.getFeatureCounter("addedLinesCodeOnly"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesCodeOnly"));
-        assertEquals(2, metrics.getFeatureCounter("modifiedLinesCodeOnly"));
-        assertEquals(2, metrics.getFeatureCounter("patchSizeCodeOnly"));
     }
 
     @Test
