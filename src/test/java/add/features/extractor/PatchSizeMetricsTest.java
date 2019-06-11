@@ -22,68 +22,10 @@ import static org.junit.Assert.assertEquals;
  */
 public class PatchSizeMetricsTest {
 
-    @Test
-    public void chart1() {
-        Config config = TestUtils.setupConfig("chart_1");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(0, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(1, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(1, metrics.getFeatureCounter("patchSizeAllLines"));
-    }
+    // BEGINNING of tests on patch size metrics considering ALL LINES
 
     @Test
-    public void chart4() {
-        Config config = TestUtils.setupConfig("chart_4");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(2, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(2, metrics.getFeatureCounter("patchSizeAllLines"));
-    }
-
-    @Test
-    public void chart18() {
-        Config config = TestUtils.setupConfig("chart_18");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(10, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(2, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(1, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(13, metrics.getFeatureCounter("patchSizeAllLines"));
-    }
-
-    @Test
-    public void closure24() {
-        Config config = TestUtils.setupConfig("closure_24");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(2, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(1, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(2, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(5, metrics.getFeatureCounter("patchSizeAllLines"));
-    }
-
-    @Test
-    public void closure76() {
-        Config config = TestUtils.setupConfig("closure_76");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(37, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(6, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(43, metrics.getFeatureCounter("patchSizeAllLines"));
-    }
-
-    @Test
-    public void math4() {
+    public void testPatchSizeOnlyWithAddedLinesAllLines_math4() {
         Config config = TestUtils.setupConfig("math_4");
 
         MetricExtractor extractor = new MetricExtractor(config);
@@ -95,19 +37,43 @@ public class PatchSizeMetricsTest {
     }
 
     @Test
-    public void time12() {
-        Config config = TestUtils.setupConfig("time_12");
+    public void testPatchSizeOnlyWithRemovedLinesAllLines_math50() {
+        Config config = TestUtils.setupConfig("math_50");
 
         MetricExtractor extractor = new MetricExtractor(config);
         Metrics metrics = extractor.analyze();
-        assertEquals(12, metrics.getFeatureCounter("addedLinesAllLines"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesAllLines"));
-        assertEquals(2, metrics.getFeatureCounter("modifiedLinesAllLines"));
-        assertEquals(14, metrics.getFeatureCounter("patchSizeAllLines"));
+        assertEquals(0, metrics.getFeatureCounter("addedLinesAllLines"));
+        assertEquals(4, metrics.getFeatureCounter("removedLinesAllLines"));
+        assertEquals(0, metrics.getFeatureCounter("modifiedLinesAllLines"));
+        assertEquals(4, metrics.getFeatureCounter("patchSizeAllLines"));
     }
 
     @Test
-    public void time23() {
+    public void testPatchSizeOnlyWithModifiedLinesAllLines_chart1() {
+        Config config = TestUtils.setupConfig("chart_1");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(0, metrics.getFeatureCounter("addedLinesAllLines"));
+        assertEquals(0, metrics.getFeatureCounter("removedLinesAllLines"));
+        assertEquals(1, metrics.getFeatureCounter("modifiedLinesAllLines"));
+        assertEquals(1, metrics.getFeatureCounter("patchSizeAllLines"));
+    }
+
+    @Test
+    public void testPatchSizeAllLines_closure24() {
+        Config config = TestUtils.setupConfig("closure_24");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(2, metrics.getFeatureCounter("addedLinesAllLines"));
+        assertEquals(1, metrics.getFeatureCounter("removedLinesAllLines"));
+        assertEquals(2, metrics.getFeatureCounter("modifiedLinesAllLines"));
+        assertEquals(5, metrics.getFeatureCounter("patchSizeAllLines"));
+    }
+
+    @Test
+    public void testPatchSizeAllLines_time23() {
         Config config = TestUtils.setupConfig("time_23");
 
         MetricExtractor extractor = new MetricExtractor(config);
@@ -118,8 +84,26 @@ public class PatchSizeMetricsTest {
         assertEquals(13, metrics.getFeatureCounter("patchSizeAllLines"));
     }
 
+    // END of tests on patch size metrics considering ALL LINES
+
+    // BEGINNING of tests on patch size metrics considering CODE ONLY
+
+    // Lines of code were commented
     @Test
-    public void accumulo13eb19c2() {
+    public void testPatchSizeCodeOnly_math38() {
+        Config config = TestUtils.setupConfig("math_38");
+
+        MetricExtractor extractor = new MetricExtractor(config);
+        Metrics metrics = extractor.analyze();
+        assertEquals(0, metrics.getFeatureCounter("addedLinesCodeOnly"));
+        assertEquals(2, metrics.getFeatureCounter("removedLinesCodeOnly"));
+        assertEquals(2, metrics.getFeatureCounter("modifiedLinesCodeOnly"));
+        assertEquals(4, metrics.getFeatureCounter("patchSizeCodeOnly"));
+    }
+
+    // Deletion of an empty line and addition of a single line comment
+    @Test
+    public void testPatchSizeCodeOnly_accumulo13eb19c2() {
         Config config = TestUtils.setupConfig("accumulo_13eb19c2");
 
         MetricExtractor extractor = new MetricExtractor(config);
@@ -130,20 +114,9 @@ public class PatchSizeMetricsTest {
         assertEquals(8, metrics.getFeatureCounter("patchSizeCodeOnly"));
     }
 
+    // Addition of single line comments
     @Test
-    public void accumulo17344890() {
-        Config config = TestUtils.setupConfig("accumulo_17344890");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(3, metrics.getFeatureCounter("addedLinesCodeOnly"));
-        assertEquals(4, metrics.getFeatureCounter("removedLinesCodeOnly"));
-        assertEquals(3, metrics.getFeatureCounter("modifiedLinesCodeOnly"));
-        assertEquals(10, metrics.getFeatureCounter("patchSizeCodeOnly"));
-    }
-
-    @Test
-    public void bears5() {
+    public void testPatchSizeCodeOnly_bears5() {
         Config config = TestUtils.setupConfig("bears_5");
 
         MetricExtractor extractor = new MetricExtractor(config);
@@ -154,8 +127,9 @@ public class PatchSizeMetricsTest {
         assertEquals(6, metrics.getFeatureCounter("patchSizeCodeOnly"));
     }
 
+    // Single and non-single comments, addition of empty lines
     @Test
-    public void bears140() {
+    public void testPatchSizeCodeOnly_bears140() {
         Config config = TestUtils.setupConfig("bears_140");
 
         MetricExtractor extractor = new MetricExtractor(config);
@@ -166,16 +140,5 @@ public class PatchSizeMetricsTest {
         assertEquals(14, metrics.getFeatureCounter("patchSizeCodeOnly"));
     }
 
-    @Test
-    public void bears144() {
-        Config config = TestUtils.setupConfig("bears_144");
-
-        MetricExtractor extractor = new MetricExtractor(config);
-        Metrics metrics = extractor.analyze();
-        assertEquals(0, metrics.getFeatureCounter("addedLinesCodeOnly"));
-        assertEquals(0, metrics.getFeatureCounter("removedLinesCodeOnly"));
-        assertEquals(2, metrics.getFeatureCounter("modifiedLinesCodeOnly"));
-        assertEquals(2, metrics.getFeatureCounter("patchSizeCodeOnly"));
-    }
-
+    // END of tests on patch size metrics considering CODE ONLY
 }
