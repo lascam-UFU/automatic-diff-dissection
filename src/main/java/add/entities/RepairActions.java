@@ -1,9 +1,20 @@
 package add.entities;
 
+import fr.inria.coming.utils.MapList;
+import spoon.reflect.declaration.CtElement;
+
 /**
  * Created by tdurieux
  */
 public class RepairActions extends Feature {
+
+    MapList<String, CtElement> elementPerFeature = new MapList<>();
+
+    public void incrementFeatureCounter(String key, CtElement element) {
+        super.incrementFeatureCounter(key);
+        elementPerFeature.add(key, element);
+    }
+
     @FeatureAnnotation(key = "assignAdd", name = "Assignment addition")
     private int assignAdd = 0;
 
@@ -58,6 +69,7 @@ public class RepairActions extends Feature {
     @FeatureAnnotation(key = "mcRepl", name = "Method call replacement")
     private int mcRepl = 0;
 
+    // TODO
     @FeatureAnnotation(key = "mcMove", name = "Method call moving")
     private int mcMove = 0;
 
@@ -153,4 +165,8 @@ public class RepairActions extends Feature {
 
     @FeatureAnnotation(key = "tyImpInterf", name = "Type implemented interface modification")
     private int tyImpInterf = 0;
+
+    public MapList<String, CtElement> getElementPerFeature() {
+        return elementPerFeature;
+    }
 }

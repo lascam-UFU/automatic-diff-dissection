@@ -1,5 +1,9 @@
 package add.features.detector.repairpatterns;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import add.entities.RepairPatterns;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
@@ -9,10 +13,6 @@ import spoon.reflect.code.CtLiteral;
 import spoon.reflect.code.CtVariableAccess;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.DefaultJavaPrettyPrinter;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by tdurieux
@@ -63,7 +63,7 @@ public class CopyPasteDetector extends AbstractPatternDetector {
                             ((CtLiteral) e).setValue("VAR");
                             super.scan(e);
                             ((CtLiteral) e).setValue(value);
-                        } else{
+                        } else {
                             super.scan(e);
                         }
                         return this;
@@ -76,7 +76,7 @@ public class CopyPasteDetector extends AbstractPatternDetector {
             srcNode.setParent(parent);
             String result = print.getResult().trim().replaceAll("\"VAR\"", "VAR");
             if (operationString.contains(result) && !result.isEmpty() && !"VAR".equals(result)) {
-                repairPatterns.incrementFeatureCounter("copyPaste");
+                repairPatterns.incrementFeatureCounter("copyPaste", operation);
             }
             operationString.add(result);
         }

@@ -1,11 +1,11 @@
 package add.features.diffanalyzer;
 
-import org.eclipse.jgit.diff.Edit;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.eclipse.jgit.diff.Edit;
 
 /**
  * Created by tdurieux

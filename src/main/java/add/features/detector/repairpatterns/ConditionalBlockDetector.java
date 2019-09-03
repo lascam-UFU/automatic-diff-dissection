@@ -1,5 +1,7 @@
 package add.features.detector.repairpatterns;
 
+import java.util.List;
+
 import add.entities.RepairPatterns;
 import add.features.detector.spoon.RepairPatternUtils;
 import add.features.detector.spoon.SpoonHelper;
@@ -7,11 +9,14 @@ import gumtree.spoon.diff.operations.DeleteOperation;
 import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
-import spoon.reflect.code.*;
+import spoon.reflect.code.CtBlock;
+import spoon.reflect.code.CtCase;
+import spoon.reflect.code.CtConditional;
+import spoon.reflect.code.CtExpression;
+import spoon.reflect.code.CtIf;
+import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.filter.TypeFilter;
-
-import java.util.List;
 
 /**
  * Created by fermadeiral
@@ -36,18 +41,18 @@ public class ConditionalBlockDetector extends AbstractPatternDetector {
                     if (RepairPatternUtils.isNewIf(ctIf)) {
                         CtBlock thenBlock = ctIf.getThenStatement();
                         if (thenBlock != null) {
-                            if (operation instanceof InsertOperation &&
-                                    RepairPatternUtils.isThereOnlyNewAndMovedStatementsInStatementList(thenBlock.getStatements())) {
+                            if (operation instanceof InsertOperation && RepairPatternUtils
+                                    .isThereOnlyNewAndMovedStatementsInStatementList(thenBlock.getStatements())) {
                                 wasPatternFound = true;
                             }
-                            if (operation instanceof DeleteOperation &&
-                                    RepairPatternUtils.isThereOnlyRemovedAndMovedAwayStatementsInRemovedIf(ctIf)) {
+                            if (operation instanceof DeleteOperation
+                                    && RepairPatternUtils.isThereOnlyRemovedAndMovedAwayStatementsInRemovedIf(ctIf)) {
                                 wasPatternFound = true;
                             }
                             if (wasPatternFound) {
                                 String pattern = this.getVariant(thenBlock, operation);
                                 if (!pattern.isEmpty()) {
-                                    repairPatterns.incrementFeatureCounter(pattern);
+                                    repairPatterns.incrementFeatureCounter(pattern, operation);
                                 }
                             }
                         }
@@ -62,10 +67,11 @@ public class ConditionalBlockDetector extends AbstractPatternDetector {
                             CtBlock elseBlock = ctIfParent.getElseStatement();
                             if (ctBlock == elseBlock) {
                                 if (!ctBlock.isImplicit()) {
-                                    if (!RepairPatternUtils.isThereOldStatementInStatementList(elseBlock.getStatements())) {
+                                    if (!RepairPatternUtils
+                                            .isThereOldStatementInStatementList(elseBlock.getStatements())) {
                                         String pattern = this.getVariant(ctBlock, operation);
                                         if (!pattern.isEmpty()) {
-                                            repairPatterns.incrementFeatureCounter(pattern);
+                                            repairPatterns.incrementFeatureCounter(pattern, operation);
                                         }
                                     }
                                 }
@@ -79,12 +85,11 @@ public class ConditionalBlockDetector extends AbstractPatternDetector {
                     if (ctConditional.getMetadata("new") != null) {
                         CtExpression thenExpression = ctConditional.getThenExpression();
                         CtExpression elseExpression = ctConditional.getElseExpression();
-                        if (thenExpression.getMetadata("new") != null &&
-                                elseExpression.getMetadata("new") != null) {
+                        if (thenExpression.getMetadata("new") != null && elseExpression.getMetadata("new") != null) {
                             if (operation instanceof InsertOperation) {
-                                repairPatterns.incrementFeatureCounter("condBlockOthersAdd");
+                                repairPatterns.incrementFeatureCounter("condBlockOthersAdd", operation);
                             } else {
-                                repairPatterns.incrementFeatureCounter("condBlockRem");
+                                repairPatterns.incrementFeatureCounter("condBlockRem", operation);
                             }
                         }
                     }
@@ -94,10 +99,11 @@ public class ConditionalBlockDetector extends AbstractPatternDetector {
                 for (CtCase ctCase : caseList) {
                     if (ctCase.getMetadata("new") != null) {
                         List<CtStatement> statements = ctCase.getStatements();
-                        if (statements.size() > 0 && !RepairPatternUtils.isThereOldStatementInStatementList(statements)) {
+                        if (statements.size() > 0
+                                && !RepairPatternUtils.isThereOldStatementInStatementList(statements)) {
                             String pattern = this.getVariant(ctCase, operation);
                             if (!pattern.isEmpty()) {
-                                repairPatterns.incrementFeatureCounter(pattern);
+                                repairPatterns.incrementFeatureCounter(pattern, operation);
                             }
                         }
                     }
@@ -110,9 +116,9 @@ public class ConditionalBlockDetector extends AbstractPatternDetector {
                         if (ctConditional.getMetadata("new") != null) {
                             CtExpression thenExpression = ctConditional.getThenExpression();
                             CtExpression elseExpression = ctConditional.getElseExpression();
-                            if (thenExpression.getMetadata("new") != null &&
-                                    elseExpression.getMetadata("new") != null) {
-                                repairPatterns.incrementFeatureCounter("condBlockRem");
+                            if (thenExpression.getMetadata("new") != null
+                                    && elseExpression.getMetadata("new") != null) {
+                                repairPatterns.incrementFeatureCounter("condBlockRem", operation);
                             }
                         }
                     }
@@ -122,9 +128,9 @@ public class ConditionalBlockDetector extends AbstractPatternDetector {
                         if (ctConditional.getMetadata("new") != null) {
                             CtExpression thenExpression = ctConditional.getThenExpression();
                             CtExpression elseExpression = ctConditional.getElseExpression();
-                            if (thenExpression.getMetadata("new") != null &&
-                                    elseExpression.getMetadata("new") != null) {
-                                repairPatterns.incrementFeatureCounter("condBlockOthersAdd");
+                            if (thenExpression.getMetadata("new") != null
+                                    && elseExpression.getMetadata("new") != null) {
+                                repairPatterns.incrementFeatureCounter("condBlockOthersAdd", operation);
                             }
                         }
                     }

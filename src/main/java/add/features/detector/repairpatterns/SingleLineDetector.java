@@ -1,5 +1,7 @@
 package add.features.detector.repairpatterns;
 
+import java.util.List;
+
 import add.entities.Metrics;
 import add.entities.RepairPatterns;
 import add.features.detector.spoon.RepairPatternUtils;
@@ -12,8 +14,6 @@ import gumtree.spoon.diff.operations.Operation;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.filter.LineFilter;
-
-import java.util.List;
 
 /**
  * Created by fermadeiral
@@ -33,11 +33,12 @@ public class SingleLineDetector extends AbstractPatternDetector {
 
         MetricExtractor extractor = new MetricExtractor(this.config);
         Metrics metrics = extractor.analyze();
-        if (metrics.getFeatureCounter("patchSizeCodeOnly") == 1) {
+        if (metrics.getFeatureCounter("patchSize") == 1) {
             wasPatternFound = true;
         } else {
             if (metrics.getFeatureCounter("spreadingCodeOnly") == 0) {
-                List<Operation> operationsWithoutMoveOperation = RepairPatternUtils.getOperationsWithoutMoveOperation(this.operations);
+                List<Operation> operationsWithoutMoveOperation = RepairPatternUtils
+                        .getOperationsWithoutMoveOperation(this.operations);
                 if (operationsWithoutMoveOperation.size() == 1) {
                     Operation operation = operationsWithoutMoveOperation.get(0);
                     if (operation instanceof InsertOperation || operation instanceof DeleteOperation) {
@@ -67,14 +68,14 @@ public class SingleLineDetector extends AbstractPatternDetector {
                 if (this.operations.size() == 1 && this.operations.get(0) instanceof MoveOperation) {
                     CtElement srcNode = this.operations.get(0).getSrcNode();
                     List<CtStatement> statements = srcNode.getElements(new LineFilter());
-                    if (statements.size() == 1 || metrics.getFeatureCounter("patchSizeCodeOnly") == 2) {
+                    if (statements.size() == 1 || metrics.getFeatureCounter("patchSize") == 2) {
                         wasPatternFound = true;
                     }
                 }
             }
         }
         if (wasPatternFound) {
-            repairPatterns.incrementFeatureCounter("singleLine");
+            repairPatterns.incrementFeatureCounter("singleLine", null);// MM
         }
     }
 

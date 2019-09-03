@@ -1,17 +1,18 @@
 package add.main;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.json.JSONObject;
+
 import add.entities.FeatureList;
 import add.features.FeatureAnalyzer;
 import add.features.detector.repairactions.RepairActionDetector;
 import add.features.detector.repairpatterns.RepairPatternDetector;
 import add.features.extractor.MetricExtractor;
 import fi.iki.elonen.NanoHTTPD;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by tdurieux

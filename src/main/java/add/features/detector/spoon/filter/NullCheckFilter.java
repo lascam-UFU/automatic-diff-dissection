@@ -20,5 +20,4 @@ public class NullCheckFilter implements Filter<CtBinaryOperator> {
         }
         return false;
     }
-
 }

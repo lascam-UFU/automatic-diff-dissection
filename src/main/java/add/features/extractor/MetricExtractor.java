@@ -1,15 +1,20 @@
 package add.features.extractor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import add.entities.Metrics;
 import add.features.FeatureAnalyzer;
 import add.features.diffanalyzer.Change;
 import add.features.diffanalyzer.Changes;
 import add.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import add.main.Config;
-
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by tdurieux
@@ -33,9 +38,7 @@ public class MetricExtractor extends FeatureAnalyzer {
 
         this.computeNbModifiedClassesAndMethods(changes, jgitDiffAnalyzer);
 
-        this.computePatchSize(changes, jgitDiffAnalyzer, false);
-
-        this.computePatchSize(changes, jgitDiffAnalyzer, true);
+        this.computePatchSize(changes);
 
         this.computeNbChunks(changes);
 
@@ -49,7 +52,7 @@ public class MetricExtractor extends FeatureAnalyzer {
         int nbModifiedMethods = 0;
 
         Pattern packagePattern = Pattern.compile("package\\s+([\\w\\.]+);");
-        Pattern classDefinitionPattern = Pattern.compile("(^.*class\\s+(\\w+))", Pattern.MULTILINE);
+        Pattern classDefinitionPattern = Pattern.compile("(^.*class\\s+((\\w+)(\\s*<[\\w.,\\s]+>)?)(\\s+extends\\s+((\\w+)(\\s*<[\\w.,\\s]+>)?))?(\\s+implements\\s+(((\\w+\\s*(<[\\w.,\\s]+>)?)[,\\s]*)+))?\\s*\\{)", Pattern.MULTILINE);
         Pattern methodDefinitionPattern = Pattern.compile("(((public|private|protected|static|final|native|synchronized|abstract|transient)+\\s)+[\\$_\\w\\<\\>\\w\\s\\[\\]]*\\s+[\\$_\\w]+\\([^\\)]*\\)?\\s*)", Pattern.MULTILINE);
 
         Map<String, List<String>> modifiedClassesAndMethods = new HashMap<>();
@@ -126,22 +129,14 @@ public class MetricExtractor extends FeatureAnalyzer {
     /**
      * Count the number of lines added, removed and modified in the patch
      */
-    public void computePatchSize(Changes changes, JGitBasedDiffAnalyzer jgitDiffAnalyzer, boolean codeOnly) {
+    public void computePatchSize(Changes changes) {
         int patchAddedLines = 0;
         int patchRemovedLines = 0;
         int patchModifiedLines = 0;
 
-        Map<String, List<String>> originalFiles = jgitDiffAnalyzer.getOriginalFiles(this.config.getBuggySourceDirectoryPath());
-        Map<String, List<String>> patchedFiles = jgitDiffAnalyzer.getPatchedFiles(this.config.getBuggySourceDirectoryPath());
-
         for (Change change : changes.getNewChanges()) {
             int addedLines = change.getLength();
             int removedLines = change.getAssociateChange().getLength();
-
-            if (codeOnly) {
-                addedLines -= this.countEmptyAndCommentLines(change, patchedFiles);
-                removedLines -= this.countEmptyAndCommentLines(change.getAssociateChange(), originalFiles);
-            }
 
             int chunkAddedLines = 0;
             int chunkRemovedLines = 0;
@@ -163,11 +158,10 @@ public class MetricExtractor extends FeatureAnalyzer {
             patchModifiedLines += chunkModifiedLines;
         }
 
-        String name = codeOnly ? "CodeOnly" : "AllLines";
-        this.metrics.setFeatureCounter("addedLines" + name, patchAddedLines);
-        this.metrics.setFeatureCounter("removedLines" + name, patchRemovedLines);
-        this.metrics.setFeatureCounter("modifiedLines" + name, patchModifiedLines);
-        this.metrics.setFeatureCounter("patchSize" + name, patchAddedLines + patchRemovedLines + patchModifiedLines);
+        this.metrics.setFeatureCounter("addedLines", patchAddedLines);
+        this.metrics.setFeatureCounter("removedLines", patchRemovedLines);
+        this.metrics.setFeatureCounter("modifiedLines", patchModifiedLines);
+        this.metrics.setFeatureCounter("patchSize", patchAddedLines + patchRemovedLines + patchModifiedLines);
     }
 
     /**
@@ -319,28 +313,6 @@ public class MetricExtractor extends FeatureAnalyzer {
                 s.startsWith("/*") ||
                 s.startsWith("*/") ||
                 s.startsWith("*");
-    }
-
-    private int countEmptyAndCommentLines(Change change, Map<String, List<String>> files) {
-        String changedFile = change.getFile();
-        List<String> fileContent = null;
-        for (String file : files.keySet()) {
-            if (file.endsWith(changedFile)) {
-                fileContent = files.get(file);
-                break;
-            }
-        }
-        if (fileContent == null) {
-            return 0;
-        }
-        int count = 0;
-        for (int i = change.getLine() - 1; i < change.getEndLine(); i++) {
-            String line = fileContent.get(i);
-            if (line.isEmpty() || isComment(line)) {
-                count++;
-            }
-        }
-        return count;
     }
 
     private String putFileContentInString(List<String> fileContent, int lineLimit) {
