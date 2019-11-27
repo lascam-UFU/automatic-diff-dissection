@@ -16,7 +16,7 @@
         <java.src.version>1.7</java.src.version>
         <java.test.version>1.7</java.test.version>
 
-        <maven-jacoco-plugin.version>0.7.9</maven-jacoco-plugin.version>
+        <maven-jacoco-plugin.version>0.8.4</maven-jacoco-plugin.version>
         <maven-coveralls-plugin.version>4.3.0</maven-coveralls-plugin.version>
         <github.global.server>github</github.global.server>
     </properties>
