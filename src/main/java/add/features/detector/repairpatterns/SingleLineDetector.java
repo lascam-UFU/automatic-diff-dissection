@@ -1,7 +1,5 @@
 package add.features.detector.repairpatterns;
 
-import java.util.List;
-
 import add.entities.Metrics;
 import add.entities.RepairPatterns;
 import add.features.detector.spoon.RepairPatternUtils;
@@ -14,6 +12,8 @@ import gumtree.spoon.diff.operations.Operation;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.filter.LineFilter;
+
+import java.util.List;
 
 /**
  * Created by fermadeiral

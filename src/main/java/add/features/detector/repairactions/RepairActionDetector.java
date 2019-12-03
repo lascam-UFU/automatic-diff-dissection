@@ -34,8 +34,8 @@ public class RepairActionDetector extends EditScriptBasedDetector {
             Operation operation = editScript.getRootOperations().get(i);
             CtElement srcNode = operation.getSrcNode();
             if (operation instanceof InsertOperation || operation instanceof DeleteOperation) {
-                this.detectRepairActions(srcNode, operation instanceof DeleteOperation?
-                        CtElementAnalyzer.ACTION_TYPE.DELETE:
+                this.detectRepairActions(srcNode, operation instanceof DeleteOperation ?
+                        CtElementAnalyzer.ACTION_TYPE.DELETE :
                         CtElementAnalyzer.ACTION_TYPE.ADD);
                 SpoonHelper.printInsertOrDeleteOperation(srcNode.getFactory().getEnvironment(), srcNode, operation);
             } else {
@@ -52,8 +52,9 @@ public class RepairActionDetector extends EditScriptBasedDetector {
     private void detectRepairActions(CtElement e, CtElementAnalyzer.ACTION_TYPE actionType) {
         new CtElementAnalyzer(e).analyze(repairActions, actionType);
     }
+
     private void detectRepairActionsInUpdate(CtElement e, CtElement dst) {
-        new CtElementAnalyzer(e,dst).analyze(repairActions, CtElementAnalyzer.ACTION_TYPE.UPDATE);
+        new CtElementAnalyzer(e, dst).analyze(repairActions, CtElementAnalyzer.ACTION_TYPE.UPDATE);
     }
 
     public RepairActions getRepairActions() {

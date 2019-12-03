@@ -7,9 +7,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @author Matias Martinez
- *
  * @param <K>
+ * @author Matias Martinez
  */
 public class MapCounter<K> extends HashMap<K, Integer> {
 

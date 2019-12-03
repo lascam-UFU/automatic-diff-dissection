@@ -1,13 +1,13 @@
 package add.features.detector.repairpatterns;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import add.entities.RepairPatterns;
 import add.features.detector.EditScriptBasedDetector;
 import add.main.Config;
 import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.Operation;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by fermadeiral

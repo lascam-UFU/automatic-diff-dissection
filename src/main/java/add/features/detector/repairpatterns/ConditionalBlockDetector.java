@@ -1,7 +1,5 @@
 package add.features.detector.repairpatterns;
 
-import java.util.List;
-
 import add.entities.RepairPatterns;
 import add.features.detector.spoon.RepairPatternUtils;
 import add.features.detector.spoon.SpoonHelper;
@@ -17,6 +15,8 @@ import spoon.reflect.code.CtIf;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.filter.TypeFilter;
+
+import java.util.List;
 
 /**
  * Created by fermadeiral

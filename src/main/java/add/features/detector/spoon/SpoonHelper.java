@@ -1,22 +1,21 @@
 package add.features.detector.spoon;
 
-import java.io.File;
-import java.util.List;
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import add.main.Constants;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spoon.Launcher;
 import spoon.compiler.Environment;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.DefaultJavaPrettyPrinter;
 import spoon.support.compiler.VirtualFile;
+
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by fermadeiral

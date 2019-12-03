@@ -4,9 +4,7 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * 
  * @author Matias Martinez, matias.martinez@inria.fr
- *
  */
 public class PDDConfigurationProperties {
 

@@ -1,5 +1,12 @@
 package add.features.extractor;
 
+import add.entities.Metrics;
+import add.features.FeatureAnalyzer;
+import add.features.diffanalyzer.Change;
+import add.features.diffanalyzer.Changes;
+import add.features.diffanalyzer.JGitBasedDiffAnalyzer;
+import add.main.Config;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,13 +15,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import add.entities.Metrics;
-import add.features.FeatureAnalyzer;
-import add.features.diffanalyzer.Change;
-import add.features.diffanalyzer.Changes;
-import add.features.diffanalyzer.JGitBasedDiffAnalyzer;
-import add.main.Config;
 
 /**
  * Created by tdurieux
@@ -84,7 +84,7 @@ public class MetricExtractor extends FeatureAnalyzer {
             Map<String, Integer> classes = new HashMap<>();
             matcher = classDefinitionPattern.matcher(inputToMatcher);
             while (matcher.find()) {
-                classes.put(packageName+"."+matcher.group(2), matcher.end(2));
+                classes.put(packageName + "." + matcher.group(2), matcher.end(2));
             }
 
             Map<String, Integer> methods = new HashMap<>();
@@ -145,7 +145,7 @@ public class MetricExtractor extends FeatureAnalyzer {
             int diff = addedLines - removedLines;
             if (diff == 0) {
                 chunkModifiedLines = addedLines;
-            } else if (diff > 0 ) {
+            } else if (diff > 0) {
                 chunkModifiedLines = removedLines;
                 chunkAddedLines = diff;
             } else {
@@ -320,7 +320,7 @@ public class MetricExtractor extends FeatureAnalyzer {
         String line;
         for (int i = 0; i < fileContent.size() && i < lineLimit; i++) {
             line = fileContent.get(i);
-            content += line+"\n";
+            content += line + "\n";
         }
         return content;
     }

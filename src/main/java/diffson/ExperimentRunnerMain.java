@@ -1,8 +1,8 @@
 package diffson;
 
-import java.io.File;
-
 import fr.inria.coming.main.ComingProperties;
+
+import java.io.File;
 
 /**
  * Experiment runners

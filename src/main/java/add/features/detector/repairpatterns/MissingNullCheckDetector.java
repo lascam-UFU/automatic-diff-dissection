@@ -1,21 +1,16 @@
 package add.features.detector.repairpatterns;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.github.gumtreediff.tree.ITree;
-
 import add.entities.PatternInstance;
 import add.entities.RepairPatterns;
 import add.features.detector.spoon.RepairPatternUtils;
 import add.features.detector.spoon.SpoonHelper;
 import add.features.detector.spoon.filter.NullCheckFilter;
+import com.github.gumtreediff.tree.ITree;
 import gumtree.spoon.builder.SpoonGumTreeBuilder;
 import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.Operation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import spoon.reflect.code.BinaryOperatorKind;
 import spoon.reflect.code.CtBinaryOperator;
 import spoon.reflect.code.CtBlock;
@@ -23,6 +18,9 @@ import spoon.reflect.code.CtConditional;
 import spoon.reflect.code.CtIf;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.filter.LineFilter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by fermadeiral
@@ -70,26 +68,26 @@ public class MissingNullCheckDetector extends AbstractPatternDetector {
                             CtElement parent = binaryOperator.getParent(new LineFilter());
 
                             if (parent instanceof CtIf) {
-                                if(RepairPatternUtils.isNewIf((CtIf) parent)) {
+                                if (RepairPatternUtils.isNewIf((CtIf) parent)) {
                                     CtBlock thenBlock = ((CtIf) parent).getThenStatement();
                                     CtBlock elseBlock = ((CtIf) parent).getElseStatement();
 
-                                   if (thenBlock != null) {
-                                      soldt = RepairPatternUtils.getIsThereOldStatementInStatementList(diff,
-                                            thenBlock.getStatements());
-                                      if (!soldt.isEmpty())
-                                         wasPatternFound = true;
+                                    if (thenBlock != null) {
+                                        soldt = RepairPatternUtils.getIsThereOldStatementInStatementList(diff,
+                                                thenBlock.getStatements());
+                                        if (!soldt.isEmpty())
+                                            wasPatternFound = true;
 
-                                   } // else
-                                   if (elseBlock != null) {
-                                      soldelse = RepairPatternUtils.getIsThereOldStatementInStatementList(diff,
-                                            elseBlock.getStatements());
-                                      if (!soldelse.isEmpty())
-                                         wasPatternFound = true;
-                                   }
+                                    } // else
+                                    if (elseBlock != null) {
+                                        soldelse = RepairPatternUtils.getIsThereOldStatementInStatementList(diff,
+                                                elseBlock.getStatements());
+                                        if (!soldelse.isEmpty())
+                                            wasPatternFound = true;
+                                    }
                                 }
                             } else if (binaryOperator.getParent() instanceof CtConditional) {
-                                
+
                                 CtConditional c = (CtConditional) binaryOperator.getParent();
                                 CtElement thenExpr = c.getThenExpression();
                                 CtElement elseExp = c.getElseExpression();
@@ -98,7 +96,7 @@ public class MissingNullCheckDetector extends AbstractPatternDetector {
                                     soldt = new ArrayList<>();
                                     // If it's not new the THEN
                                     if (thenExpr.getMetadata("new") == null) {
-                                    //    soldelse.add(thenExpr);
+                                        //    soldelse.add(thenExpr);
                                         soldt.add(RepairPatternUtils.getElementInOld(diff, thenExpr));
                                         wasPatternFound = true;
                                     }
@@ -107,7 +105,7 @@ public class MissingNullCheckDetector extends AbstractPatternDetector {
                                     soldelse = new ArrayList<>();
                                     // If it's not new the ELSE
                                     if (elseExp.getMetadata("new") == null) {
-                                    //    soldelse.add(elseExp);
+                                        //    soldelse.add(elseExp);
                                         soldt.add(RepairPatternUtils.getElementInOld(diff, elseExp));
                                         wasPatternFound = true;
                                     }
@@ -148,7 +146,7 @@ public class MissingNullCheckDetector extends AbstractPatternDetector {
                                     }
 
                                     lineP = susp.get(0);
-                                //    lineTree = treeInLeft.get(0);
+                                    //    lineTree = treeInLeft.get(0);
                                     lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
                                 }
 

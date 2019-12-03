@@ -1,13 +1,9 @@
 package add.features.detector.repairpatterns;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.github.gumtreediff.tree.ITree;
-
 import add.entities.PatternInstance;
 import add.entities.RepairPatterns;
 import add.features.detector.spoon.RepairPatternUtils;
+import com.github.gumtreediff.tree.ITree;
 import gumtree.spoon.builder.SpoonGumTreeBuilder;
 import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.Operation;
@@ -17,8 +13,11 @@ import spoon.reflect.code.CtIf;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * 
+ *
  */
 public class AssigmentDetector extends AbstractPatternDetector {
 
@@ -81,7 +80,7 @@ public class AssigmentDetector extends AbstractPatternDetector {
             suspiciousTree = MappingAnalysis.getFormatedTreeFromControlFlow(associatedLeftCtElement);
 
             followCtElementsInLeft.add(associatedLeftCtElement);
-            
+
             repairPatterns.incrementFeatureCounterInstance(ADD_ASSIGNMENT,
                     new PatternInstance(ADD_ASSIGNMENT, operation, operation.getSrcNode(),
 

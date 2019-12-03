@@ -1,9 +1,7 @@
 package add.main;
 
 /**
- * 
  * @author Matias Martinez
- *
  */
 public class TimeChrono {
 

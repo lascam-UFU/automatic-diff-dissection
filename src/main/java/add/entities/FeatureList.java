@@ -1,12 +1,11 @@
 package add.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.json.JSONObject;
-
 import add.main.Config;
 import add.main.Constants;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by fermadeiral
