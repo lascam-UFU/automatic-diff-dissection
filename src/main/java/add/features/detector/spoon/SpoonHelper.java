@@ -56,7 +56,7 @@ public class SpoonHelper {
         };
         print.scan(element);
         LOGGER.debug(operation.getClass().getSimpleName());
-        LOGGER.debug(print.getResult()+Constants.LINE_BREAK);
+        LOGGER.debug(print.getResult() + Constants.LINE_BREAK);
     }
 
     public static void printUpdateOperation(CtElement srcNode, CtElement dstNode, UpdateOperation operation) {
@@ -64,9 +64,9 @@ public class SpoonHelper {
         LOGGER.debug(srcNode.toString());
         LOGGER.debug("to");
         if (dstNode != null) {
-            LOGGER.debug(dstNode+Constants.LINE_BREAK);
+            LOGGER.debug(dstNode + Constants.LINE_BREAK);
         } else {
-            LOGGER.debug(operation.getAction().getValue()+Constants.LINE_BREAK);
+            LOGGER.debug(operation.getAction().getValue() + Constants.LINE_BREAK);
         }
     }
 

@@ -16,7 +16,7 @@ public class JSONOutputFileCreator {
     public static void writeJSONfile(String jsonString, Config config) {
         FileWriter fileWriter;
         try {
-            fileWriter = new FileWriter(config.getOutputDirectoryPath()+"/"+config.getBugId()+"_"+config.getLauncherMode().name().toLowerCase()+FILE_EXTENSION);
+            fileWriter = new FileWriter(config.getOutputDirectoryPath() + "/" + config.getBugId() + "_" + config.getLauncherMode().name().toLowerCase() + FILE_EXTENSION);
             fileWriter.write(jsonString);
             fileWriter.flush();
         } catch (Exception e) {

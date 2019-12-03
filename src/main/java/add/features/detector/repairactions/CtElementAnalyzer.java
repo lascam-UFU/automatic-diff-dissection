@@ -1,8 +1,32 @@
 package add.features.detector.repairactions;
 
 import add.entities.RepairActions;
-import spoon.reflect.code.*;
-import spoon.reflect.declaration.*;
+import spoon.reflect.code.CtAbstractInvocation;
+import spoon.reflect.code.CtAssignment;
+import spoon.reflect.code.CtBinaryOperator;
+import spoon.reflect.code.CtBlock;
+import spoon.reflect.code.CtCase;
+import spoon.reflect.code.CtConditional;
+import spoon.reflect.code.CtConstructorCall;
+import spoon.reflect.code.CtExpression;
+import spoon.reflect.code.CtFieldRead;
+import spoon.reflect.code.CtFor;
+import spoon.reflect.code.CtIf;
+import spoon.reflect.code.CtInvocation;
+import spoon.reflect.code.CtLiteral;
+import spoon.reflect.code.CtLocalVariable;
+import spoon.reflect.code.CtLoop;
+import spoon.reflect.code.CtReturn;
+import spoon.reflect.code.CtThrow;
+import spoon.reflect.code.CtTry;
+import spoon.reflect.code.CtVariableRead;
+import spoon.reflect.declaration.CtElement;
+import spoon.reflect.declaration.CtMethod;
+import spoon.reflect.declaration.CtModifiable;
+import spoon.reflect.declaration.CtNamedElement;
+import spoon.reflect.declaration.CtParameter;
+import spoon.reflect.declaration.CtType;
+import spoon.reflect.declaration.CtVariable;
 import spoon.reflect.path.CtRole;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.CtInheritanceScanner;
@@ -283,7 +307,7 @@ public class CtElementAnalyzer {
                     @Override
                     public <T> void visitCtLiteral(CtLiteral<T> e) {
                         CtVariable parent = e.getParent(CtVariable.class);
-                        if (parent != null && parent.getMetadata("new") == null)  {
+                        if (parent != null && parent.getMetadata("new") == null) {
                             output.incrementFeatureCounter("objInstMod");
                         }
                         super.visitCtLiteral(e);

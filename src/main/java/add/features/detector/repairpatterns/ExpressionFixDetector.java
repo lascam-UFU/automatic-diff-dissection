@@ -6,7 +6,16 @@ import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
-import spoon.reflect.code.*;
+import spoon.reflect.code.BinaryOperatorKind;
+import spoon.reflect.code.CtBinaryOperator;
+import spoon.reflect.code.CtBlock;
+import spoon.reflect.code.CtCase;
+import spoon.reflect.code.CtExpression;
+import spoon.reflect.code.CtFor;
+import spoon.reflect.code.CtIf;
+import spoon.reflect.code.CtUnaryOperator;
+import spoon.reflect.code.CtWhile;
+import spoon.reflect.code.UnaryOperatorKind;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.path.CtRole;
 import spoon.reflect.visitor.EarlyTerminatingScanner;
@@ -39,7 +48,7 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
             }
             if ((operation instanceof UpdateOperation)) {
                 CtElement srcNode = operation.getDstNode();
-                CtBinaryOperator binaryOperator = srcNode instanceof CtBinaryOperator? (CtBinaryOperator) srcNode :srcNode.getParent(CtBinaryOperator.class);
+                CtBinaryOperator binaryOperator = srcNode instanceof CtBinaryOperator ? (CtBinaryOperator) srcNode : srcNode.getParent(CtBinaryOperator.class);
                 if (binaryOperator != null) {
                     if (mathematicOperator.contains(binaryOperator.getKind())) {
                         if (!RepairPatternUtils.isStringInvolvedInBinaryOperator(binaryOperator)) {
@@ -63,7 +72,7 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                         }
                     }
                 }
-                CtUnaryOperator unaryOperator = srcNode instanceof CtUnaryOperator? (CtUnaryOperator) srcNode :srcNode.getParent(CtUnaryOperator.class);
+                CtUnaryOperator unaryOperator = srcNode instanceof CtUnaryOperator ? (CtUnaryOperator) srcNode : srcNode.getParent(CtUnaryOperator.class);
                 if (unaryOperator != null) {
                     if (unaryOperators.contains(unaryOperator.getKind())) {
                         repairPatterns.incrementFeatureCounter("expArithMod");

@@ -9,7 +9,8 @@ import spoon.reflect.visitor.Filter;
  */
 public class NullCheckFilter implements Filter<CtBinaryOperator> {
 
-    public NullCheckFilter() {}
+    public NullCheckFilter() {
+    }
 
     @Override
     public boolean matches(CtBinaryOperator ctBinaryOperator) {

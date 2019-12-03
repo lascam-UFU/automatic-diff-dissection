@@ -63,7 +63,7 @@ public class CopyPasteDetector extends AbstractPatternDetector {
                             ((CtLiteral) e).setValue("VAR");
                             super.scan(e);
                             ((CtLiteral) e).setValue(value);
-                        } else{
+                        } else {
                             super.scan(e);
                         }
                         return this;

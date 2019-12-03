@@ -5,7 +5,22 @@ import add.features.detector.spoon.filter.ThrowInsideConditionalFilter;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import spoon.SpoonException;
-import spoon.reflect.code.*;
+import spoon.reflect.code.CtArrayAccess;
+import spoon.reflect.code.CtBinaryOperator;
+import spoon.reflect.code.CtBlock;
+import spoon.reflect.code.CtCatch;
+import spoon.reflect.code.CtExpression;
+import spoon.reflect.code.CtFor;
+import spoon.reflect.code.CtForEach;
+import spoon.reflect.code.CtIf;
+import spoon.reflect.code.CtInvocation;
+import spoon.reflect.code.CtReturn;
+import spoon.reflect.code.CtStatement;
+import spoon.reflect.code.CtThrow;
+import spoon.reflect.code.CtTypeAccess;
+import spoon.reflect.code.CtUnaryOperator;
+import spoon.reflect.code.CtVariableAccess;
+import spoon.reflect.code.CtWhile;
 import spoon.reflect.cu.position.NoSourcePosition;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtVariable;
@@ -62,7 +77,7 @@ public class RepairPatternUtils {
             return false;
         }
         return (((CtBinaryOperator) binaryOperator).getLeftHandOperand().getMetadata("isMoved") != null &&
-                ((CtBinaryOperator) binaryOperator).getRightHandOperand().getMetadata("isMoved")  != null);
+                ((CtBinaryOperator) binaryOperator).getRightHandOperand().getMetadata("isMoved") != null);
     }
 
     public static boolean isNewConditionInBinaryOperator(CtBinaryOperator binaryOperator) {

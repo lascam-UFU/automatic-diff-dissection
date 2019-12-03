@@ -21,7 +21,7 @@ public abstract class Feature {
 
     public void incrementFeatureCounter(String key) {
         try {
-            Field field  = this.getClass().getDeclaredField(key);
+            Field field = this.getClass().getDeclaredField(key);
             field.setAccessible(true);
             int value = (int) field.get(this);
             field.set(this, value + 1);
@@ -32,7 +32,7 @@ public abstract class Feature {
 
     public void setFeatureCounter(String key, int value) {
         try {
-            Field field  = this.getClass().getDeclaredField(key);
+            Field field = this.getClass().getDeclaredField(key);
             field.setAccessible(true);
             field.set(this, value);
         } catch (IllegalAccessException | NoSuchFieldException e) {
@@ -80,7 +80,7 @@ public abstract class Feature {
 
     public JSONObject toJson() {
         JSONObject jsonObjectFeatures = new JSONObject();
-        for (String featureName: getFeatureNames()) {
+        for (String featureName : getFeatureNames()) {
             int counter = getFeatureCounter(featureName);
             jsonObjectFeatures.put(featureName, counter);
         }

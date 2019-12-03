@@ -54,7 +54,7 @@ public class Launcher {
         JSAPResult config = jsap.parse(args);
         if (!config.success()) {
             System.err.println();
-            for (Iterator<?> errs = config.getErrorMessageIterator(); errs.hasNext();) {
+            for (Iterator<?> errs = config.getErrorMessageIterator(); errs.hasNext(); ) {
                 System.err.println("Error: " + errs.next());
             }
             this.showUsage(jsap);
@@ -68,9 +68,9 @@ public class Launcher {
 
         String launcherModeValues = "";
         for (LauncherMode mode : LauncherMode.values()) {
-            launcherModeValues += mode.name()+";";
+            launcherModeValues += mode.name() + ";";
         }
-        launcherModeValues = launcherModeValues.substring(0, launcherModeValues.length()-1);
+        launcherModeValues = launcherModeValues.substring(0, launcherModeValues.length() - 1);
 
         FlaggedOption opt = new FlaggedOption("launcherMode");
         opt.setShortFlag('m');

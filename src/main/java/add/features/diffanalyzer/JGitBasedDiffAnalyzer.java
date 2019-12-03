@@ -95,18 +95,18 @@ public class JGitBasedDiffAnalyzer {
                 List<String> hunkLines = new ArrayList(hrt.size());
 
 
-                for(int pos = 0; pos < hrt.size(); ++pos) {
+                for (int pos = 0; pos < hrt.size(); ++pos) {
                     hunkLines.add(hrt.getString(pos));
                 }
 
                 int pos = 0;
-                for(int j = 1; j < hunkLines.size(); ++j) {
+                for (int j = 1; j < hunkLines.size(); ++j) {
                     String hunkLine = hunkLines.get(j).replace("\r", "");
                     if (hunkLine.isEmpty()) {
                         ++pos;
                         continue;
                     }
-                    switch(hunkLine.charAt(0)) {
+                    switch (hunkLine.charAt(0)) {
                         case ' ':
                             if (!hunkLine.substring(1).equals(output.get(fileName).get(hh.getNewStartLine() - 1 + pos))) {
                                 throw new RuntimeException("Invalid diff");
