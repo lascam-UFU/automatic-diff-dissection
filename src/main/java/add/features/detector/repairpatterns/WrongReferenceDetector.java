@@ -149,13 +149,17 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                             newMethod.getSimpleName().equals(dstCallMethodName)) {
                                         boolean oldParEquals = true;
                                         List<CtParameter> oldMethodPars = oldMethod.getParameters();
-                                        for (int k = 0; k < oldMethodPars.size(); k++) {
-                                            CtTypeReference methodParType = oldMethodPars.get(k).getType();
-                                            CtTypeReference methodCallArgType = srcCallArguments.get(k);
-                                            if (!methodParType.getQualifiedName().
-                                                    equals(methodCallArgType.getQualifiedName())) {
-                                                oldParEquals = false;
-                                                break;
+                                        if (oldMethodPars.size() != srcCallArguments.size()) {
+                                            oldParEquals = false;
+                                        } else {
+                                            for (int k = 0; k < oldMethodPars.size(); k++) {
+                                                CtTypeReference methodParType = oldMethodPars.get(k).getType();
+                                                CtTypeReference methodCallArgType = srcCallArguments.get(k);
+                                                if (!methodParType.getQualifiedName().
+                                                        equals(methodCallArgType.getQualifiedName())) {
+                                                    oldParEquals = false;
+                                                    break;
+                                                }
                                             }
                                         }
                                         if (oldParEquals) {

@@ -223,7 +223,11 @@ public class MetricExtractor extends FeatureAnalyzer {
 
             for (int line = 0; line < oldFileContent.size(); line++) {
                 String oldLine = oldFileContent.get(line);
-                String newLine = newFileContent.get(line + lineDiff);
+                String newLine = null;
+                int newLineNumber = line + lineDiff;
+                if (newLineNumber < newFileContent.size()) {
+                    newLine = newFileContent.get(newLineNumber);
+                }
 
                 if (oldLine.equals(newLine)) {
                     if (!first) {

@@ -134,7 +134,7 @@ public class CtElementAnalyzer {
 
                     CtFor ctFor = expression.getParent(CtFor.class);
                     if (ctFor != null && ctFor.getMetadata("new") == null) {
-                        if (ctFor.getForInit() != null && expression.hasParent(ctFor.getForInit().get(0))) {
+                        if (ctFor.getForInit() != null && !ctFor.getForInit().isEmpty() && expression.hasParent(ctFor.getForInit().get(0))) {
                             output.incrementFeatureCounter("loopInitChange");
                         } else if (expression.hasParent(ctFor.getExpression())) {
                             output.incrementFeatureCounter("loopCondChange");
