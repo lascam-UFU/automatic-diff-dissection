@@ -65,8 +65,7 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
             LineFilter filter = new LineFilter();
             if ((operation instanceof UpdateOperation)) {
                 CtElement dstNode = operation.getDstNode();
-                CtBinaryOperator binaryOperator = dstNode instanceof CtBinaryOperator ? (CtBinaryOperator) dstNode
-                        : dstNode.getParent(CtBinaryOperator.class);
+                CtBinaryOperator binaryOperator = dstNode instanceof CtBinaryOperator ? (CtBinaryOperator) dstNode : dstNode.getParent(CtBinaryOperator.class);
                 if (binaryOperator != null) {
 
                     CtBinaryOperator buggybinaryOperator = operation.getSrcNode() instanceof CtBinaryOperator
@@ -110,8 +109,7 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                         }
                     }
                 }
-                CtUnaryOperator unaryOperator = dstNode instanceof CtUnaryOperator ? (CtUnaryOperator) dstNode
-                        : dstNode.getParent(CtUnaryOperator.class);
+                CtUnaryOperator unaryOperator = dstNode instanceof CtUnaryOperator ? (CtUnaryOperator) dstNode : dstNode.getParent(CtUnaryOperator.class);
                 if (unaryOperator != null) {
                     if (unaryOperators.contains(unaryOperator.getKind())) {
                         // repairPatterns.incrementFeatureCounter("expArithMod", operation);

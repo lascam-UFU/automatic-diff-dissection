@@ -9,6 +9,9 @@ import gumtree.spoon.diff.operations.DeleteOperation;
 import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
+import spoon.reflect.code.CtConstructorCall;
+import spoon.reflect.code.CtInvocation;
+import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
 
 /**
@@ -35,8 +38,7 @@ public class RepairActionDetector extends EditScriptBasedDetector {
             CtElement srcNode = operation.getSrcNode();
             if (operation instanceof InsertOperation || operation instanceof DeleteOperation) {
                 this.detectRepairActions(srcNode, operation instanceof DeleteOperation ?
-                        CtElementAnalyzer.ACTION_TYPE.DELETE :
-                        CtElementAnalyzer.ACTION_TYPE.ADD);
+                        CtElementAnalyzer.ACTION_TYPE.DELETE : CtElementAnalyzer.ACTION_TYPE.ADD);
                 SpoonHelper.printInsertOrDeleteOperation(srcNode.getFactory().getEnvironment(), srcNode, operation);
             } else {
                 if (operation instanceof UpdateOperation) {

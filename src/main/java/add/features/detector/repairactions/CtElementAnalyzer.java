@@ -9,6 +9,7 @@ import spoon.reflect.code.CtCase;
 import spoon.reflect.code.CtConditional;
 import spoon.reflect.code.CtConstructorCall;
 import spoon.reflect.code.CtExpression;
+import spoon.reflect.code.CtFieldRead;
 import spoon.reflect.code.CtFor;
 import spoon.reflect.code.CtIf;
 import spoon.reflect.code.CtInvocation;
@@ -18,6 +19,7 @@ import spoon.reflect.code.CtLoop;
 import spoon.reflect.code.CtReturn;
 import spoon.reflect.code.CtThrow;
 import spoon.reflect.code.CtTry;
+import spoon.reflect.code.CtVariableRead;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtModifiable;
@@ -147,8 +149,8 @@ public class CtElementAnalyzer {
 
                     CtFor ctFor = expression.getParent(CtFor.class);
                     if (ctFor != null && ctFor.getMetadata("new") == null) {
-                        if (ctFor.getForInit() != null && expression.hasParent(ctFor.getForInit().get(0))) {
-                            output.incrementFeatureCounter("loopInitChange", expression);
+                        if (ctFor.getForInit() != null && !ctFor.getForInit().isEmpty() && expression.hasParent(ctFor.getForInit().get(0))) {
+                            output.incrementFeatureCounter("loopInitChange");
                         } else if (expression.hasParent(ctFor.getExpression())) {
                             output.incrementFeatureCounter("loopCondChange", expression);
                         }

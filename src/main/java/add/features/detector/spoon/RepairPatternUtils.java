@@ -8,6 +8,7 @@ import gumtree.spoon.builder.SpoonGumTreeBuilder;
 import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
+import spoon.SpoonException;
 import spoon.reflect.code.CtArrayAccess;
 import spoon.reflect.code.CtBinaryOperator;
 import spoon.reflect.code.CtBlock;
@@ -25,6 +26,7 @@ import spoon.reflect.code.CtUnaryOperator;
 import spoon.reflect.code.CtVariableAccess;
 import spoon.reflect.code.CtWhile;
 import spoon.reflect.declaration.CtClass;
+import spoon.reflect.cu.position.NoSourcePosition;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtVariable;
 import spoon.reflect.declaration.ModifierKind;
@@ -80,8 +82,8 @@ public class RepairPatternUtils {
         if (!(binaryOperator instanceof CtBinaryOperator)) {
             return false;
         }
-        return (((CtBinaryOperator) binaryOperator).getLeftHandOperand().getMetadata("isMoved") != null
-                && ((CtBinaryOperator) binaryOperator).getRightHandOperand().getMetadata("isMoved") != null);
+        return (((CtBinaryOperator) binaryOperator).getLeftHandOperand().getMetadata("isMoved") != null &&
+                ((CtBinaryOperator) binaryOperator).getRightHandOperand().getMetadata("isMoved") != null);
     }
 
     public static boolean isNewConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
