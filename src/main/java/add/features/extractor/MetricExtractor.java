@@ -158,6 +158,15 @@ public class MetricExtractor extends FeatureAnalyzer {
             patchModifiedLines += chunkModifiedLines;
         }
 
+        // all lines block
+        // String name = codeOnly ? "CodeOnly" : "AllLines";
+        String name = "AllLines";
+        this.metrics.setFeatureCounter("addedLines" + name, patchAddedLines);
+        this.metrics.setFeatureCounter("removedLines" + name, patchRemovedLines);
+        this.metrics.setFeatureCounter("modifiedLines" + name, patchModifiedLines);
+        this.metrics.setFeatureCounter("patchSize" + name, patchAddedLines + patchRemovedLines + patchModifiedLines);
+
+
         this.metrics.setFeatureCounter("addedLines", patchAddedLines);
         this.metrics.setFeatureCounter("removedLines", patchRemovedLines);
         this.metrics.setFeatureCounter("modifiedLines", patchModifiedLines);
