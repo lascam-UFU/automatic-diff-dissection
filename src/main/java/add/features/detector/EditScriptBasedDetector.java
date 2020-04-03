@@ -67,7 +67,7 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
             try {
                 String patchedPath = x.getKey().replace("buggy-version", "patched-version");
                 System.out.println(patchedPath);
-                FileUtils.writeStringToFile(new File(patchedPath), StringUtils.join(x.getValue()));
+                FileUtils.writeStringToFile(new File(patchedPath), StringUtils.join(x.getValue(), "\n"));
                 patchedFiles.put(patchedPath, x.getValue());
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -77,7 +77,7 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
         Launcher oldSpoon = SpoonHelper.initSpoon(originalFiles);
         Launcher newSpoon = SpoonHelper.initSpoon(patchedFiles);
 
-        Diff editScript = SpoonHelper.getAstDiff(newSpoon, oldSpoon);
+        Diff editScript = SpoonHelper.getAstDiff(oldSpoon, newSpoon);
         this.preprocessEditScript(editScript);
 
         return editScript;
