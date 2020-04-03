@@ -86,7 +86,7 @@ public class CodeMovingDetector extends AbstractPatternDetector {
 //                        repairPatterns.incrementFeatureCounterInstance(CODE_MOVE, new PatternInstance(CODE_MOVE,
 //                                operation, dstNode, suspicious, srcNode, maction.getParent()));
 //                    }
-                    // repairPatterns.incrementFeatureCounter("codeMove", operation);
+                    repairPatterns.incrementFeatureCounter("codeMove", operation);
                 }
             }
         }
