@@ -28,7 +28,6 @@ public class SpoonHelper {
         spoon.getEnvironment().setNoClasspath(true);
         spoon.getEnvironment().setAutoImports(false);
         spoon.getEnvironment().setCommentEnabled(false);
-        System.out.println("foo");
         for (String path : files.keySet()) {
             String fileContent = String.join(Constants.LINE_BREAK, files.get(path))
                     .replace("import javax.annotation.Nullable", "// import javax.annotation.Nullable")

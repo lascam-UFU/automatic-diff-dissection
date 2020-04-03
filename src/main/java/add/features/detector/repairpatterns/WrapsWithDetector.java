@@ -41,10 +41,10 @@ public class WrapsWithDetector extends AbstractPatternDetector {
 
     public static final String WRAPS_LOOP = "wrapsLoop";
     public static final String UNWRAP_METHOD = "unwrapMethod";
-    //    public static final String UNWRAP_TRY_CATCH = "unwrapTryCatch";
+    public static final String UNWRAP_TRY_CATCH = "unwrapTryCatch";
     public static final String WRAPS_METHOD = "wrapsMethod";
     public static final String WRAPS_TRY_CATCH = "wrapsTryCatch";
-    //    public static final String WRAPS_ELSE = "wrapsElse";
+    public static final String WRAPS_ELSE = "wrapsElse";
     public static final String WRAPS_IF_ELSE = "wrapsIfElse";
     public static final String UNWRAP_IF_ELSE = "unwrapIfElse";
     public static final String WRAPS_IF = "wrapsIf";
@@ -162,42 +162,38 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                 }
             }
 
-            // we will not consider wrap_else repair transform initially
-//            List<CtBlock> blockList = ctElement.getElements(new TypeFilter<>(CtBlock.class));
-//            for (CtBlock ctBlock : blockList) {
-//                if (ctBlock.getMetadata("new") != null) {
-//                    if (ctBlock.getParent() instanceof CtIf) {
-//                        CtIf ctIfParent = (CtIf) ctBlock.getParent();
-//                        CtBlock elseBlock = ctIfParent.getElseStatement();
-//                        if (ctBlock == elseBlock) {
-//                            if (!RepairPatternUtils.isNewIf(ctIfParent)) {
-//                                CtBlock thenBlock = ctIfParent.getThenStatement();
-//                                if (thenBlock != null && RepairPatternUtils
-//                                        .isThereOldStatementInStatementList(thenBlock.getStatements())) {
-//                                    List selse = RepairPatternUtils.getIsThereOldStatementInStatementList(diff,
-//                                            elseBlock.getStatements());
-//                                    if (!selse.isEmpty()) {
-//
-//                                        if (operation instanceof InsertOperation) {
-//                                            CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(),
-//                                                    (CtElement) selse.get(0));
-//                                            ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
-//
-//                                            repairPatterns.incrementFeatureCounterInstance(WRAPS_ELSE,
-//                                                    new PatternInstance(WRAPS_ELSE, operation, ctIfParent, selse, lineP,
-//                                                            lineTree));
-//                                        } else {
-//                                            // Here is unwrap else.
-//                                            // TODO:
-//
-//                                        }
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+            // wrap_else repair transform
+            List<CtBlock> blockList = ctElement.getElements(new TypeFilter<>(CtBlock.class));
+            for (CtBlock ctBlock : blockList) {
+                if (ctBlock.getMetadata("new") != null) {
+                    if (ctBlock.getParent() instanceof CtIf) {
+                        CtIf ctIfParent = (CtIf) ctBlock.getParent();
+                        CtBlock elseBlock = ctIfParent.getElseStatement();
+                        if (ctBlock == elseBlock) {
+                            if (!RepairPatternUtils.isNewIf(ctIfParent)) {
+                                CtBlock thenBlock = ctIfParent.getThenStatement();
+                                if (thenBlock != null && RepairPatternUtils
+                                        .isThereOldStatementInStatementList(thenBlock.getStatements())) {
+                                    List selse = RepairPatternUtils.getIsThereOldStatementInStatementList(diff,
+                                            elseBlock.getStatements());
+                                    if (!selse.isEmpty()) {
+
+                                        if (operation instanceof InsertOperation) {
+                                            CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(),
+                                                    (CtElement) selse.get(0));
+                                            ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+
+                                            repairPatterns.incrementFeatureCounterInstance(WRAPS_ELSE,
+                                                    new PatternInstance(WRAPS_ELSE, operation, ctIfParent, selse, lineP,
+                                                            lineTree));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             List<CtConditional> conditionalList = ctElement.getElements(new TypeFilter<>(CtConditional.class));
             for (CtConditional ctConditional : conditionalList) {
@@ -313,9 +309,9 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                                     repairPatterns.incrementFeatureCounterInstance(WRAPS_TRY_CATCH,
                                             new PatternInstance(WRAPS_TRY_CATCH, operation, ctTry, olds, lineP, lineTree));
                                 } else {
-//                                ITree tryTree = (ITree) ctTry.getMetadata("gtnode");
-//                                repairPatterns.incrementFeatureCounterInstance(UNWRAP_TRY_CATCH,
-//                                        new PatternInstance(UNWRAP_TRY_CATCH, operation, ctTry, ctTry, ctTry, tryTree));
+                                ITree tryTree = (ITree) ctTry.getMetadata("gtnode");
+                                repairPatterns.incrementFeatureCounterInstance(UNWRAP_TRY_CATCH,
+                                        new PatternInstance(UNWRAP_TRY_CATCH, operation, ctTry, ctTry, ctTry, tryTree));
                                 }
                         } else { // try to find a move into the body of the try
                             for (Operation operationAux : this.operations) {
