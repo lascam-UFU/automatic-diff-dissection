@@ -126,6 +126,28 @@ public class MetricExtractor extends FeatureAnalyzer {
         this.metrics.setFeatureCounter("nbModifiedMethods", nbModifiedMethods);
     }
 
+    private int countEmptyAndCommentLines(Change change, Map<String, List<String>> files) {
+        String changedFile = change.getFile();
+        List<String> fileContent = null;
+        for (String file : files.keySet()) {
+            if (file.endsWith(changedFile)) {
+                fileContent = files.get(file);
+                break;
+            }
+        }
+        if (fileContent == null) {
+            return 0;
+        }
+        int count = 0;
+        for (int i = change.getLine() - 1; i < change.getEndLine(); i++) {
+            String line = fileContent.get(i);
+            if (line.isEmpty() || isComment(line)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     /**
      * Count the number of lines added, removed and modified in the patch
      */
