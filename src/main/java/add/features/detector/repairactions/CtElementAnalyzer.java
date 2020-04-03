@@ -166,7 +166,8 @@ public class CtElementAnalyzer {
 
                 @Override
                 public <T> void visitCtTypeReference(CtTypeReference<T> e) {
-                    if (e.getRoleInParent() == CtRole.TYPE && e.getMetadata("new") == null) {
+                    if ((e.getRoleInParent() == CtRole.TYPE || e.getRoleInParent() == CtRole.MULTI_TYPE)
+                            && e.getMetadata("update") != null) {
                         if (e.getParent() instanceof CtMethod) {
                             output.incrementFeatureCounter("mdRetTyChange", e);
                         }
