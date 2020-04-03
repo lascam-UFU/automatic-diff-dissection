@@ -184,6 +184,18 @@ public class CtElementAnalyzer {
                     output.incrementFeatureCounter("mcRepl", e);
                     super.visitCtInvocation(e);
                 }
+
+                @Override
+                public <T> void visitCtFieldRead(CtFieldRead<T> e) {
+                    output.incrementFeatureCounter("varReplVar");
+                    super.visitCtFieldRead(e);
+                }
+
+                @Override
+                public <T> void visitCtVariableRead(CtVariableRead<T> e) {
+                    output.incrementFeatureCounter("varReplVar");
+                    super.visitCtVariableRead(e);
+                }
             });
             return output;
         }
