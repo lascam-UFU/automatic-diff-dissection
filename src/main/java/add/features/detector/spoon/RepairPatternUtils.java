@@ -33,6 +33,7 @@ import spoon.reflect.declaration.ModifierKind;
 import spoon.reflect.reference.CtTypeReference;
 import spoon.reflect.visitor.filter.LineFilter;
 import spoon.reflect.visitor.filter.TypeFilter;
+import spoon.support.reflect.cu.position.PartialSourcePositionImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -433,6 +434,9 @@ public class RepairPatternUtils {
     }
 
     public static boolean areAllOperationsAtTheSamePosition(List<Operation> operations) {
+    	if (operations.get(0).getSrcNode().getPosition() instanceof NoSourcePosition) {
+    		return false;
+		}
         boolean allSamePosition = true;
         int position = operations.get(0).getSrcNode().getPosition().getLine();
         for (int i = 1; i < operations.size(); i++) {

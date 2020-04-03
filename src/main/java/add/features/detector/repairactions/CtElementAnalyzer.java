@@ -341,7 +341,9 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void visitCtParameter(CtParameter<T> e) {
-                        output.incrementFeatureCounter("mdPar" + actionType.name, e);
+                        if (e.getParent().getMetadata("new") == null) {
+                            output.incrementFeatureCounter("mdPar" + actionType.name, e);
+                        }
                         super.visitCtParameter(e);
                     }
 

@@ -13,6 +13,7 @@ import spoon.reflect.code.CtArrayAccess;
 import spoon.reflect.code.CtLiteral;
 import spoon.reflect.code.CtTypeAccess;
 import spoon.reflect.code.CtVariableAccess;
+import spoon.reflect.code.CtVariableRead;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.filter.LineFilter;
 
@@ -50,28 +51,29 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
                 // we consider constChange_varaccess as variable related transform
 //                if (srcNode instanceof CtVariableAccess
 //                        && RepairPatternUtils.isConstantVariableAccess((CtVariableAccess) srcNode)) {
-//                    // repairPatterns.incrementFeatureCounter(CONST_CHANGE, operation);
+//                    repairPatterns.incrementFeatureCounter(CONST_CHANGE, operation);
 //                    repairPatterns.incrementFeatureCounterInstance(CONST_CHANGE,
 //                            new PatternInstance(CONST_CHANGE, operation, operation.getDstNode(), srcNode, parent,
 //                                    lineTree, new PropertyPair("type", "varaccess")));
 //                }
-                // old if
-//                if (srcNode instanceof CtTypeAccess  
-//                        && RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode)) {
+                // rquired for closure14
+                if (srcNode instanceof CtTypeAccess
+                        && RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode)) {
 
-//                    if (srcNode instanceof CtTypeAccess &&
-//                            RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode)
-//                            && !RepairPatternUtils.isThisAccess((CtTypeAccess) srcNode)) {
-//                    // repairPatterns.incrementFeatureCounter(CONST_CHANGE, operation);
-//                    CtVariableRead parentVarRead = srcNode.getParent(CtVariableRead.class);
-//                    // The change is not inside a VariableRead (wich ast has as node a TypeAccess)
-//                    if (parentVarRead == null) {
-//
-//                        repairPatterns.incrementFeatureCounterInstance(CONST_CHANGE,
-//                                new PatternInstance(CONST_CHANGE, operation, operation.getDstNode(), srcNode, parent,
-//                                        lineTree, new PropertyPair("type", "typeaccess")));
-//                    }
-//                }
+                    if (srcNode instanceof CtTypeAccess &&
+                            RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode)
+                            && !RepairPatternUtils.isThisAccess((CtTypeAccess) srcNode)) {
+                        // repairPatterns.incrementFeatureCounter(CONST_CHANGE, operation);
+                        CtVariableRead parentVarRead = srcNode.getParent(CtVariableRead.class);
+                        // The change is not inside a VariableRead (wich ast has as node a TypeAccess)
+                        if (parentVarRead == null) {
+
+                            repairPatterns.incrementFeatureCounterInstance(CONST_CHANGE,
+                                    new PatternInstance(CONST_CHANGE, operation, operation.getDstNode(), srcNode, parent,
+                                            lineTree, new PropertyPair("type", "typeaccess")));
+                        }
+                    }
+                }
             } else {
 //                if (operation instanceof DeleteOperation && operation.getSrcNode() instanceof CtLiteral) {
 //                    CtLiteral ctLiteral = (CtLiteral) operation.getSrcNode();
