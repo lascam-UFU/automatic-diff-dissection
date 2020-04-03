@@ -142,6 +142,10 @@ public class CtElementAnalyzer {
                         output.incrementFeatureCounter("mcParVal" + actionType.name, expression);
                     }
                     CtAssignment assignment = expression.getParent(CtAssignment.class);
+                    CtReturn ctReturn = expression.getParent(CtReturn.class);
+                    if (ctReturn != null && ctReturn.getMetadata("new") == null && ctReturn.getMetadata("delete") == null) {
+                        output.incrementFeatureCounter("retExpChange");
+                    }
                     if (assignment != null && assignment.getMetadata("isMoved") != null
                             && expression.hasParent(assignment.getAssignment())) {
                         output.incrementFeatureCounter("assignExp" + actionType.name, expression);
@@ -173,6 +177,9 @@ public class CtElementAnalyzer {
                         }
                         if (e.getParent() instanceof CtVariable) {
                             output.incrementFeatureCounter("varTyChange", e);
+                            if (e.getParent() instanceof CtParameter) {
+                                output.incrementFeatureCounter("mdParTyChange", e);
+                            }
                         }
                     } else if (e.getRoleInParent() == CtRole.INTERFACE) {
                         output.incrementFeatureCounter("tyImpInterf", e);
@@ -236,6 +243,9 @@ public class CtElementAnalyzer {
                             if (actionType == ACTION_TYPE.DELETE) {
                                 output.incrementFeatureCounter("condBran" + actionType.name, e);
                             } else {
+                                if (e.getParent().getMetadata("new") == null) {
+                                    output.incrementFeatureCounter("condBranElseAdd");
+                                }
                                 output.incrementFeatureCounter("condBranIfElse" + actionType.name, e);
                             }
                         }
@@ -381,6 +391,14 @@ public class CtElementAnalyzer {
                         if (expression.getRoleInParent() == CtRole.ARGUMENT
                                 && expression.getParent().getMetadata("new") == null) {
                             output.incrementFeatureCounter("mcPar" + actionType.name, e);
+                        }
+                        CtInvocation ctInvocation = expression.getParent(CtInvocation.class);
+                        if (ctInvocation != null && ctInvocation.getMetadata("new") == null) {
+                            output.incrementFeatureCounter("mcParValChange");
+                        }
+                        CtConstructorCall ctConstructorCall = expression.getParent(CtConstructorCall.class);
+                        if (ctConstructorCall != null && ctConstructorCall.getMetadata("new") == null) {
+                            output.incrementFeatureCounter("mcParValChange");
                         }
                         super.scanCtExpression(expression);
                     }

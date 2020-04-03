@@ -13,6 +13,10 @@ import spoon.reflect.code.CtConstructorCall;
 import spoon.reflect.code.CtInvocation;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
+import spoon.reflect.path.CtRole;
+import spoon.reflect.visitor.filter.LineFilter;
+
+import java.util.List;
 
 /**
  * Created by fermadeiral
@@ -41,10 +45,24 @@ public class RepairActionDetector extends EditScriptBasedDetector {
                         CtElementAnalyzer.ACTION_TYPE.DELETE : CtElementAnalyzer.ACTION_TYPE.ADD);
                 SpoonHelper.printInsertOrDeleteOperation(srcNode.getFactory().getEnvironment(), srcNode, operation);
             } else {
+                CtElement dstNode = operation.getDstNode();
                 if (operation instanceof UpdateOperation) {
-                    CtElement dstNode = operation.getDstNode();
                     this.detectRepairActionsInUpdate(srcNode, dstNode);
                     SpoonHelper.printUpdateOperation(srcNode, dstNode, (UpdateOperation) operation);
+                } else {
+                    if (srcNode instanceof CtInvocation) {
+                        List<CtStatement> statements = srcNode.getElements(new LineFilter());
+                        if (statements.size() == 1 && statements.get(0).equals(srcNode)) {
+                            this.repairActions.incrementFeatureCounter("mcMove");
+                        }
+                    } else {
+                        if (srcNode.getRoleInParent() == CtRole.ARGUMENT && dstNode.getRoleInParent() == CtRole.ARGUMENT &&
+                                (srcNode.getParent() instanceof CtConstructorCall || srcNode.getParent() instanceof CtInvocation)
+                                && (dstNode.getParent() instanceof CtConstructorCall || dstNode.getParent() instanceof CtInvocation)) {
+
+                            this.repairActions.incrementFeatureCounter("mcParSwap");
+                        }
+                    }
                 }
             }
         }
