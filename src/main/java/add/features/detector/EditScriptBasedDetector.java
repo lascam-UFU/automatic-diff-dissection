@@ -13,10 +13,15 @@ import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import spoon.Launcher;
 import spoon.reflect.declaration.CtElement;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,13 +54,30 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
 
         Map<String, List<String>> originalFiles = jgitDiffAnalyzer
                 .getOriginalFiles(this.config.getBuggySourceDirectoryPath());
-        Map<String, List<String>> patchedFiles = jgitDiffAnalyzer
+
+
+        Map<String, List<String>> patchedFilesTmp = jgitDiffAnalyzer
                 .getPatchedFiles(this.config.getBuggySourceDirectoryPath());
+
+        Map<String, List<String>> patchedFiles = new HashMap<>();
+
+        String patchedFilePath = this.config.getBuggySourceDirectoryPath().replace("buggy-version", "patched-version");
+        new File(patchedFilePath).mkdirs();
+        for (Map.Entry<String, List<String>> x : patchedFilesTmp.entrySet()) {
+            try {
+                String patchedPath = x.getKey().replace("buggy-version", "patched-version");
+                System.out.println(patchedPath);
+                FileUtils.writeStringToFile(new File(patchedPath), StringUtils.join(x.getValue()));
+                patchedFiles.put(patchedPath, x.getValue());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         Launcher oldSpoon = SpoonHelper.initSpoon(originalFiles);
         Launcher newSpoon = SpoonHelper.initSpoon(patchedFiles);
 
-        Diff editScript = SpoonHelper.getAstDiff(oldSpoon, newSpoon);
+        Diff editScript = SpoonHelper.getAstDiff(newSpoon, oldSpoon);
         this.preprocessEditScript(editScript);
 
         return editScript;

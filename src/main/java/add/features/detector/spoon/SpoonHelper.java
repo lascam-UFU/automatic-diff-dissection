@@ -28,10 +28,12 @@ public class SpoonHelper {
         spoon.getEnvironment().setNoClasspath(true);
         spoon.getEnvironment().setAutoImports(false);
         spoon.getEnvironment().setCommentEnabled(false);
+        System.out.println("foo");
         for (String path : files.keySet()) {
             String fileContent = String.join(Constants.LINE_BREAK, files.get(path))
                     .replace("import javax.annotation.Nullable", "// import javax.annotation.Nullable")
                     .replace("import javax.annotation.CheckForNull", "// import javax.annotation.CheckForNull");
+            System.out.println(path);
             spoon.getModelBuilder().addInputSource(new File(path));
         }
         spoon.buildModel();
