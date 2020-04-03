@@ -1,11 +1,8 @@
 package add.features.detector.repairpatterns;
 
-import java.util.List;
-
-import com.github.gumtreediff.actions.model.Move;
-
 import add.entities.RepairPatterns;
 import add.features.detector.spoon.RepairPatternUtils;
+import com.github.gumtreediff.actions.model.Move;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import spoon.reflect.code.CtBlock;
@@ -13,6 +10,8 @@ import spoon.reflect.code.CtIf;
 import spoon.reflect.code.CtStatement;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtMethod;
+
+import java.util.List;
 
 /**
  * Created by tdurieux

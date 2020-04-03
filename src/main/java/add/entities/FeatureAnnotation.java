@@ -8,9 +8,10 @@ import java.lang.annotation.Target;
 /**
  * Created by tdurieux
  */
-@Target({ElementType.FIELD,ElementType.METHOD})
+@Target({ElementType.FIELD, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface FeatureAnnotation {
     String key();
+
     String name() default "";
 }

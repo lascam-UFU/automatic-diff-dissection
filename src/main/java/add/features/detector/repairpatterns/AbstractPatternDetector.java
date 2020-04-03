@@ -1,10 +1,10 @@
 package add.features.detector.repairpatterns;
 
-import java.util.List;
-
 import add.entities.RepairPatterns;
 import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.Operation;
+
+import java.util.List;
 
 /**
  * Created by fermadeiral

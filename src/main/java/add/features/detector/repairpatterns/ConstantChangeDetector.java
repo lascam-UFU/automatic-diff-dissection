@@ -1,13 +1,10 @@
 package add.features.detector.repairpatterns;
 
-import java.util.List;
-
-import com.github.gumtreediff.tree.ITree;
-
 import add.entities.PatternInstance;
 import add.entities.PropertyPair;
 import add.entities.RepairPatterns;
 import add.features.detector.spoon.RepairPatternUtils;
+import com.github.gumtreediff.tree.ITree;
 import gumtree.spoon.diff.operations.DeleteOperation;
 import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.Operation;
@@ -18,6 +15,8 @@ import spoon.reflect.code.CtTypeAccess;
 import spoon.reflect.code.CtVariableAccess;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.filter.LineFilter;
+
+import java.util.List;
 
 /**
  * Created by tdurieux
@@ -59,7 +58,7 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
                 // old if
 //                if (srcNode instanceof CtTypeAccess  
 //                        && RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode)) {
-                
+
 //                    if (srcNode instanceof CtTypeAccess &&
 //                            RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode)
 //                            && !RepairPatternUtils.isThisAccess((CtTypeAccess) srcNode)) {
@@ -101,7 +100,7 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
 //                        }
 //                    }
 //                }
-                
+
                 // literal replaced by variable or type access (note enum type will be deemed as type access for partial program
                 if (operation instanceof DeleteOperation && operation.getSrcNode() instanceof CtLiteral) {
                     CtLiteral ctLiteral = (CtLiteral) operation.getSrcNode();
@@ -111,9 +110,9 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
                         if (operation2Insert instanceof InsertOperation) {
                             CtElement ctElement = operation2Insert.getSrcNode();
                             boolean isConstantVariable = false;
-                            if (ctElement instanceof CtVariableAccess || ctElement instanceof CtArrayAccess 
+                            if (ctElement instanceof CtVariableAccess || ctElement instanceof CtArrayAccess
                                     || (ctElement instanceof CtTypeAccess && !RepairPatternUtils.isThisAccess((CtTypeAccess) ctElement)
-                                            && RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) ctElement))) {
+                                    && RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) ctElement))) {
                                 isConstantVariable = true;
                             }
                             if (((InsertOperation) operation2Insert).getParent() == ctLiteral.getParent()
@@ -129,7 +128,7 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
                         }
                     }
                 }
-            
+
 //                if (operation instanceof DeleteOperation && operation.getSrcNode() instanceof CtTypeAccess) {
 //                    CtTypeAccess cttypeaccess = (CtTypeAccess) operation.getSrcNode();
 //                    

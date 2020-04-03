@@ -11,7 +11,8 @@ public class Config {
     private String diffPath;
     private String outputDirectoryPath;
 
-    public Config() {}
+    public Config() {
+    }
 
     public LauncherMode getLauncherMode() {
         return launcherMode;

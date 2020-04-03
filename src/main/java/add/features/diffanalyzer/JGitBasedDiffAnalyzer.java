@@ -1,12 +1,6 @@
 package add.features.diffanalyzer;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import add.main.Utils;
 import org.eclipse.jgit.diff.Edit;
 import org.eclipse.jgit.diff.EditList;
 import org.eclipse.jgit.diff.RawText;
@@ -16,7 +10,12 @@ import org.eclipse.jgit.patch.Patch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import add.main.Utils;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tdurieux
@@ -96,18 +95,18 @@ public class JGitBasedDiffAnalyzer {
                 List<String> hunkLines = new ArrayList(hrt.size());
 
 
-                for(int pos = 0; pos < hrt.size(); ++pos) {
+                for (int pos = 0; pos < hrt.size(); ++pos) {
                     hunkLines.add(hrt.getString(pos));
                 }
 
                 int pos = 0;
-                for(int j = 1; j < hunkLines.size(); ++j) {
+                for (int j = 1; j < hunkLines.size(); ++j) {
                     String hunkLine = hunkLines.get(j).replace("\r", "");
                     if (hunkLine.isEmpty()) {
                         ++pos;
                         continue;
                     }
-                    switch(hunkLine.charAt(0)) {
+                    switch (hunkLine.charAt(0)) {
                         case ' ':
                             if (!hunkLine.substring(1).equals(output.get(fileName).get(hh.getNewStartLine() - 1 + pos))) {
                                 throw new RuntimeException("Invalid diff");

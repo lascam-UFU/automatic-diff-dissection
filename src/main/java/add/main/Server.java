@@ -1,18 +1,18 @@
 package add.main;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import org.json.JSONObject;
-
 import add.entities.FeatureList;
 import add.features.FeatureAnalyzer;
 import add.features.detector.repairactions.RepairActionDetector;
 import add.features.detector.repairpatterns.RepairPatternDetector;
 import add.features.extractor.MetricExtractor;
 import fi.iki.elonen.NanoHTTPD;
+import gumtree.spoon.diff.Diff;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tdurieux
@@ -45,22 +45,25 @@ public class Server extends NanoHTTPD {
                 JSONObject data = new JSONObject(parms.get("postData"));
 
                 Config config = new Config();
-                config.setLauncherMode(LauncherMode.ALL);
+                config.setLauncherMode(LauncherMode.METRICS);
                 config.setBugId(data.getString("bugId"));
                 config.setBuggySourceDirectoryPath(data.getString("buggySourceDirectory"));
                 config.setDiffPath(data.getString("diffPath"));
 
                 FeatureList features = new FeatureList(config);
+
                 List<FeatureAnalyzer> featureAnalyzers = new ArrayList<>();
 
                 RepairPatternDetector detector = new RepairPatternDetector(config);
+                Diff editScript = detector.getEditScript();
                 featureAnalyzers.add(detector);
-                featureAnalyzers.add(new RepairActionDetector(config, detector.getEditScript()));
+                featureAnalyzers.add(new RepairActionDetector(config, editScript));
                 featureAnalyzers.add(new MetricExtractor(config));
 
                 for (FeatureAnalyzer featureAnalyzer : featureAnalyzers) {
                     features.add(featureAnalyzer.analyze());
                 }
+
                 Response response = newFixedLengthResponse(Response.Status.OK, "application/json", features.toJson().toString(4));
                 response.addHeader("Access-Control-Allow-Origin", "*");
                 response.addHeader("Access-Control-Allow-Headers", "*");

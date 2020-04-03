@@ -1,19 +1,5 @@
 package add.main;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
-import org.json.JSONObject;
-import org.slf4j.LoggerFactory;
-
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
-import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
-import com.martiansoftware.jsap.stringparsers.FileStringParser;
-
 import add.entities.FeatureList;
 import add.features.FeatureAnalyzer;
 import add.features.detector.repairactions.RepairActionDetector;
@@ -21,7 +7,19 @@ import add.features.detector.repairpatterns.RepairPatternDetector;
 import add.features.extractor.MetricExtractor;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import com.martiansoftware.jsap.FlaggedOption;
+import com.martiansoftware.jsap.JSAP;
+import com.martiansoftware.jsap.JSAPException;
+import com.martiansoftware.jsap.JSAPResult;
+import com.martiansoftware.jsap.stringparsers.EnumeratedStringParser;
+import com.martiansoftware.jsap.stringparsers.FileStringParser;
 import gumtree.spoon.diff.Diff;
+import org.json.JSONObject;
+import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by tdurieux
@@ -56,7 +54,7 @@ public class Launcher {
         JSAPResult config = jsap.parse(args);
         if (!config.success()) {
             System.err.println();
-            for (Iterator<?> errs = config.getErrorMessageIterator(); errs.hasNext();) {
+            for (Iterator<?> errs = config.getErrorMessageIterator(); errs.hasNext(); ) {
                 System.err.println("Error: " + errs.next());
             }
             this.showUsage(jsap);
@@ -70,9 +68,9 @@ public class Launcher {
 
         String launcherModeValues = "";
         for (LauncherMode mode : LauncherMode.values()) {
-            launcherModeValues += mode.name()+";";
+            launcherModeValues += mode.name() + ";";
         }
-        launcherModeValues = launcherModeValues.substring(0, launcherModeValues.length()-1);
+        launcherModeValues = launcherModeValues.substring(0, launcherModeValues.length() - 1);
 
         FlaggedOption opt = new FlaggedOption("launcherMode");
         opt.setShortFlag('m');

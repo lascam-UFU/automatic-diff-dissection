@@ -1,5 +1,44 @@
 package diffson;
 
+import add.entities.PatternInstance;
+import add.entities.RepairPatterns;
+import add.features.detector.EditScriptBasedDetector;
+import add.features.detector.repairpatterns.MappingAnalysis;
+import add.features.detector.repairpatterns.RepairPatternDetector;
+import add.main.Config;
+import add.main.TimeChrono;
+import com.github.gumtreediff.tree.ITree;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import fr.inria.coming.codefeatures.Cntx;
+import fr.inria.coming.codefeatures.CodeFeatureDetector;
+import fr.inria.coming.utils.MapList;
+import gumtree.spoon.AstComparator;
+import gumtree.spoon.builder.Json4SpoonGenerator;
+import gumtree.spoon.builder.SpoonGumTreeBuilder;
+import gumtree.spoon.builder.jsonsupport.NodePainter;
+import gumtree.spoon.diff.Diff;
+import gumtree.spoon.diff.DiffImpl;
+import gumtree.spoon.diff.operations.DeleteOperation;
+import gumtree.spoon.diff.operations.InsertOperation;
+import gumtree.spoon.diff.operations.MoveOperation;
+import gumtree.spoon.diff.operations.Operation;
+import gumtree.spoon.diff.operations.UpdateOperation;
+import org.apache.log4j.Logger;
+import spoon.reflect.code.BinaryOperatorKind;
+import spoon.reflect.code.CtBinaryOperator;
+import spoon.reflect.code.CtDo;
+import spoon.reflect.code.CtFor;
+import spoon.reflect.code.CtForEach;
+import spoon.reflect.code.CtIf;
+import spoon.reflect.code.CtLiteral;
+import spoon.reflect.code.CtSwitch;
+import spoon.reflect.code.CtWhile;
+import spoon.reflect.declaration.CtElement;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
@@ -15,49 +54,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
-import org.apache.log4j.Logger;
-import com.github.gumtreediff.tree.ITree;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import add.entities.PatternInstance;
-import add.entities.RepairPatterns;
-import add.features.detector.EditScriptBasedDetector;
-import add.features.detector.repairpatterns.MappingAnalysis;
-import add.features.detector.repairpatterns.RepairPatternDetector;
-import add.main.Config;
-import add.main.TimeChrono;
-import fr.inria.coming.codefeatures.Cntx;
-import fr.inria.coming.codefeatures.CodeFeatureDetector;
-import fr.inria.coming.utils.MapList;
-import gumtree.spoon.AstComparator;
-import gumtree.spoon.builder.Json4SpoonGenerator;
-import gumtree.spoon.builder.SpoonGumTreeBuilder;
-import gumtree.spoon.builder.jsonsupport.NodePainter;
-import gumtree.spoon.diff.Diff;
-import gumtree.spoon.diff.DiffImpl;
-import gumtree.spoon.diff.operations.DeleteOperation;
-import gumtree.spoon.diff.operations.InsertOperation;
-import gumtree.spoon.diff.operations.MoveOperation;
-import gumtree.spoon.diff.operations.Operation;
-import gumtree.spoon.diff.operations.UpdateOperation;
-import spoon.reflect.code.BinaryOperatorKind;
-import spoon.reflect.code.CtBinaryOperator;
-import spoon.reflect.code.CtDo;
-import spoon.reflect.code.CtFor;
-import spoon.reflect.code.CtForEach;
-import spoon.reflect.code.CtIf;
-import spoon.reflect.code.CtLiteral;
-import spoon.reflect.code.CtSwitch;
-import spoon.reflect.code.CtWhile;
-import spoon.reflect.declaration.CtElement;
 
 /**
- * 
  * @author Matias Martinez
- *
  */
 public class DiffContextAnalyzer {
     File out = null;
@@ -94,7 +93,7 @@ public class DiffContextAnalyzer {
         beforeStart();
 
         for (File difffile : dir.listFiles()) {
-            
+
             TimeChrono cr = new TimeChrono();
             cr.start();
             Map<String, Diff> diffOfcommit = new HashMap();
@@ -110,9 +109,9 @@ public class DiffContextAnalyzer {
 
             // here, at the end, we compute the Context
             atEndCommit(difffile, diffOfcommit);
-            
+
         }
-        
+
         log.info("Final Results: ");
         log.info("----");
         log.info("Withactions " + withactions);
@@ -133,8 +132,8 @@ public class DiffContextAnalyzer {
 //            if (PDDConfigurationProperties.getPropertyBoolean("excludetests")
 //                    && (fileModif.getName().toLowerCase().indexOf("test")!=-1))
 //                continue;
-            
-            if (fileModif.getName().toLowerCase().indexOf("test")!=-1)
+
+            if (fileModif.getName().toLowerCase().indexOf("test") != -1)
                 continue;
 
             String pathname = fileModif.getAbsolutePath() + File.separator + difffile.getName() + "_"
@@ -208,15 +207,15 @@ public class DiffContextAnalyzer {
         }
 
         executorService.shutdown();
-        
+
         try {
             if (!executorService.awaitTermination(30, TimeUnit.SECONDS)) {
                 executorService.shutdownNow();
-            } 
+            }
         } catch (InterruptedException e) {
             executorService.shutdownNow();
         }
-        
+
         return resukltDiff;
 
     }
@@ -268,7 +267,7 @@ public class DiffContextAnalyzer {
     }
 
     private Future<JsonObject> getContextInFeature(ExecutorService executorService, String id,
-            Map<String, Diff> diffOfcommit) {
+                                                   Map<String, Diff> diffOfcommit) {
 
         Future<JsonObject> future = executorService.submit(() -> {
             JsonObject statsjsonRoot = calculateCntxJSON(id, diffOfcommit);
@@ -293,21 +292,21 @@ public class DiffContextAnalyzer {
         }
 
         executorService.shutdown();
-        
+
         try {
             if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
                 executorService.shutdownNow();
-            } 
+            }
         } catch (InterruptedException e) {
             executorService.shutdownNow();
         }
-        
+
         return resukltDiff;
     }
 
     /////// ---------=-=-=-=--=-=-=-
 
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({"unchecked", "rawtypes"})
     public JsonObject calculateCntxJSON(String id, Map<String, Diff> operations) {
 
         JsonObject statsjsonRoot = new JsonObject();
@@ -325,33 +324,33 @@ public class DiffContextAnalyzer {
 
             log.info("Diff file " + modifiedFile + " " + operationsFromFile.size());
             // Patterns:
-          //  System.out.println(diff.getRootOperations().size());
-            if(diff.getRootOperations().size()<=10) {
-               JsonObject fileModified = new JsonObject();
+            //  System.out.println(diff.getRootOperations().size());
+            if (diff.getRootOperations().size() <= 10) {
+                JsonObject fileModified = new JsonObject();
 
-               fileModified.addProperty("file", modifiedFile);
-               fileModified.addProperty("nr_root_ast_changes", diff.getRootOperations().size());
-               filesArray.add(fileModified);
+                fileModified.addProperty("file", modifiedFile);
+                fileModified.addProperty("nr_root_ast_changes", diff.getRootOperations().size());
+                filesArray.add(fileModified);
 
-               Config config = new Config();
-               EditScriptBasedDetector.preprocessEditScript(diff);
-               TimeChrono cr = new TimeChrono();
-               cr.start();
-               RepairPatternDetector detector = new RepairPatternDetector(config, diff);
-               RepairPatterns rp = detector.analyze();
+                Config config = new Config();
+                EditScriptBasedDetector.preprocessEditScript(diff);
+                TimeChrono cr = new TimeChrono();
+                cr.start();
+                RepairPatternDetector detector = new RepairPatternDetector(config, diff);
+                RepairPatterns rp = detector.analyze();
 
-               for (List<PatternInstance> pi : rp.getPatternInstances().values()) {
-                  patternInstances.addAll(pi);
-               }
-               cr.start();
+                for (List<PatternInstance> pi : rp.getPatternInstances().values()) {
+                    patternInstances.addAll(pi);
+                }
+                cr.start();
 
-               JsonArray ast_arrays = calculateJSONAffectedStatementList(diff, operationsFromFile, patternsPerOp,
-                    repairactionPerOp, patternInstances);
-            // fileModified.add("faulty_stmts_ast", ast_arrays);
-               fileModified.add("pattern_instances", ast_arrays);
+                JsonArray ast_arrays = calculateJSONAffectedStatementList(diff, operationsFromFile, patternsPerOp,
+                        repairactionPerOp, patternInstances);
+                // fileModified.add("faulty_stmts_ast", ast_arrays);
+                fileModified.add("pattern_instances", ast_arrays);
 
-               includeAstChangeInfoInJSon(diff, operationsFromFile, fileModified);
-           }
+                includeAstChangeInfoInJSon(diff, operationsFromFile, fileModified);
+            }
         }
 
         return statsjsonRoot;
@@ -375,14 +374,13 @@ public class DiffContextAnalyzer {
     }
 
     /**
-     * 
      * @param operation
      * @param cresolver
      * @param opContext
      * @param diff
      */
 
-    @SuppressWarnings({ "unchecked", "unused", "rawtypes" })
+    @SuppressWarnings({"unchecked", "unused", "rawtypes"})
     private void seInformation(Operation operation, CodeFeatureDetector cresolver, JsonObject opContext, Diff diff, CtElement affectedelement
             , ReturnTypePainter painter) {
 
@@ -394,23 +392,22 @@ public class DiffContextAnalyzer {
 
             CtElement affected = operation.getSrcNode();
             affectedCtElement = affected;
-        } else if (operation instanceof InsertOperation){
+        } else if (operation instanceof InsertOperation) {
             CtElement oldLocation = ((InsertOperation) operation).getParent();
             affectedCtElement = oldLocation;
-        } 
+        }
 
         if (affectedCtElement != null) {
             Cntx iContext = cresolver.analyzeFeatures(affectedelement, painter.getAllExpressions(),
                     painter.getRootLogicalExpressions(), painter.getAllBinaryOperators());
             opContext.add("cntx", iContext.toJSON());
         }
-        
+
     }
 
     CodeFeatureDetector cresolver = new CodeFeatureDetector();
 
     /**
-     *
      * @param diff
      * @param operations
      * @param patternsPerOp
@@ -419,8 +416,8 @@ public class DiffContextAnalyzer {
      * @return
      */
     public JsonArray calculateJSONAffectedStatementList(Diff diff, List<Operation> operations,
-            MapList<Operation, String> patternsPerOp, MapList<Operation, String> repairactionPerOp,
-            List<PatternInstance> patternInstancesOriginal) {
+                                                        MapList<Operation, String> patternsPerOp, MapList<Operation, String> repairactionPerOp,
+                                                        List<PatternInstance> patternInstancesOriginal) {
 
         Json4SpoonGenerator jsongen = new Json4SpoonGenerator();
 
@@ -435,10 +432,10 @@ public class DiffContextAnalyzer {
             List<CtElement> faulties = null;
 
             CtElement getAffectedCtElement = patternInstance.getFaultyLine();
-            
-            if(whetherDiscardElement(getAffectedCtElement))
-                   continue;
-            
+
+            if (whetherDiscardElement(getAffectedCtElement))
+                continue;
+
             ITree faultyTree = patternInstance.getFaultyTree();
             if (faultyTree != null) {
 
@@ -475,7 +472,7 @@ public class DiffContextAnalyzer {
 
             List<NodePainter> painters = new ArrayList();
             painters.add(new FaultyElementPatternPainter(patternInstancesOriginal));
-            
+
             ReturnTypePainter painterforreturn = new ReturnTypePainter(getAffectedCtElement);
             painters.add(painterforreturn);
 
@@ -485,7 +482,7 @@ public class DiffContextAnalyzer {
                 JsonObject jsonT = jsongen.getJSONwithCustorLabels(((DiffImpl) diff).getContext(), iTree, painters);
                 affected.add(jsonT);
             }
-            
+
             jsonInstance.add("faulty_ast", affected);
 
             ast_affected.add(jsonInstance);
@@ -497,56 +494,56 @@ public class DiffContextAnalyzer {
 
         return ast_affected;
     }
-    
+
     private boolean whetherDiscardElement(CtElement orginalelement) {
-        
+
         CtElement tostudy = retrieveElementToStudy(orginalelement);
-        
+
         List<CtBinaryOperator> allbinaporators = tostudy.getElements(e -> (e instanceof CtBinaryOperator)).stream()
                 .map(CtBinaryOperator.class::cast).collect(Collectors.toList());
-        
-        if(allbinaporators.size()>=3) {
-            
-            for (CtBinaryOperator anbinaryoperator: allbinaporators) {
-                
-                int numberString=0;
-                
+
+        if (allbinaporators.size() >= 3) {
+
+            for (CtBinaryOperator anbinaryoperator : allbinaporators) {
+
+                int numberString = 0;
+
                 CtElement parent = anbinaryoperator;
-                
+
                 do {
-                    numberString+=getNumberOfStringInBinary((CtBinaryOperator)parent);
-                    parent=parent.getParent();
-                    
+                    numberString += getNumberOfStringInBinary((CtBinaryOperator) parent);
+                    parent = parent.getParent();
+
                 } while (parent instanceof CtBinaryOperator &&
                         ((CtBinaryOperator) parent).getKind().equals(BinaryOperatorKind.PLUS));
-                
-                if(numberString>=4)
+
+                if (numberString >= 4)
                     return true;
             }
         }
-        
+
         return false;
     }
-    
-    private int getNumberOfStringInBinary (CtBinaryOperator binarytostudy) {
-        
-        int stringnumber=0;
-        
-        if(binarytostudy.getKind().equals(BinaryOperatorKind.PLUS)) {
-            
-           if(binarytostudy.getLeftHandOperand() instanceof CtLiteral && 
-                ((CtLiteral) binarytostudy.getLeftHandOperand()).toString().trim().startsWith("\""))
-             stringnumber++;
-        
-           if(binarytostudy.getRightHandOperand() instanceof CtLiteral && 
-                ((CtLiteral) binarytostudy.getRightHandOperand()).toString().trim().startsWith("\""))
-            stringnumber++;
-           
+
+    private int getNumberOfStringInBinary(CtBinaryOperator binarytostudy) {
+
+        int stringnumber = 0;
+
+        if (binarytostudy.getKind().equals(BinaryOperatorKind.PLUS)) {
+
+            if (binarytostudy.getLeftHandOperand() instanceof CtLiteral &&
+                    ((CtLiteral) binarytostudy.getLeftHandOperand()).toString().trim().startsWith("\""))
+                stringnumber++;
+
+            if (binarytostudy.getRightHandOperand() instanceof CtLiteral &&
+                    ((CtLiteral) binarytostudy.getRightHandOperand()).toString().trim().startsWith("\""))
+                stringnumber++;
+
         }
-        
+
         return stringnumber;
     }
-    
+
 //    private boolean wheterBinaryofString (CtBinaryOperator binarytostudy) {
 //        
 //        if(binarytostudy.getKind().equals(BinaryOperatorKind.PLUS)) {
@@ -565,7 +562,7 @@ public class DiffContextAnalyzer {
 //        
 //        return false;
 //    }
-    
+
     private CtElement retrieveElementToStudy(CtElement element) {
 
         if (element instanceof CtIf) {
@@ -585,7 +582,7 @@ public class DiffContextAnalyzer {
     }
 
     public JsonObject getContextInformation(Diff diff, CodeFeatureDetector cresolver, Operation opi,
-            CtElement getAffectedCtElement, ReturnTypePainter painter) {
+                                            CtElement getAffectedCtElement, ReturnTypePainter painter) {
 
         JsonObject opContext = new JsonObject();
 
@@ -595,7 +592,7 @@ public class DiffContextAnalyzer {
     }
 
     private List<PatternInstance> merge(List<PatternInstance> patternInstancesOriginal) {
-        
+
         List<PatternInstance> patternInstancesMerged = new ArrayList<>();
         Map<CtElement, PatternInstance> cacheFaultyLines = new HashMap<>();
 

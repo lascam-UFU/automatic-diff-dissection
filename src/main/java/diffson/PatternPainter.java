@@ -1,20 +1,17 @@
 package diffson;
 
-import java.util.List;
-
 import com.github.gumtreediff.tree.ITree;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-
 import fr.inria.coming.utils.MapList;
 import gumtree.spoon.builder.jsonsupport.NodePainter;
 import gumtree.spoon.diff.operations.Operation;
 
+import java.util.List;
+
 /**
- * 
  * @author Matias Martinez
- *
  */
 public class PatternPainter implements NodePainter {
 

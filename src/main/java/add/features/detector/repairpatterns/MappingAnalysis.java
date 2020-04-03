@@ -1,15 +1,10 @@
 package add.features.detector.repairpatterns;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import com.github.gumtreediff.actions.model.Action;
 import com.github.gumtreediff.actions.model.Addition;
 import com.github.gumtreediff.actions.model.Insert;
 import com.github.gumtreediff.matchers.Mapping;
 import com.github.gumtreediff.tree.ITree;
-
 import gumtree.spoon.builder.SpoonGumTreeBuilder;
 import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.MoveOperation;
@@ -27,10 +22,12 @@ import spoon.reflect.declaration.CtField;
 import spoon.reflect.path.CtRole;
 import spoon.reflect.visitor.filter.LineFilter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
- * 
  * @author Matias Martinez
- *
  */
 public class MappingAnalysis {
 
@@ -110,7 +107,7 @@ public class MappingAnalysis {
         }
 
         if (element.getRoleInParent().equals(CtRole.CONDITION) ||
-        //
+                //
                 (element.getRoleInParent().equals(CtRole.EXPRESSION) && !(element.getParent() instanceof CtReturn))) {
             return element;
         }
@@ -223,45 +220,45 @@ public class MappingAnalysis {
 
             return copiedIfTree;
         } else // || parentLine instanceof CtForEach
-        if (parentLine instanceof CtFor) {
+            if (parentLine instanceof CtFor) {
 
-            ITree copiedIfTree = lineTree.deepCopy();
+                ITree copiedIfTree = lineTree.deepCopy();
 
-            for (int i = lineTree.getChildren().size() - 1; i >= MappingAnalysis.MAX_CHILDREN_FOR; i--) {
-                // printMetadata(copiedIfTree, i);
+                for (int i = lineTree.getChildren().size() - 1; i >= MappingAnalysis.MAX_CHILDREN_FOR; i--) {
+                    // printMetadata(copiedIfTree, i);
 
-                copiedIfTree.getChildren().remove(i);
+                    copiedIfTree.getChildren().remove(i);
+                }
+                return copiedIfTree;
+            } else if (parentLine instanceof CtForEach) {
+
+                ITree copiedIfTree = lineTree.deepCopy();
+
+                for (int i = lineTree.getChildren().size() - 1; i >= MappingAnalysis.MAX_CHILDREN_FOREACH; i--) {
+                    // printMetadata(copiedIfTree, i);
+
+                    copiedIfTree.getChildren().remove(i);
+                }
+                return copiedIfTree;
+            } else if (parentLine instanceof CtDo) {
+
+                ITree copiedIfTree = lineTree.deepCopy();
+
+                for (int i = lineTree.getChildren().size() - 1; i >= MappingAnalysis.MAX_CHILDREN_DO; i--) {
+
+                    copiedIfTree.getChildren().remove(i);
+                }
+                return copiedIfTree;
+            } else if (parentLine instanceof CtSwitch) {
+
+                ITree copiedIfTree = lineTree.deepCopy();
+
+                for (int i = lineTree.getChildren().size() - 1; i >= MappingAnalysis.MAX_CHILDREN_SWITCH; i--) {
+
+                    copiedIfTree.getChildren().remove(i);
+                }
+                return copiedIfTree;
             }
-            return copiedIfTree;
-        } else if (parentLine instanceof CtForEach) {
-
-            ITree copiedIfTree = lineTree.deepCopy();
-
-            for (int i = lineTree.getChildren().size() - 1; i >= MappingAnalysis.MAX_CHILDREN_FOREACH; i--) {
-                // printMetadata(copiedIfTree, i);
-
-                copiedIfTree.getChildren().remove(i);
-            }
-            return copiedIfTree;
-        } else if (parentLine instanceof CtDo) {
-
-            ITree copiedIfTree = lineTree.deepCopy();
-
-            for (int i = lineTree.getChildren().size() - 1; i >= MappingAnalysis.MAX_CHILDREN_DO; i--) {
-
-                copiedIfTree.getChildren().remove(i);
-            }
-            return copiedIfTree;
-        } else if (parentLine instanceof CtSwitch) {
-
-            ITree copiedIfTree = lineTree.deepCopy();
-
-            for (int i = lineTree.getChildren().size() - 1; i >= MappingAnalysis.MAX_CHILDREN_SWITCH; i--) {
-
-                copiedIfTree.getChildren().remove(i);
-            }
-            return copiedIfTree;
-        }
 
         return lineTree;
 
@@ -275,7 +272,6 @@ public class MappingAnalysis {
     }
 
     /**
-     * 
      * @param diff
      * @param maction
      * @return
@@ -323,7 +319,7 @@ public class MappingAnalysis {
     }
 
     public static void computeLeftFromRight(Diff diff, List<ITree> followingInLeft,
-            List<ITree> followingSiblingsInRing) {
+                                            List<ITree> followingSiblingsInRing) {
         for (ITree siblingRight : followingSiblingsInRing) {
             // The mapped at the left
             ITree mappedSiblingLeft = getLeftFromRightNodeMapped(diff, siblingRight);
@@ -401,7 +397,7 @@ public class MappingAnalysis {
 
         return null;
     }
-    
+
     public static ITree getRightFromLeftNodeMapped(Diff diff, CtElement element) {
 
         ITree rightMoved = MappingAnalysis.getRightFromLeftNodeMapped(diff, (ITree) element.getMetadata("gtnode"));

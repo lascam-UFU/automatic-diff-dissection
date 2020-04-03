@@ -1,9 +1,5 @@
 package add.features.detector.repairpatterns;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import add.entities.RepairPatterns;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
@@ -13,6 +9,10 @@ import spoon.reflect.code.CtLiteral;
 import spoon.reflect.code.CtVariableAccess;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.DefaultJavaPrettyPrinter;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by tdurieux

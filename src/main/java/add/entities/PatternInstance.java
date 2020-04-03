@@ -1,18 +1,15 @@
 package add.entities;
 
+import com.github.gumtreediff.tree.ITree;
+import gumtree.spoon.diff.operations.Operation;
+import spoon.reflect.declaration.CtElement;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.github.gumtreediff.tree.ITree;
-
-import gumtree.spoon.diff.operations.Operation;
-import spoon.reflect.declaration.CtElement;
-
 /**
- * 
  * @author Matias Martinez
- *
  */
 public class PatternInstance {
 
@@ -25,7 +22,7 @@ public class PatternInstance {
     List<PropertyPair> metadata;
 
     public PatternInstance(String patternName, Operation op, CtElement nodeAffectedOp, CtElement faultyElement,
-            CtElement faultyLine, ITree tree, PropertyPair... metadata) {
+                           CtElement faultyLine, ITree tree, PropertyPair... metadata) {
         super();
         this.patternName = patternName;
         this.op = op;
@@ -37,7 +34,7 @@ public class PatternInstance {
     }
 
     public PatternInstance(String patternName, Operation op, CtElement nodeAffectedOp, List<CtElement> faultyStatements,
-            CtElement faultyLine, ITree faultyAST_Tree, PropertyPair... metadata) {
+                           CtElement faultyLine, ITree faultyAST_Tree, PropertyPair... metadata) {
         super();
         this.patternName = patternName;
         this.op = op;

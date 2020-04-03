@@ -1,16 +1,11 @@
 package add.features.detector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import com.github.gumtreediff.tree.ITree;
-
 import add.features.FeatureAnalyzer;
 import add.features.detector.repairpatterns.MappingAnalysis;
 import add.features.detector.spoon.SpoonHelper;
 import add.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import add.main.Config;
+import com.github.gumtreediff.tree.ITree;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;
 import gumtree.spoon.diff.operations.DeleteOperation;
@@ -20,6 +15,10 @@ import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
 import spoon.Launcher;
 import spoon.reflect.declaration.CtElement;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tdurieux
@@ -123,7 +122,7 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
 
     /**
      * The operation has the node in source. We find in the mapping the destination.
-     * 
+     *
      * @param editScript
      * @param operation
      * @param srcNode

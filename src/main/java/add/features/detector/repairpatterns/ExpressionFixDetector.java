@@ -1,16 +1,11 @@
 package add.features.detector.repairpatterns;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.github.gumtreediff.tree.ITree;
-
 import add.entities.PatternInstance;
 import add.entities.PropertyPair;
 import add.entities.RepairPatterns;
 import add.features.detector.spoon.LogicalExpressionAnalyzer;
 import add.features.detector.spoon.RepairPatternUtils;
+import com.github.gumtreediff.tree.ITree;
 import gumtree.spoon.builder.SpoonGumTreeBuilder;
 import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.MoveOperation;
@@ -32,13 +27,17 @@ import spoon.reflect.visitor.EarlyTerminatingScanner;
 import spoon.reflect.visitor.filter.LineFilter;
 import spoon.reflect.visitor.filter.TypeFilter;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Created by tdurieux
  */
 public class ExpressionFixDetector extends AbstractPatternDetector {
 
     public static final String BIN_OPERATOR_MODIF = "binOperatorModif";
-//    public static final String EXP_LOGIC_MOD = "expLogicMod";
+    //    public static final String EXP_LOGIC_MOD = "expLogicMod";
     public static final String EXP_LOGIC_REDUCE = "expLogicReduce";
     public static final String EXP_LOGIC_EXPAND = "expLogicExpand";
 
@@ -66,8 +65,7 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
             LineFilter filter = new LineFilter();
             if ((operation instanceof UpdateOperation)) {
                 CtElement dstNode = operation.getDstNode();
-                CtBinaryOperator binaryOperator = dstNode instanceof CtBinaryOperator ? (CtBinaryOperator) dstNode
-                        : dstNode.getParent(CtBinaryOperator.class);
+                CtBinaryOperator binaryOperator = dstNode instanceof CtBinaryOperator ? (CtBinaryOperator) dstNode : dstNode.getParent(CtBinaryOperator.class);
                 if (binaryOperator != null) {
 
                     CtBinaryOperator buggybinaryOperator = operation.getSrcNode() instanceof CtBinaryOperator
@@ -111,8 +109,7 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                         }
                     }
                 }
-                CtUnaryOperator unaryOperator = dstNode instanceof CtUnaryOperator ? (CtUnaryOperator) dstNode
-                        : dstNode.getParent(CtUnaryOperator.class);
+                CtUnaryOperator unaryOperator = dstNode instanceof CtUnaryOperator ? (CtUnaryOperator) dstNode : dstNode.getParent(CtUnaryOperator.class);
                 if (unaryOperator != null) {
                     if (unaryOperators.contains(unaryOperator.getKind())) {
                         // repairPatterns.incrementFeatureCounter("expArithMod", operation);
@@ -207,26 +204,26 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                         CtElement parentLine = MappingAnalysis.getParentLine(filter, suspLeft.get(0));
                         ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
                         ///
-                        
-                        CtElement susplogical=suspLeft.get(0);
-                        
-                        List<CtExpression> allrootlogicalexpers=LogicalExpressionAnalyzer.getAllRootLogicalExpressions(parentLine);
-                        
-                        for(int index=0; index<allrootlogicalexpers.size(); index++) {
-                            
-                            CtExpression experunderstudy=allrootlogicalexpers.get(index);
+
+                        CtElement susplogical = suspLeft.get(0);
+
+                        List<CtExpression> allrootlogicalexpers = LogicalExpressionAnalyzer.getAllRootLogicalExpressions(parentLine);
+
+                        for (int index = 0; index < allrootlogicalexpers.size(); index++) {
+
+                            CtExpression experunderstudy = allrootlogicalexpers.get(index);
                             List<CtExpression> expressionssFromFaultyLine = experunderstudy.getElements(e -> (e instanceof CtExpression)).stream()
                                     .map(CtExpression.class::cast).collect(Collectors.toList());
-                            
-                            if(expressionssFromFaultyLine.contains(susplogical)) {
-                                susplogical=experunderstudy;
+
+                            if (expressionssFromFaultyLine.contains(susplogical)) {
+                                susplogical = experunderstudy;
                                 break;
                             }
                         }
-                        
+
 //                        repairPatterns.incrementFeatureCounterInstance(EXP_LOGIC_EXPAND, new PatternInstance(
 //                                EXP_LOGIC_EXPAND, operation, parentBinaryOperator, suspLeft, parentLine, lineTree));
-                        
+
                         repairPatterns.incrementFeatureCounterInstance(EXP_LOGIC_EXPAND, new PatternInstance(
                                 EXP_LOGIC_EXPAND, operation, parentBinaryOperator, susplogical, parentLine, lineTree));
 
@@ -248,26 +245,26 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                         CtElement parentLine = MappingAnalysis.getParentLine(filter, binary);
 
                         ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
-                        
-                        CtElement susplogical= removedNode;
-                        
-                        List<CtExpression> allrootlogicalexpers=LogicalExpressionAnalyzer.getAllRootLogicalExpressions(parentLine);
-                        
-                        for(int index=0; index<allrootlogicalexpers.size(); index++) {
-                            
-                            CtExpression experunderstudy=allrootlogicalexpers.get(index);
+
+                        CtElement susplogical = removedNode;
+
+                        List<CtExpression> allrootlogicalexpers = LogicalExpressionAnalyzer.getAllRootLogicalExpressions(parentLine);
+
+                        for (int index = 0; index < allrootlogicalexpers.size(); index++) {
+
+                            CtExpression experunderstudy = allrootlogicalexpers.get(index);
                             List<CtExpression> expressionssFromFaultyLine = experunderstudy.getElements(e -> (e instanceof CtExpression)).stream()
                                     .map(CtExpression.class::cast).collect(Collectors.toList());
-                            
-                            if(expressionssFromFaultyLine.contains(susplogical)) {
-                                susplogical=experunderstudy;
+
+                            if (expressionssFromFaultyLine.contains(susplogical)) {
+                                susplogical = experunderstudy;
                                 break;
                             }
                         }
-                        
+
 //                        repairPatterns.incrementFeatureCounterInstance(EXP_LOGIC_REDUCE, new PatternInstance(
 //                                EXP_LOGIC_REDUCE, operation, affected, removedNode, parentLine, lineTree));
-                        
+
                         repairPatterns.incrementFeatureCounterInstance(EXP_LOGIC_REDUCE, new PatternInstance(
                                 EXP_LOGIC_REDUCE, operation, affected, susplogical, parentLine, lineTree));
 
