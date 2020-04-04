@@ -180,8 +180,10 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                                     if (newElementReplacementOfTheVar instanceof CtVariableRead) {
 
-                                        if (whethervariablenewlydeclared((CtVariableRead) newElementReplacementOfTheVar))
-                                            continue;
+                                        // Martin comments this if/contniue because it breaks WrongReferenceDetectorTest.math64
+                                        // to maximize backward compatbility
+//                                        if (whethervariablenewlydeclared((CtVariableRead) newElementReplacementOfTheVar))
+//                                            continue;
                                     }
 
                                     if (newElementReplacementOfTheVar instanceof CtVariableWrite) {
