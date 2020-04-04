@@ -33,12 +33,11 @@ public class SingleLineDetector extends AbstractPatternDetector {
 
         MetricExtractor extractor = new MetricExtractor(this.config);
         Metrics metrics = extractor.analyze();
-        if (metrics.getFeatureCounter("patchSize") == 1) {
+        if (metrics.getFeatureCounter("patchSizeCodeOnly") == 1) {
             wasPatternFound = true;
         } else {
             if (metrics.getFeatureCounter("spreadingCodeOnly") == 0) {
-                List<Operation> operationsWithoutMoveOperation = RepairPatternUtils
-                        .getOperationsWithoutMoveOperation(this.operations);
+                List<Operation> operationsWithoutMoveOperation = RepairPatternUtils.getOperationsWithoutMoveOperation(this.operations);
                 if (operationsWithoutMoveOperation.size() == 1) {
                     Operation operation = operationsWithoutMoveOperation.get(0);
                     if (operation instanceof InsertOperation || operation instanceof DeleteOperation) {
@@ -68,14 +67,14 @@ public class SingleLineDetector extends AbstractPatternDetector {
                 if (this.operations.size() == 1 && this.operations.get(0) instanceof MoveOperation) {
                     CtElement srcNode = this.operations.get(0).getSrcNode();
                     List<CtStatement> statements = srcNode.getElements(new LineFilter());
-                    if (statements.size() == 1 || metrics.getFeatureCounter("patchSize") == 2) {
+                    if (statements.size() == 1 || metrics.getFeatureCounter("patchSizeCodeOnly") == 2) {
                         wasPatternFound = true;
                     }
                 }
             }
         }
         if (wasPatternFound) {
-            repairPatterns.incrementFeatureCounter("singleLine", null);// MM
+            repairPatterns.incrementFeatureCounter("singleLine");
         }
     }
 
