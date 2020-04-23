@@ -1013,12 +1013,10 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
         CtStatement oldparent = oldexpression.getParent(new LineFilter());
         CtStatement newparent = newexpression.getParent(new LineFilter());
 
-        if ((RepairPatternUtils.getElementInOld(diff, newparent) != null &&
-                RepairPatternUtils.getElementInOld(diff, newparent) == oldparent
-        ) ||
-                (oldparent instanceof CtInvocation && newparent instanceof CtAssignment))
+        if ((RepairPatternUtils.getElementInOld(diff, newparent) != null && RepairPatternUtils.getElementInOld(diff, newparent) == oldparent) || (oldparent instanceof CtInvocation && newparent instanceof CtAssignment)) {
             return true;
-        else return false;
+        }
+        return false;
     }
 
     public void detectConstantChange(List<CtExpression> invocationArgumentsold, List<CtExpression> invocationArgumentsnew,

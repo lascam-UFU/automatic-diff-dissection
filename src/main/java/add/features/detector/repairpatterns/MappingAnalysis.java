@@ -33,12 +33,12 @@ public class MappingAnalysis {
 
     // Those represent the max number of children we want to show in the AST i.e.,
     // the first X children from the list of children.
-    public final static int MAX_CHILDREN_WHILE = 1;
-    public final static int MAX_CHILDREN_DO = 1;
-    public final static int MAX_CHILDREN_FOR = 3;
-    public final static int MAX_CHILDREN_IF = 1;
-    public final static int MAX_CHILDREN_FOREACH = 2;
-    public final static int MAX_CHILDREN_SWITCH = 1;
+    public static final int MAX_CHILDREN_WHILE = 1;
+    public static final int MAX_CHILDREN_DO = 1;
+    public static final int MAX_CHILDREN_FOR = 3;
+    public static final int MAX_CHILDREN_IF = 1;
+    public static final int MAX_CHILDREN_FOREACH = 2;
+    public static final int MAX_CHILDREN_SWITCH = 1;
 
     public static ITree getParentInSource(Diff diff, Action affectedAction) {
         ITree affected = null;

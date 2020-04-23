@@ -309,9 +309,8 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                                     repairPatterns.incrementFeatureCounterInstance(WRAPS_TRY_CATCH,
                                             new PatternInstance(WRAPS_TRY_CATCH, operation, ctTry, olds, lineP, lineTree));
                                 } else {
-                                ITree tryTree = (ITree) ctTry.getMetadata("gtnode");
-                                repairPatterns.incrementFeatureCounterInstance(UNWRAP_TRY_CATCH,
-                                        new PatternInstance(UNWRAP_TRY_CATCH, operation, ctTry, ctTry, ctTry, tryTree));
+                                    ITree tryTree = (ITree) ctTry.getMetadata("gtnode");
+                                    repairPatterns.incrementFeatureCounterInstance(UNWRAP_TRY_CATCH, new PatternInstance(UNWRAP_TRY_CATCH, operation, ctTry, ctTry, ctTry, tryTree));
                                 }
                         } else { // try to find a move into the body of the try
                             for (Operation operationAux : this.operations) {
@@ -554,12 +553,10 @@ public class WrapsWithDetector extends AbstractPatternDetector {
         CtStatement oldparent = oldexpression.getParent(new LineFilter());
         CtStatement newparent = newexpression.getParent(new LineFilter());
 
-        if ((RepairPatternUtils.getElementInOld(diff, newparent) != null &&
-                RepairPatternUtils.getElementInOld(diff, newparent) == oldparent
-        ) ||
-                (oldparent instanceof CtInvocation && newparent instanceof CtAssignment))
+        if ((RepairPatternUtils.getElementInOld(diff, newparent) != null && RepairPatternUtils.getElementInOld(diff, newparent) == oldparent) || (oldparent instanceof CtInvocation && newparent instanceof CtAssignment)) {
             return true;
-        else return false;
+        }
+        return false;
     }
 
     private void detectWrapsLoop(Operation operation, RepairPatterns repairPatterns) {

@@ -11,7 +11,6 @@ import spoon.Launcher;
 import spoon.compiler.Environment;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.visitor.DefaultJavaPrettyPrinter;
-import spoon.support.compiler.VirtualFile;
 
 import java.io.File;
 import java.util.List;
