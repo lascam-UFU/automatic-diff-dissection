@@ -2,7 +2,6 @@ package add.features.detector.repairpatterns;
 
 import add.entities.RepairPatterns;
 import add.features.detector.spoon.RepairPatternUtils;
-import com.github.gumtreediff.actions.model.Move;
 import gumtree.spoon.diff.operations.MoveOperation;
 import gumtree.spoon.diff.operations.Operation;
 import spoon.reflect.code.CtBlock;
