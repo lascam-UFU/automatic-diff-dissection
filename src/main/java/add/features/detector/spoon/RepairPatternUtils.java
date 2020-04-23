@@ -440,7 +440,7 @@ public class RepairPatternUtils {
         boolean allSamePosition = true;
         int position = operations.get(0).getSrcNode().getPosition().getLine();
         for (int i = 1; i < operations.size(); i++) {
-            if (operations.get(i).getSrcNode().getPosition().getLine() != position) {
+            if (operations.get(i).getSrcNode().getPosition() instanceof NoSourcePosition || operations.get(i).getSrcNode().getPosition().getLine() != position) {
                 allSamePosition = false;
                 break;
             }
