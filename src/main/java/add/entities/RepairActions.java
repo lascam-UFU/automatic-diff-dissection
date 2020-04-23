@@ -1,6 +1,6 @@
 package add.entities;
 
-import fr.inria.coming.utils.MapList;
+import add.main.MapList;
 import spoon.reflect.declaration.CtElement;
 
 /**
@@ -69,7 +69,6 @@ public class RepairActions extends Feature {
     @FeatureAnnotation(key = "mcRepl", name = "Method call replacement")
     private int mcRepl = 0;
 
-    // TODO
     @FeatureAnnotation(key = "mcMove", name = "Method call moving")
     private int mcMove = 0;
 
@@ -166,7 +165,4 @@ public class RepairActions extends Feature {
     @FeatureAnnotation(key = "tyImpInterf", name = "Type implemented interface modification")
     private int tyImpInterf = 0;
 
-    public MapList<String, CtElement> getElementPerFeature() {
-        return elementPerFeature;
-    }
 }

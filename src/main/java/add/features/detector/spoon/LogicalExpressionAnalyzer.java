@@ -205,8 +205,7 @@ public class LogicalExpressionAnalyzer {
 
         if (currentElement.getParent() instanceof CtFor) {
             CtFor forcond = (CtFor) currentElement.getParent();
-            if (currentElement.equals(forcond.getExpression()))
-                return true;
+            return currentElement.equals(forcond.getExpression());
         }
 
         return false;

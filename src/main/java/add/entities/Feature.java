@@ -15,8 +15,6 @@ public abstract class Feature {
 
     private Config config;
 
-    @SuppressWarnings("rawtypes")
-
     public void setConfig(Config config) {
         this.config = config;
     }
@@ -27,7 +25,6 @@ public abstract class Feature {
             field.setAccessible(true);
             int value = (int) field.get(this);
             field.set(this, value + 1);
-
         } catch (IllegalAccessException | NoSuchFieldException e) {
             throw new IllegalArgumentException("Feature not found: " + key, e);
         }
@@ -91,8 +88,7 @@ public abstract class Feature {
         if (config != null) {
             json.put("bugId", this.config.getBugId());
         }
-        json.put(Character.toLowerCase(this.getClass().getSimpleName().charAt(0))
-                + this.getClass().getSimpleName().substring(1), jsonObjectFeatures);
+        json.put(Character.toLowerCase(this.getClass().getSimpleName().charAt(0)) + this.getClass().getSimpleName().substring(1), jsonObjectFeatures);
         return json;
     }
 
@@ -100,5 +96,4 @@ public abstract class Feature {
     public String toString() {
         return toJson().toString(2);
     }
-
 }

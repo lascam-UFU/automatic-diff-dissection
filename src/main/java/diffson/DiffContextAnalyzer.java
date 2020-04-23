@@ -3,9 +3,10 @@ package diffson;
 import add.entities.PatternInstance;
 import add.entities.RepairPatterns;
 import add.features.detector.EditScriptBasedDetector;
-import add.features.detector.repairpatterns.MappingAnalysis;
 import add.features.detector.repairpatterns.RepairPatternDetector;
+import add.features.detector.spoon.MappingAnalysis;
 import add.main.Config;
+import add.main.MapList;
 import add.main.TimeChrono;
 import com.github.gumtreediff.tree.ITree;
 import com.google.gson.Gson;
@@ -13,9 +14,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import fr.inria.coming.codefeatures.Cntx;
-import fr.inria.coming.codefeatures.CodeFeatureDetector;
-import fr.inria.coming.utils.MapList;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.builder.Json4SpoonGenerator;
 import gumtree.spoon.builder.SpoonGumTreeBuilder;
@@ -374,45 +372,10 @@ public class DiffContextAnalyzer {
     }
 
     /**
-     * @param operation
-     * @param cresolver
-     * @param opContext
-     * @param diff
-     */
-
-    @SuppressWarnings({"unchecked", "unused", "rawtypes"})
-    private void seInformation(Operation operation, CodeFeatureDetector cresolver, JsonObject opContext, Diff diff, CtElement affectedelement
-            , ReturnTypePainter painter) {
-
-        Cntx bugContext = new Cntx<>();
-
-        CtElement affectedCtElement = null;
-
-        if (operation instanceof MoveOperation || operation instanceof DeleteOperation || operation instanceof UpdateOperation) {
-
-            CtElement affected = operation.getSrcNode();
-            affectedCtElement = affected;
-        } else if (operation instanceof InsertOperation) {
-            CtElement oldLocation = ((InsertOperation) operation).getParent();
-            affectedCtElement = oldLocation;
-        }
-
-        if (affectedCtElement != null) {
-            Cntx iContext = cresolver.analyzeFeatures(affectedelement, painter.getAllExpressions(),
-                    painter.getRootLogicalExpressions(), painter.getAllBinaryOperators());
-            opContext.add("cntx", iContext.toJSON());
-        }
-
-    }
-
-    CodeFeatureDetector cresolver = new CodeFeatureDetector();
-
-    /**
      * @param diff
      * @param operations
      * @param patternsPerOp
      * @param repairactionPerOp
-     * @param patternInstances
      * @return
      */
     public JsonArray calculateJSONAffectedStatementList(Diff diff, List<Operation> operations,
@@ -486,10 +449,6 @@ public class DiffContextAnalyzer {
             jsonInstance.add("faulty_ast", affected);
 
             ast_affected.add(jsonInstance);
-
-            JsonObject opContext = getContextInformation(diff, cresolver, opi, getAffectedCtElement, painterforreturn);
-
-            jsonInstance.add("context", opContext);
         }
 
         return ast_affected;
@@ -581,15 +540,6 @@ public class DiffContextAnalyzer {
             return (element);
     }
 
-    public JsonObject getContextInformation(Diff diff, CodeFeatureDetector cresolver, Operation opi,
-                                            CtElement getAffectedCtElement, ReturnTypePainter painter) {
-
-        JsonObject opContext = new JsonObject();
-
-        seInformation(opi, cresolver, opContext, diff, getAffectedCtElement, painter);
-
-        return opContext;
-    }
 
     private List<PatternInstance> merge(List<PatternInstance> patternInstancesOriginal) {
 

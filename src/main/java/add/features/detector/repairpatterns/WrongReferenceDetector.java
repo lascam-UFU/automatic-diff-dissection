@@ -3,6 +3,7 @@ package add.features.detector.repairpatterns;
 import add.entities.PatternInstance;
 import add.entities.PropertyPair;
 import add.entities.RepairPatterns;
+import add.features.detector.spoon.MappingAnalysis;
 import add.features.detector.spoon.RepairPatternUtils;
 import add.features.detector.spoon.SpoonHelper;
 import add.features.detector.spoon.filter.NullCheckFilter;
@@ -44,6 +45,9 @@ import spoon.reflect.visitor.filter.TypeFilter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by tdurieux
+ */
 public class WrongReferenceDetector extends AbstractPatternDetector {
 
     public static final String WRONG_VAR_REF = "wrongVarRef";
@@ -66,20 +70,19 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
     @Override
     public void detect(RepairPatterns repairPatterns) {
 
-        List<CtElement> alreadyconsidered = new ArrayList<CtElement>();
+        List<CtElement> alreadyConsidered = new ArrayList<CtElement>();
 
         for (int i = 0; i < operations.size(); i++) {
-
             Operation operation = operations.get(i);
             if (operation instanceof DeleteOperation) {
-                Operation operationDelete = operation;
-                CtElement srcNode = operationDelete.getSrcNode();
-                if (srcNode instanceof CtVariableAccess
-                        || srcNode instanceof CtInvocation || srcNode instanceof CtConstructorCall ||
+                CtElement srcNode = operation.getSrcNode();
+                if (srcNode instanceof CtVariableAccess ||
+                        srcNode instanceof CtInvocation ||
+                        srcNode instanceof CtConstructorCall ||
                         srcNode instanceof CtTypeAccess) {
                     if (srcNode.getMetadata("delete") != null) {
                         CtElement statementParent = srcNode.getParent(CtStatement.class);
-                        if (statementParent.getMetadata("delete") == null) {
+                        if (statementParent != null && statementParent.getMetadata("delete") == null) {
                             CtElement newElementReplacementOfTheVar = null;
                             boolean wasVariableWrapped = false;
                             boolean wasVarUnWrapted = false;
@@ -92,7 +95,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                             if (srcNode.getParent() == ((InsertOperation) operation2).getParent()) {
                                                 wasVariableWrapped = whethervarwrapped(srcNode, node2);
                                                 if (wasVariableWrapped)
-                                                    alreadyconsidered.add(node2);
+                                                    alreadyConsidered.add(node2);
                                             }
                                         }
                                     }
@@ -104,7 +107,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                                 if (srcNode.getParent() == ((InsertOperation) operation2).getParent()) {
                                                     wasVarUnWrapted = whethervarunwrapped(srcNode, node2);
                                                     if (wasVarUnWrapted)
-                                                        alreadyconsidered.add(node2);
+                                                        alreadyConsidered.add(node2);
                                                 }
                                             }
                                         }
@@ -118,9 +121,9 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                     CtElement node2 = operation2.getSrcNode();
 
                                     if (srcNode.getParent() == ((InsertOperation) operation2).getParent()
-                                            && !alreadyconsidered.contains(node2)) {
+                                            && !alreadyConsidered.contains(node2)) {
                                         newElementReplacementOfTheVar = node2;
-                                        alreadyconsidered.add(node2);
+                                        alreadyConsidered.add(node2);
                                         break;
                                     }
                                 }
@@ -134,10 +137,10 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                             if (!wasVariableWrapped && !wasVarUnWrapted) {
 
-                                CtElement susp = operationDelete.getSrcNode();
+                                CtElement susp = operation.getSrcNode();
                                 CtElement patch = null;
 
-                                ITree parentRight = MappingAnalysis.getParentInRight(diff, operationDelete.getAction());
+                                ITree parentRight = MappingAnalysis.getParentInRight(diff, operation.getAction());
                                 if (parentRight != null) {
                                     patch = (CtElement) parentRight.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
                                 }
@@ -223,16 +226,16 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                                                 if (!srcCallMethodName.equals(dstCallMethodName)) {
                                                     repairPatterns.incrementFeatureCounterInstance(WRONG_METHOD_REF,
-                                                            new PatternInstance(WRONG_METHOD_REF, operationDelete, patch, susp, parentLine,
+                                                            new PatternInstance(WRONG_METHOD_REF, operation, patch, susp, parentLine,
                                                                     lineTree, new PropertyPair("Change", "differentMethodName")));
 
                                                 } else {
                                                     repairPatterns.incrementFeatureCounterInstance(WRONG_METHOD_REF,
-                                                            new PatternInstance(WRONG_METHOD_REF, operationDelete, patch, susp, parentLine,
+                                                            new PatternInstance(WRONG_METHOD_REF, operation, patch, susp, parentLine,
                                                                     lineTree, new PropertyPair("Change", "SameNamedifferentArgument")));
                                                 }
                                             } else
-                                                repairPatterns.incrementFeatureCounterInstance(WRONG_METHOD_REF, new PatternInstance(WRONG_METHOD_REF, operationDelete, patch, susp,
+                                                repairPatterns.incrementFeatureCounterInstance(WRONG_METHOD_REF, new PatternInstance(WRONG_METHOD_REF, operation, patch, susp,
                                                         parentLine, lineTree, metadata));
                                         }
 
@@ -276,17 +279,17 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                                                 if (!originalconstructorname.equals(newconstructorname)) {
                                                     repairPatterns.incrementFeatureCounterInstance(WRONG_METHOD_REF,
-                                                            new PatternInstance(WRONG_METHOD_REF, operationDelete, patch, susp, parentLine,
+                                                            new PatternInstance(WRONG_METHOD_REF, operation, patch, susp, parentLine,
                                                                     lineTree, new PropertyPair("Change", "differentMethodName")));
 
                                                 } else {
                                                     repairPatterns.incrementFeatureCounterInstance(WRONG_METHOD_REF,
-                                                            new PatternInstance(WRONG_METHOD_REF, operationDelete, patch, susp, parentLine,
+                                                            new PatternInstance(WRONG_METHOD_REF, operation, patch, susp, parentLine,
                                                                     lineTree, new PropertyPair("Change", "SameNamedifferentArgument")));
                                                 }
                                             } else
                                                 repairPatterns.incrementFeatureCounterInstance(WRONG_METHOD_REF,
-                                                        new PatternInstance(WRONG_METHOD_REF, operationDelete, patch, susp,
+                                                        new PatternInstance(WRONG_METHOD_REF, operation, patch, susp,
                                                                 parentLine, lineTree, metadata));
                                         }
 
@@ -312,7 +315,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                         }
                                     } else
                                         repairPatterns.incrementFeatureCounterInstance(WRONG_VAR_REF,
-                                                new PatternInstance(WRONG_VAR_REF, operationDelete, patch, susp, parentLine,
+                                                new PatternInstance(WRONG_VAR_REF, operation, patch, susp, parentLine,
                                                         lineTree, metadata));
                                 }
 
@@ -321,7 +324,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                         CtElement susp_parent = susp.getParent();
                                         if (!whetherparentchanged(susp_parent) && whetherargumentnumberdifferent(susp_parent)) {
                                             repairPatterns.incrementFeatureCounterInstance(WRONG_METHOD_REF,
-                                                    new PatternInstance(WRONG_METHOD_REF, operationDelete, patch, susp_parent,
+                                                    new PatternInstance(WRONG_METHOD_REF, operation, patch, susp_parent,
                                                             parentLine, lineTree, new PropertyPair("Change", "SameNamedifferentArgument")));
                                         }
                                     }
@@ -336,30 +339,27 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                 CtElement srcNode = operation.getSrcNode();
                 CtElement dstNode = operation.getDstNode();
 
-                if (dstNode.getParent().getMetadata("new") != null
-                        || dstNode.getParent().getMetadata("isMoved") != null) {
+                if (dstNode.getParent().getMetadata("new") != null ||
+                        dstNode.getParent().getMetadata("isMoved") != null) {
                     continue;
                 }
-                if (srcNode.getParent().getMetadata("new") != null
-                        || srcNode.getParent().getMetadata("isMoved") != null) {
+                if (srcNode.getParent().getMetadata("new") != null ||
+                        srcNode.getParent().getMetadata("isMoved") != null) {
                     continue;
                 }
 
                 if (srcNode instanceof CtVariableAccess || srcNode instanceof CtTypeAccess) {
-                    if (operation.getDstNode() instanceof CtVariableAccess
-                            || operation.getDstNode() instanceof CtTypeAccess
-                    ) {
-
+                    if (operation.getDstNode() instanceof CtVariableAccess || operation.getDstNode() instanceof CtTypeAccess) {
                         if (srcNode instanceof CtVariableAccess && operation.getDstNode() instanceof CtVariableAccess) {
-
-                            if (whethervariableDeclarationUpdated((CtVariableAccess) srcNode, (CtVariableAccess) operation.getDstNode()))
+                            if (whethervariableDeclarationUpdated((CtVariableAccess) srcNode, (CtVariableAccess) operation.getDstNode())) {
                                 continue;
-
-                            if (whethervariablenewlydeclared((CtVariableAccess) operation.getDstNode()))
+                            }
+                            if (whethervariablenewlydeclared((CtVariableAccess) operation.getDstNode())) {
                                 continue;
-
-                            if (whethervariabledecalarationdeleted((CtVariableAccess) srcNode))
+                            }
+                            if (whethervariabledecalarationdeleted((CtVariableAccess) srcNode)) {
                                 continue;
+                            }
                         }
 
                         CtElement susp = operation.getSrcNode();
@@ -808,9 +808,8 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
             }
 
             if (oldelement instanceof CtConstructorCall && newelement instanceof CtConstructorCall) {
-                if (((CtConstructorCall) oldelement).getExecutable().getSignature().
-                        equals(((CtConstructorCall) newelement).getExecutable().getSignature()))
-                    return true;
+                return ((CtConstructorCall) oldelement).getExecutable().getSignature().
+                        equals(((CtConstructorCall) newelement).getExecutable().getSignature());
             }
         }
 
@@ -995,11 +994,9 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
         CtStatement oldparent = oldexpression.getParent(new LineFilter());
         CtStatement newparent = newexpression.getParent(new LineFilter());
 
-        if ((RepairPatternUtils.getElementInOld(diff, newparent) != null &&
+        return (RepairPatternUtils.getElementInOld(diff, newparent) != null &&
                 RepairPatternUtils.getElementInOld(diff, newparent) == oldparent) ||
-                (oldparent instanceof CtConstructorCall && newparent instanceof CtAssignment))
-            return true;
-        else return false;
+                (oldparent instanceof CtConstructorCall && newparent instanceof CtAssignment);
     }
 
     private boolean whetherconsinderthemethodunrap(CtExpression oldexpression, CtInvocation ctInvocation) {
@@ -1013,10 +1010,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
         CtStatement oldparent = oldexpression.getParent(new LineFilter());
         CtStatement newparent = newexpression.getParent(new LineFilter());
 
-        if ((RepairPatternUtils.getElementInOld(diff, newparent) != null && RepairPatternUtils.getElementInOld(diff, newparent) == oldparent) || (oldparent instanceof CtInvocation && newparent instanceof CtAssignment)) {
-            return true;
-        }
-        return false;
+        return (RepairPatternUtils.getElementInOld(diff, newparent) != null && RepairPatternUtils.getElementInOld(diff, newparent) == oldparent) || (oldparent instanceof CtInvocation && newparent instanceof CtAssignment);
     }
 
     public void detectConstantChange(List<CtExpression> invocationArgumentsold, List<CtExpression> invocationArgumentsnew,
@@ -1227,7 +1221,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                 ITree lineTree = null;
                                 if (!susp.isEmpty()) {
 
-                                    lineP = MappingAnalysis.getParentLine(new LineFilter(), (CtElement) susp.get(0));
+                                    lineP = MappingAnalysis.getParentLine(new LineFilter(), susp.get(0));
                                     lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
 
                                 } else {
@@ -1554,14 +1548,14 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                     if (((CtParameter) insertedNode).getSimpleName().equals(variableaccess.getVariable().getSimpleName())) {
 
-                        CtMethod parentParameter = ((CtParameter) insertedNode).getParent(CtMethod.class);
+                        CtMethod parentParameter = insertedNode.getParent(CtMethod.class);
 
                         CtMethod parentVarAccess = variableaccess.getParent(CtMethod.class);
 
                         if (parentParameter != null && parentVarAccess != null && parentParameter.equals(parentVarAccess))
                             return true;
 
-                        CtConstructor parentParameterConstructor = ((CtParameter) insertedNode).getParent(CtConstructor.class);
+                        CtConstructor parentParameterConstructor = insertedNode.getParent(CtConstructor.class);
 
                         CtConstructor parentVarAccessConstructor = variableaccess.getParent(CtConstructor.class);
 
@@ -1575,14 +1569,14 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                     if (((CtLocalVariable) insertedNode).getSimpleName().equals(variableaccess.getVariable().getSimpleName())) {
 
-                        CtMethod parentLocalVariable = ((CtLocalVariable) insertedNode).getParent(CtMethod.class);
+                        CtMethod parentLocalVariable = insertedNode.getParent(CtMethod.class);
 
                         CtMethod parentVarAccess = variableaccess.getParent(CtMethod.class);
 
                         if (parentLocalVariable != null && parentVarAccess != null && parentLocalVariable.equals(parentVarAccess))
                             return true;
 
-                        CtConstructor parentLocalVariableConstructor = ((CtLocalVariable) insertedNode).getParent(CtConstructor.class);
+                        CtConstructor parentLocalVariableConstructor = insertedNode.getParent(CtConstructor.class);
 
                         CtConstructor parentVarAccessConstructor = variableaccess.getParent(CtConstructor.class);
 
@@ -1613,14 +1607,14 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                     if (((CtParameter) deleteNode).getSimpleName().equals(variableaccess.getVariable().getSimpleName())) {
 
-                        CtMethod parentParameter = ((CtParameter) deleteNode).getParent(CtMethod.class);
+                        CtMethod parentParameter = deleteNode.getParent(CtMethod.class);
 
                         CtMethod parentVarAccess = variableaccess.getParent(CtMethod.class);
 
                         if (parentParameter != null && parentVarAccess != null && parentParameter.equals(parentVarAccess))
                             return true;
 
-                        CtConstructor parentParameterConstructor = ((CtParameter) deleteNode).getParent(CtConstructor.class);
+                        CtConstructor parentParameterConstructor = deleteNode.getParent(CtConstructor.class);
 
                         CtConstructor parentVarAccessConstructor = variableaccess.getParent(CtConstructor.class);
 
@@ -1634,14 +1628,14 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                     if (((CtLocalVariable) deleteNode).getSimpleName().equals(variableaccess.getVariable().getSimpleName())) {
 
-                        CtMethod parentLocalVariable = ((CtLocalVariable) deleteNode).getParent(CtMethod.class);
+                        CtMethod parentLocalVariable = deleteNode.getParent(CtMethod.class);
 
                         CtMethod parentVarAccess = variableaccess.getParent(CtMethod.class);
 
                         if (parentLocalVariable != null && parentVarAccess != null && parentLocalVariable.equals(parentVarAccess))
                             return true;
 
-                        CtConstructor parentLocalVariableConstructor = ((CtLocalVariable) deleteNode).getParent(CtConstructor.class);
+                        CtConstructor parentLocalVariableConstructor = deleteNode.getParent(CtConstructor.class);
 
                         CtConstructor parentVarAccessConstructor = variableaccess.getParent(CtConstructor.class);
 
@@ -1891,9 +1885,8 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
             if (treeoldcon != null) {
                 CtElement newcon = (CtElement) treeoldcon.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
 
-                if (newcon != null && newcon instanceof CtConstructorCall && ((CtConstructorCall) inputelement).getArguments().size()
-                        != ((CtConstructorCall) newcon).getArguments().size())
-                    return true;
+                return newcon != null && newcon instanceof CtConstructorCall && ((CtConstructorCall) inputelement).getArguments().size()
+                        != ((CtConstructorCall) newcon).getArguments().size();
             }
         }
 

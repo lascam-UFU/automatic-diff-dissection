@@ -2,6 +2,7 @@ package add.features.detector.repairpatterns;
 
 import add.entities.PatternInstance;
 import add.entities.RepairPatterns;
+import add.features.detector.spoon.MappingAnalysis;
 import add.features.detector.spoon.RepairPatternUtils;
 import com.github.gumtreediff.tree.ITree;
 import gumtree.spoon.builder.SpoonGumTreeBuilder;
@@ -34,15 +35,6 @@ public class AssigmentDetector extends AbstractPatternDetector {
             if (!(operation instanceof InsertOperation) || !(operation.getSrcNode() instanceof CtAssignment)) {
                 continue;
             }
-            InsertOperation opInsert = (InsertOperation) operation;
-            // CtElement dstNode = operation.getDstNode();
-            CtElement dstParent = opInsert.getParent();
-            if (dstParent instanceof CtBlock) {
-                if (dstParent.getMetadata("new") != null) {
-                    continue;
-                }
-                dstParent = dstParent.getParent();
-            }
             CtElement srcNode = operation.getSrcNode();
             CtElement srcParent = srcNode.getParent();
             if (srcParent instanceof CtBlock) {
@@ -65,8 +57,7 @@ public class AssigmentDetector extends AbstractPatternDetector {
 
             List<ITree> treeInLeft = MappingAnalysis.getFollowStatementsInLeft(diff, operationIns.getAction());
             if (treeInLeft.isEmpty()) {
-                System.out.println("Problems: follow in empty");
-                return;
+                continue;
             }
 
             List<CtElement> followCtElementsInLeft = new ArrayList<>();
@@ -82,9 +73,12 @@ public class AssigmentDetector extends AbstractPatternDetector {
             followCtElementsInLeft.add(associatedLeftCtElement);
 
             repairPatterns.incrementFeatureCounterInstance(ADD_ASSIGNMENT,
-                    new PatternInstance(ADD_ASSIGNMENT, operation, operation.getSrcNode(),
-
-                            followCtElementsInLeft, associatedLeftCtElement, suspiciousTree));
+                    new PatternInstance(ADD_ASSIGNMENT,
+                            operation,
+                            operation.getSrcNode(),
+                            followCtElementsInLeft,
+                            associatedLeftCtElement,
+                            suspiciousTree));
 
         }
     }

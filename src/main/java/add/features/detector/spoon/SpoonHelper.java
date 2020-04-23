@@ -28,10 +28,6 @@ public class SpoonHelper {
         spoon.getEnvironment().setAutoImports(false);
         spoon.getEnvironment().setCommentEnabled(false);
         for (String path : files.keySet()) {
-            String fileContent = String.join(Constants.LINE_BREAK, files.get(path))
-                    .replace("import javax.annotation.Nullable", "// import javax.annotation.Nullable")
-                    .replace("import javax.annotation.CheckForNull", "// import javax.annotation.CheckForNull");
-            System.out.println(path);
             spoon.getModelBuilder().addInputSource(new File(path));
         }
         spoon.buildModel();
@@ -41,8 +37,7 @@ public class SpoonHelper {
 
     public static Diff getAstDiff(Launcher oldSpoon, Launcher newSpoon) {
         AstComparator diff = new AstComparator();
-        return diff.compare(oldSpoon.getFactory().getModel().getRootPackage(),
-                newSpoon.getFactory().getModel().getRootPackage());
+        return diff.compare(oldSpoon.getFactory().getModel().getRootPackage(), newSpoon.getFactory().getModel().getRootPackage());
     }
 
     public static void printInsertOrDeleteOperation(Environment env, CtElement element, Operation operation) {
@@ -61,9 +56,9 @@ public class SpoonHelper {
     }
 
     public static void printUpdateOperation(CtElement srcNode, CtElement dstNode, UpdateOperation operation) {
-        // LOGGER.debug(UpdateOperation.class.getSimpleName());
-        // LOGGER.debug(srcNode.toString());
-        // LOGGER.debug("to");
+        LOGGER.debug(UpdateOperation.class.getSimpleName());
+        LOGGER.debug(srcNode.toString());
+        LOGGER.debug("to");
         if (dstNode != null) {
             LOGGER.debug(dstNode + Constants.LINE_BREAK);
         } else {

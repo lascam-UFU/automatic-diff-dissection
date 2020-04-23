@@ -3,6 +3,7 @@ package add.features.detector.repairpatterns;
 import add.entities.PatternInstance;
 import add.entities.PropertyPair;
 import add.entities.RepairPatterns;
+import add.features.detector.spoon.MappingAnalysis;
 import add.features.detector.spoon.RepairPatternUtils;
 import com.github.gumtreediff.tree.ITree;
 import gumtree.spoon.diff.operations.DeleteOperation;
@@ -36,8 +37,8 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
             Operation operation = operations.get(i);
             if ((operation instanceof UpdateOperation)) {
                 CtElement srcNode = operation.getSrcNode();
-                if (operation.getSrcNode().getParent().getMetadata("new") != null
-                        || operation.getSrcNode().getParent().getMetadata("isMoved") != null) {
+                if (operation.getSrcNode().getParent().getMetadata("new") != null ||
+                        operation.getSrcNode().getParent().getMetadata("isMoved") != null) {
                     continue;
                 }
                 CtElement parent = MappingAnalysis.getParentLine(new LineFilter(), srcNode);
@@ -56,18 +57,13 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
 //                            new PatternInstance(CONST_CHANGE, operation, operation.getDstNode(), srcNode, parent,
 //                                    lineTree, new PropertyPair("type", "varaccess")));
 //                }
-                // rquired for closure14
-                if (srcNode instanceof CtTypeAccess
-                        && RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode)) {
-
-                    if (srcNode instanceof CtTypeAccess &&
-                            RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode)
-                            && !RepairPatternUtils.isThisAccess((CtTypeAccess) srcNode)) {
-                        // repairPatterns.incrementFeatureCounter(CONST_CHANGE, operation);
+                // required for closure14
+                if (srcNode instanceof CtTypeAccess && RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode)) {
+                    if (RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) srcNode) &&
+                            !RepairPatternUtils.isThisAccess((CtTypeAccess) srcNode)) {
                         CtVariableRead parentVarRead = srcNode.getParent(CtVariableRead.class);
-                        // The change is not inside a VariableRead (wich ast has as node a TypeAccess)
+                        // The change is not inside a VariableRead (which ast has as node a TypeAccess)
                         if (parentVarRead == null) {
-
                             repairPatterns.incrementFeatureCounterInstance(CONST_CHANGE,
                                     new PatternInstance(CONST_CHANGE, operation, operation.getDstNode(), srcNode, parent,
                                             lineTree, new PropertyPair("type", "typeaccess")));
@@ -112,13 +108,12 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
                         if (operation2Insert instanceof InsertOperation) {
                             CtElement ctElement = operation2Insert.getSrcNode();
                             boolean isConstantVariable = false;
-                            if (ctElement instanceof CtVariableAccess || ctElement instanceof CtArrayAccess
-                                    || (ctElement instanceof CtTypeAccess && !RepairPatternUtils.isThisAccess((CtTypeAccess) ctElement)
+                            if (ctElement instanceof CtVariableAccess || ctElement instanceof CtArrayAccess ||
+                                    (ctElement instanceof CtTypeAccess && !RepairPatternUtils.isThisAccess((CtTypeAccess) ctElement)
                                     && RepairPatternUtils.isConstantTypeAccess((CtTypeAccess) ctElement))) {
                                 isConstantVariable = true;
                             }
-                            if (((InsertOperation) operation2Insert).getParent() == ctLiteral.getParent()
-                                    && isConstantVariable) {
+                            if (((InsertOperation) operation2Insert).getParent() == ctLiteral.getParent() && isConstantVariable) {
                                 CtElement parent = MappingAnalysis.getParentLine(new LineFilter(), ctLiteral);
                                 ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parent);
 

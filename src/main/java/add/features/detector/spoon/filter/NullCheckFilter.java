@@ -15,10 +15,7 @@ public class NullCheckFilter implements Filter<CtBinaryOperator> {
     @Override
     public boolean matches(CtBinaryOperator ctBinaryOperator) {
         BinaryOperatorKind operatorKind = ctBinaryOperator.getKind();
-        if ((operatorKind.equals(BinaryOperatorKind.EQ) || operatorKind.equals(BinaryOperatorKind.NE)) &&
-                ((ctBinaryOperator.getLeftHandOperand().toString().equals("null") || ctBinaryOperator.getRightHandOperand().toString().equals("null")))) {
-            return true;
-        }
-        return false;
+        return (operatorKind.equals(BinaryOperatorKind.EQ) || operatorKind.equals(BinaryOperatorKind.NE)) &&
+                ((ctBinaryOperator.getLeftHandOperand().toString().equals("null") || ctBinaryOperator.getRightHandOperand().toString().equals("null")));
     }
 }

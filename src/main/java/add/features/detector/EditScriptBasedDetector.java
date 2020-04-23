@@ -1,10 +1,11 @@
 package add.features.detector;
 
 import add.features.FeatureAnalyzer;
-import add.features.detector.repairpatterns.MappingAnalysis;
+import add.features.detector.spoon.MappingAnalysis;
 import add.features.detector.spoon.SpoonHelper;
 import add.features.diffanalyzer.JGitBasedDiffAnalyzer;
 import add.main.Config;
+import add.main.Constants;
 import com.github.gumtreediff.tree.ITree;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.diff.Diff;
@@ -20,6 +21,7 @@ import spoon.reflect.declaration.CtElement;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,12 +54,8 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
 
         JGitBasedDiffAnalyzer jgitDiffAnalyzer = new JGitBasedDiffAnalyzer(this.config.getDiffPath());
 
-        Map<String, List<String>> originalFiles = jgitDiffAnalyzer
-                .getOriginalFiles(this.config.getBuggySourceDirectoryPath());
-
-
-        Map<String, List<String>> patchedFilesTmp = jgitDiffAnalyzer
-                .getPatchedFiles(this.config.getBuggySourceDirectoryPath());
+        Map<String, List<String>> originalFiles = jgitDiffAnalyzer.getOriginalFiles(this.config.getBuggySourceDirectoryPath());
+        Map<String, List<String>> patchedFilesTmp = jgitDiffAnalyzer.getPatchedFiles(this.config.getBuggySourceDirectoryPath());
 
         Map<String, List<String>> patchedFiles = new HashMap<>();
 
@@ -66,8 +64,10 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
         for (Map.Entry<String, List<String>> x : patchedFilesTmp.entrySet()) {
             try {
                 String patchedPath = x.getKey().replace("buggy-version", "patched-version");
-                System.out.println(patchedPath);
-                FileUtils.writeStringToFile(new File(patchedPath), StringUtils.join(x.getValue(), "\n"));
+                String fileContent = StringUtils.join(x.getValue(), Constants.LINE_BREAK)
+                        .replace("import javax.annotation.Nullable", "// import javax.annotation.Nullable")
+                        .replace("import javax.annotation.CheckForNull", "// import javax.annotation.CheckForNull");
+                FileUtils.writeStringToFile(new File(patchedPath), fileContent, Charset.defaultCharset());
                 patchedFiles.put(patchedPath, x.getValue());
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -78,7 +78,7 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
         Launcher newSpoon = SpoonHelper.initSpoon(patchedFiles);
 
         Diff editScript = SpoonHelper.getAstDiff(oldSpoon, newSpoon);
-        this.preprocessEditScript(editScript);
+        preprocessEditScript(editScript);
 
         return editScript;
     }
@@ -95,19 +95,18 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
 
             if (editScript.getRootOperations().contains(operation)) {
                 srcNode.putMetadata("root", true);
-                if (dstNode != null)
+                if (dstNode != null) {
                     dstNode.putMetadata("root", true);
+                }
             }
 
             if (operation instanceof MoveOperation) {
-
                 srcNode.putMetadata("isMoved", true);
                 srcNode.putMetadata("movingSrc", true);
                 dstNode.putMetadata("isMoved", true);
                 dstNode.putMetadata("movingDst", true);
 
                 setTreesLeftRight(editScript, operation, srcNode, dstNode);
-
             } else {
                 if (srcNode != null) {
                     srcNode.putMetadata("new", true);
@@ -131,7 +130,6 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
                     if (operation.getDstNode() != null) {
                         operation.getDstNode().putMetadata("update", true);
                     }
-
                     setTreesLeftRight(editScript, operation, srcNode, dstNode);
                 }
 
@@ -152,11 +150,11 @@ public abstract class EditScriptBasedDetector extends FeatureAnalyzer {
      */
     public static void setTreesLeftRight(Diff editScript, Operation operation, CtElement srcNode, CtElement dstNode) {
         srcNode.putMetadata("tree", operation.getAction().getNode());
-        ITree rightnode = MappingAnalysis.getRightFromLeftNodeMapped(editScript, operation.getAction().getNode());
+        ITree rightNode = MappingAnalysis.getRightFromLeftNodeMapped(editScript, operation.getAction().getNode());
         if (editScript != null) {
-            dstNode.putMetadata("tree", rightnode);
+            dstNode.putMetadata("tree", rightNode);
         } else {
-            System.err.println("Error:  node not mapped on operation " + operation.getClass().getName());
+            throw new RuntimeException("Error:  node not mapped on operation " + operation.getClass().getName());
         }
     }
 

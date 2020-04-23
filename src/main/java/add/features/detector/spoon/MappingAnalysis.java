@@ -1,4 +1,4 @@
-package add.features.detector.repairpatterns;
+package add.features.detector.spoon;
 
 import com.github.gumtreediff.actions.model.Action;
 import com.github.gumtreediff.actions.model.Addition;

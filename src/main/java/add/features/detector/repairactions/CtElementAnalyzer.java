@@ -38,7 +38,9 @@ import spoon.reflect.visitor.CtScanner;
 public class CtElementAnalyzer {
 
     public enum ACTION_TYPE {
-        ADD("Add"), UPDATE("Change"), DELETE("Rem");
+        ADD("Add"),
+        UPDATE("Change"),
+        DELETE("Rem");
 
         private String name;
 
@@ -81,8 +83,8 @@ public class CtElementAnalyzer {
                     if (!e.getSimpleName().equals(((CtNamedElement) dstElement).getSimpleName())) {
                         output.incrementFeatureCounter("mdRen", e);
                     }
-                    if (e.getModifiers().size() != ((CtModifiable) dstElement).getModifiers().size()
-                            || !e.getModifiers().containsAll(((CtModifiable) dstElement).getModifiers())) {
+                    if (e.getModifiers().size() != ((CtModifiable) dstElement).getModifiers().size() ||
+                            !e.getModifiers().containsAll(((CtModifiable) dstElement).getModifiers())) {
                         output.incrementFeatureCounter("mdModChange", e);
                     }
                     super.visitCtMethod(e);
@@ -93,8 +95,7 @@ public class CtElementAnalyzer {
                     if (dstElement instanceof CtAbstractInvocation) {
                         if (e.getArguments().size() > ((CtAbstractInvocation) dstElement).getArguments().size()) {
                             output.incrementFeatureCounter("mcParRem", e);
-                        } else if (e.getArguments().size() < ((CtAbstractInvocation) dstElement).getArguments()
-                                .size()) {
+                        } else if (e.getArguments().size() < ((CtAbstractInvocation) dstElement).getArguments().size()) {
                             output.incrementFeatureCounter("mcParAdd", e);
                         }
                     }
@@ -111,8 +112,8 @@ public class CtElementAnalyzer {
 
                 @Override
                 public <T> void scanCtVariable(CtVariable<T> e) {
-                    if (e.getModifiers().size() != ((CtModifiable) dstElement).getModifiers().size()
-                            || !e.getModifiers().containsAll(((CtModifiable) dstElement).getModifiers())) {
+                    if (e.getModifiers().size() != ((CtModifiable) dstElement).getModifiers().size() ||
+                            !e.getModifiers().containsAll(((CtModifiable) dstElement).getModifiers())) {
                         output.incrementFeatureCounter("varModChange", e);
                     }
                     super.scanCtVariable(e);
@@ -121,7 +122,7 @@ public class CtElementAnalyzer {
                 @Override
                 public <T> void scanCtType(CtType<T> type) {
                     if (!type.getSimpleName().equals(((CtNamedElement) dstElement).getSimpleName())) {
-                        // output.incrementFeatureCounter("tyRen");
+                        //output.incrementFeatureCounter("tyRen");
                     }
                     super.scanCtType(type);
                 }
@@ -137,24 +138,26 @@ public class CtElementAnalyzer {
                     if (!(expression instanceof CtConditional) && dstElement instanceof CtConditional) {
                         output.incrementFeatureCounter("condBranIfElseAdd", expression);
                     }
-                    if (expression.getRoleInParent() == CtRole.ARGUMENT
-                            && expression.getParent().getMetadata("new") == null) {
+                    if (expression.getRoleInParent() == CtRole.ARGUMENT && expression.getParent().getMetadata("new") == null) {
                         output.incrementFeatureCounter("mcParVal" + actionType.name, expression);
                     }
                     CtAssignment assignment = expression.getParent(CtAssignment.class);
+                    if (assignment != null && assignment.getMetadata("isMoved") != null && expression.hasParent(assignment.getAssignment())) {
+                        output.incrementFeatureCounter("assignExp" + actionType.name, expression);
+                    }
+                    CtLocalVariable localVariable = expression.getParent(CtLocalVariable.class);
+                    if (localVariable != null && localVariable.getMetadata("new") == null && localVariable.getMetadata("delete") == null) {
+                        output.incrementFeatureCounter("assignExp" + actionType.name, expression);
+                    }
                     CtReturn ctReturn = expression.getParent(CtReturn.class);
                     if (ctReturn != null && ctReturn.getMetadata("new") == null && ctReturn.getMetadata("delete") == null) {
-                        output.incrementFeatureCounter("retExpChange");
-                    }
-                    if (assignment != null && assignment.getMetadata("isMoved") != null
-                            && expression.hasParent(assignment.getAssignment())) {
-                        output.incrementFeatureCounter("assignExp" + actionType.name, expression);
+                        output.incrementFeatureCounter("retExpChange", ctReturn);
                     }
 
                     CtFor ctFor = expression.getParent(CtFor.class);
                     if (ctFor != null && ctFor.getMetadata("new") == null) {
                         if (ctFor.getForInit() != null && !ctFor.getForInit().isEmpty() && expression.hasParent(ctFor.getForInit().get(0))) {
-                            output.incrementFeatureCounter("loopInitChange");
+                            output.incrementFeatureCounter("loopInitChange", expression);
                         } else if (expression.hasParent(ctFor.getExpression())) {
                             output.incrementFeatureCounter("loopCondChange", expression);
                         }
@@ -164,7 +167,9 @@ public class CtElementAnalyzer {
 
                 @Override
                 public <T> void visitCtParameter(CtParameter<T> e) {
-                    output.incrementFeatureCounter("mdParRem", e);
+                    if (e.getParent().getMetadata("new") == null) {
+                        output.incrementFeatureCounter("mdParRem", e);
+                    }
                     super.visitCtParameter(e);
                 }
 
@@ -195,13 +200,13 @@ public class CtElementAnalyzer {
 
                 @Override
                 public <T> void visitCtFieldRead(CtFieldRead<T> e) {
-                    output.incrementFeatureCounter("varReplVar");
+                    output.incrementFeatureCounter("varReplVar", e);
                     super.visitCtFieldRead(e);
                 }
 
                 @Override
                 public <T> void visitCtVariableRead(CtVariableRead<T> e) {
-                    output.incrementFeatureCounter("varReplVar");
+                    output.incrementFeatureCounter("varReplVar", e);
                     super.visitCtVariableRead(e);
                 }
             });
@@ -244,9 +249,10 @@ public class CtElementAnalyzer {
                                 output.incrementFeatureCounter("condBran" + actionType.name, e);
                             } else {
                                 if (e.getParent().getMetadata("new") == null) {
-                                    output.incrementFeatureCounter("condBranElseAdd");
+                                    output.incrementFeatureCounter("condBranElseAdd", e);
+                                } else {
+                                    output.incrementFeatureCounter("condBranIfElse" + actionType.name, e);
                                 }
-                                output.incrementFeatureCounter("condBranIfElse" + actionType.name, e);
                             }
                         }
                         super.visitCtBlock(e);
@@ -276,8 +282,7 @@ public class CtElementAnalyzer {
                     public <T> void visitCtBinaryOperator(CtBinaryOperator<T> expression) {
                         if (actionType == ACTION_TYPE.DELETE) {
                             CtIf ctIf = expression.getParent(CtIf.class);
-                            if (ctIf != null && ctIf.getMetadata("new") == null
-                                    && expression.hasParent(ctIf.getCondition())) {
+                            if (ctIf != null && ctIf.getMetadata("new") == null && expression.hasParent(ctIf.getCondition())) {
                                 output.incrementFeatureCounter("condExpRed", e);
                             }
                         } else if (actionType == ACTION_TYPE.ADD) {
@@ -349,7 +354,7 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void visitCtTypeReference(CtTypeReference<T> e) {
-                        if (e.getRoleInParent() == CtRole.TYPE && e.getMetadata("new") == null) {
+                        if ((e.getRoleInParent() == CtRole.TYPE || e.getRoleInParent() == CtRole.MULTI_TYPE) && e.getMetadata("new") == null) {
                             if (e.getParent() instanceof CtVariable) {
                                 output.incrementFeatureCounter("varTyChange", e);
                             }
@@ -390,17 +395,16 @@ public class CtElementAnalyzer {
 
                     @Override
                     public <T> void scanCtExpression(CtExpression<T> expression) {
-                        if (expression.getRoleInParent() == CtRole.ARGUMENT
-                                && expression.getParent().getMetadata("new") == null) {
+                        if (expression.getRoleInParent() == CtRole.ARGUMENT && expression.getParent().getMetadata("new") == null) {
                             output.incrementFeatureCounter("mcPar" + actionType.name, e);
                         }
                         CtInvocation ctInvocation = expression.getParent(CtInvocation.class);
                         if (ctInvocation != null && ctInvocation.getMetadata("new") == null) {
-                            output.incrementFeatureCounter("mcParValChange");
+                            output.incrementFeatureCounter("mcParValChange", e);
                         }
                         CtConstructorCall ctConstructorCall = expression.getParent(CtConstructorCall.class);
                         if (ctConstructorCall != null && ctConstructorCall.getMetadata("new") == null) {
-                            output.incrementFeatureCounter("mcParValChange");
+                            output.incrementFeatureCounter("mcParValChange", e);
                         }
                         super.scanCtExpression(expression);
                     }

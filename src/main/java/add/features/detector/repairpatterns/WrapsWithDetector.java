@@ -3,6 +3,7 @@ package add.features.detector.repairpatterns;
 import add.entities.PatternInstance;
 import add.entities.PropertyPair;
 import add.entities.RepairPatterns;
+import add.features.detector.spoon.MappingAnalysis;
 import add.features.detector.spoon.RepairPatternUtils;
 import add.features.detector.spoon.SpoonHelper;
 import com.github.gumtreediff.tree.ITree;
@@ -74,10 +75,8 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                     CtBlock thenBlock = ctIf.getThenStatement();
                     CtBlock elseBlock = ctIf.getElseStatement();
                     if (elseBlock == null) {
-                        List stmtsMoved = RepairPatternUtils.getIsThereOldStatementInStatementList(diff,
-                                thenBlock.getStatements());
-
-                        if (thenBlock != null && !stmtsMoved.isEmpty()) {
+                        List stmtsMoved = RepairPatternUtils.getIsThereOldStatementInStatementList(diff, thenBlock.getStatements());
+                        if (!stmtsMoved.isEmpty()) {
                             if (operation instanceof InsertOperation) {
                                 List<ITree> leftTreees = new ArrayList();
                                 List<CtElement> leftElements = new ArrayList();
@@ -89,17 +88,13 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                                             new PatternInstance(WRAPS_IF, operation, ctIf, leftElements,
                                                     leftElements.get(0), leftTreees.get(0),
                                                     new PropertyPair("case", "elsenull")));
-
                             } else {
-
                                 // Remove if THEN (Not else present)
-
                                 List susp = new ArrayList<>();
 
                                 // Let's take all elements that are inside the removed if
-                                //
-//                                List subelements = ctElement.getElements(new TypeFilter<>(CtStatement.class));
-//                                susp.addAll(subelements);
+                                // List subelements = ctElement.getElements(new TypeFilter<>(CtStatement.class));
+                                // susp.addAll(subelements);
 
                                 if (!susp.contains(ctIf))
                                     // Suspicious is the removed if
@@ -124,8 +119,7 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                             }
                         }
                     } else {// ELSE has content
-                        List sthen = RepairPatternUtils.getIsThereOldStatementInStatementList(diff,
-                                thenBlock.getStatements());
+                        List sthen = RepairPatternUtils.getIsThereOldStatementInStatementList(diff, thenBlock.getStatements());
                         List selse = RepairPatternUtils.getIsThereOldStatementInStatementList(diff,
                                 elseBlock.getStatements());
                         // selse.addAll(sthen);
@@ -304,7 +298,7 @@ public class WrapsWithDetector extends AbstractPatternDetector {
 
                             ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
 
-                            if (!((CtElement) olds.get(0) instanceof CtTry))
+                            if (!(olds.get(0) instanceof CtTry))
                                 if (operation instanceof InsertOperation) {
                                     repairPatterns.incrementFeatureCounterInstance(WRAPS_TRY_CATCH,
                                             new PatternInstance(WRAPS_TRY_CATCH, operation, ctTry, olds, lineP, lineTree));
@@ -535,11 +529,9 @@ public class WrapsWithDetector extends AbstractPatternDetector {
         CtStatement oldparent = oldexpression.getParent(new LineFilter());
         CtStatement newparent = newexpression.getParent(new LineFilter());
 
-        if ((RepairPatternUtils.getElementInOld(diff, newparent) != null &&
+        return (RepairPatternUtils.getElementInOld(diff, newparent) != null &&
                 RepairPatternUtils.getElementInOld(diff, newparent) == oldparent) ||
-                (oldparent instanceof CtConstructorCall && newparent instanceof CtAssignment))
-            return true;
-        else return false;
+                (oldparent instanceof CtConstructorCall && newparent instanceof CtAssignment);
     }
 
     private boolean whetherconsinderthemethodunrap(CtExpression oldexpression, CtInvocation ctInvocation) {
@@ -553,10 +545,7 @@ public class WrapsWithDetector extends AbstractPatternDetector {
         CtStatement oldparent = oldexpression.getParent(new LineFilter());
         CtStatement newparent = newexpression.getParent(new LineFilter());
 
-        if ((RepairPatternUtils.getElementInOld(diff, newparent) != null && RepairPatternUtils.getElementInOld(diff, newparent) == oldparent) || (oldparent instanceof CtInvocation && newparent instanceof CtAssignment)) {
-            return true;
-        }
-        return false;
+        return (RepairPatternUtils.getElementInOld(diff, newparent) != null && RepairPatternUtils.getElementInOld(diff, newparent) == oldparent) || (oldparent instanceof CtInvocation && newparent instanceof CtAssignment);
     }
 
     private void detectWrapsLoop(Operation operation, RepairPatterns repairPatterns) {
@@ -566,13 +555,12 @@ public class WrapsWithDetector extends AbstractPatternDetector {
 
             List<CtLoop> loopList = ctElement.getElements(new TypeFilter<>(CtLoop.class));
             for (CtLoop ctLoop : loopList) {
-                if ((ctLoop instanceof CtFor && RepairPatternUtils.isNewFor((CtFor) ctLoop))
-                        || (ctLoop instanceof CtForEach && RepairPatternUtils.isNewForEach((CtForEach) ctLoop))
-                        || (ctLoop instanceof CtWhile && RepairPatternUtils.isNewWhile((CtWhile) ctLoop))) {
+                if ((ctLoop instanceof CtFor && RepairPatternUtils.isNewFor((CtFor) ctLoop)) ||
+                        (ctLoop instanceof CtForEach && RepairPatternUtils.isNewForEach((CtForEach) ctLoop)) ||
+                        (ctLoop instanceof CtWhile && RepairPatternUtils.isNewWhile((CtWhile) ctLoop))) {
                     if (ctLoop.getBody() instanceof CtBlock) {
                         CtBlock bodyBlock = (CtBlock) ctLoop.getBody();
-                        List susp = RepairPatternUtils.getIsThereOldStatementInStatementList(diff,
-                                bodyBlock.getStatements());
+                        List susp = RepairPatternUtils.getIsThereOldStatementInStatementList(diff, bodyBlock.getStatements());
                         if (bodyBlock != null && !susp.isEmpty()) {
 
                             CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(), (CtElement) susp.get(0));
@@ -587,14 +575,9 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                                     CtLoop ctLoopParent = ctElementDst.getParent(new TypeFilter<>(CtLoop.class));
                                     if (ctLoopParent != null && ctLoopParent == ctLoop) {
 
-                                        // CtStatement sparent = getStmtParent(operationAux.getSrcNode());
-                                        CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(),
-                                                operationAux.getSrcNode());
+                                        CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(), operationAux.getSrcNode());
                                         ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
 
-//                                        repairPatterns.incrementFeatureCounterInstance(WRAPS_LOOP,
-//                                                new PatternInstance(WRAPS_LOOP, operation, ctLoop,
-//                                                        operationAux.getSrcNode(), lineP, lineTree));
                                         // loop add happens for the statement, not any specific nodes of it
 
                                         if (!RepairPatternUtils.isOldStatementInLoop(lineP))

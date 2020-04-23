@@ -1,6 +1,6 @@
 package add.entities;
 
-import fr.inria.coming.utils.MapList;
+import add.main.MapList;
 import gumtree.spoon.diff.operations.Operation;
 
 /**
@@ -103,22 +103,10 @@ public class RepairPatterns extends Feature {
     @FeatureAnnotation(key = "binOperatorModif", name = "Modify binary operator")
     private int binOperatorModif = 0;
 
-    @FeatureAnnotation(key = "addassignment", name = "add assignment")
+    @FeatureAnnotation(key = "addassignment", name = "Add assignment")
     private int addassignment = 0;
-
-    public MapList<String, Operation> getOperationsPerFeature() {
-        return operationsPerFeature;
-    }
-
-    public void setOperationsPerFeature(MapList<String, Operation> operationsPerFeature) {
-        this.operationsPerFeature = operationsPerFeature;
-    }
 
     public MapList<String, PatternInstance> getPatternInstances() {
         return patternInstances;
-    }
-
-    public void setPatternInstances(MapList<String, PatternInstance> patternInstances) {
-        this.patternInstances = patternInstances;
     }
 }

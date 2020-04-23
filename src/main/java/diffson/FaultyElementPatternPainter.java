@@ -2,11 +2,11 @@ package diffson;
 
 import add.entities.PatternInstance;
 import add.entities.PropertyPair;
+import add.main.MapList;
 import com.github.gumtreediff.tree.ITree;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
-import fr.inria.coming.utils.MapList;
 import gumtree.spoon.builder.SpoonGumTreeBuilder;
 import gumtree.spoon.builder.jsonsupport.NodePainter;
 import spoon.reflect.declaration.CtElement;
