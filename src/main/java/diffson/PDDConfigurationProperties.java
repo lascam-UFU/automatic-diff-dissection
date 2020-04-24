@@ -18,7 +18,7 @@ public class PDDConfigurationProperties {
         InputStream propFile;
         try {
             properties = new Properties();
-            propFile = PDDConfigurationProperties.class.getClassLoader().getResourceAsStream("configuration.properties");
+            propFile = PDDConfigurationProperties.class.getClassLoader().getResourceAsStream("diffContextAnalyzerConfig.properties");
 
             properties.load(propFile);
         } catch (Exception e) {

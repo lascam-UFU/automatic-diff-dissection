@@ -6,7 +6,6 @@ import add.features.detector.EditScriptBasedDetector;
 import add.features.detector.repairpatterns.RepairPatternDetector;
 import add.features.detector.spoon.MappingAnalysis;
 import add.main.Config;
-import add.main.TimeChrono;
 import com.github.gumtreediff.tree.ITree;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -81,21 +80,22 @@ public class DiffContextAnalyzer {
         File dir = new File(path);
         beforeStart();
 
-        for (File difffile : dir.listFiles()) {
+        for (File diffFile : dir.listFiles()) {
             TimeChrono cr = new TimeChrono();
             cr.start();
-            Map<String, Diff> diffOfcommit = new HashMap();
+            Map<String, Diff> diffOfCommit = new HashMap();
 
-            if (difffile.isFile() || difffile.listFiles() == null)
-                continue;
-
-            if (!acceptFile(difffile)) {
+            if (diffFile.isFile() || diffFile.listFiles() == null) {
                 continue;
             }
-            processDiff(difffile, diffOfcommit);
+
+            if (!acceptFile(diffFile)) {
+                continue;
+            }
+            processDiff(diffFile, diffOfCommit);
 
             // here, at the end, we compute the Context
-            atEndCommit(difffile, diffOfcommit);
+            atEndCommit(diffFile, diffOfCommit);
         }
 
         log.info("Final Results: ");
@@ -162,14 +162,11 @@ public class DiffContextAnalyzer {
     }
 
     private Future<Diff> getFutureResult(ExecutorService executorService, File left, File right) {
-
-        Future<Diff> future = executorService.submit(() -> {
-
+        return executorService.submit(() -> {
             AstComparator comparator = new AstComparator();
             return comparator.compare(left, right);
 
         });
-        return future;
     }
 
     public Diff getDiffFuture(File left, File right) throws Exception {
@@ -198,7 +195,6 @@ public class DiffContextAnalyzer {
         }
 
         return resultDiff;
-
     }
 
     protected boolean acceptFile(File fileModif) {
@@ -225,16 +221,16 @@ public class DiffContextAnalyzer {
 
     private Future<JsonObject> getContextInFeature(ExecutorService executorService, String id, Map<String, Diff> diffOfCommit) {
 
-        return executorService.submit(() -> calculateConntexJSON(id, diffOfCommit));
+        return executorService.submit(() -> calculateContextJSON(id, diffOfCommit));
     }
 
     public JsonObject getContextFuture(String id, Map<String, Diff> operations) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future<JsonObject> future = getContextInFeature(executorService, id, operations);
 
-        JsonObject resukltDiff = null;
+        JsonObject resultDiff = null;
         try {
-            resukltDiff = future.get(5, TimeUnit.MINUTES);
+            resultDiff = future.get(5, TimeUnit.MINUTES);
         } catch (InterruptedException e) {
             log.error("job was interrupted");
         } catch (ExecutionException e) {
@@ -253,16 +249,16 @@ public class DiffContextAnalyzer {
             executorService.shutdownNow();
         }
 
-        return resukltDiff;
+        return resultDiff;
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public JsonObject calculateConntexJSON(String id, Map<String, Diff> operations) {
+    public JsonObject calculateContextJSON(String id, Map<String, Diff> operations) {
 
-        JsonObject statsjsonRoot = new JsonObject();
-        statsjsonRoot.addProperty("diffid", id);
+        JsonObject statsJsonRoot = new JsonObject();
+        statsJsonRoot.addProperty("diffid", id);
         JsonArray filesArray = new JsonArray();
-        statsjsonRoot.add("affected_files", filesArray);
+        statsJsonRoot.add("affected_files", filesArray);
 
         for (String modifiedFile : operations.keySet()) {
             List<PatternInstance> patternInstances = new ArrayList<>();
@@ -298,7 +294,7 @@ public class DiffContextAnalyzer {
             }
         }
 
-        return statsjsonRoot;
+        return statsJsonRoot;
 
     }
 
@@ -375,8 +371,8 @@ public class DiffContextAnalyzer {
             List<NodePainter> painters = new ArrayList();
             painters.add(new FaultyElementPatternPainter(patternInstancesOriginal));
 
-            ReturnTypePainter painterforreturn = new ReturnTypePainter(getAffectedCtElement);
-            painters.add(painterforreturn);
+            ReturnTypePainter painterForReturn = new ReturnTypePainter(getAffectedCtElement);
+            painters.add(painterForReturn);
 
             JsonObject jsonInstance = new JsonObject();
             JsonArray affected = new JsonArray();
@@ -393,44 +389,41 @@ public class DiffContextAnalyzer {
         return ast_affected;
     }
 
-    private boolean whetherDiscardElement(CtElement orginalElement) {
-        CtElement tostudy = retrieveElementToStudy(orginalElement);
+    private boolean whetherDiscardElement(CtElement originalElement) {
+        CtElement toStudy = retrieveElementToStudy(originalElement);
 
-        List<CtBinaryOperator> allbinaporators = tostudy.getElements(e -> (e instanceof CtBinaryOperator)).stream()
+        List<CtBinaryOperator> allBinOporators = toStudy.getElements(e -> (e instanceof CtBinaryOperator)).stream()
                 .map(CtBinaryOperator.class::cast).collect(Collectors.toList());
 
-        if (allbinaporators.size() >= 3) {
+        if (allBinOporators.size() >= 3) {
 
-            for (CtBinaryOperator anbinaryoperator : allbinaporators) {
-
+            for (CtBinaryOperator aBinaryOperator : allBinOporators) {
                 int numberString = 0;
-
-                CtElement parent = anbinaryoperator;
+                CtElement parent = aBinaryOperator;
 
                 do {
                     numberString += getNumberOfStringInBinary((CtBinaryOperator) parent);
                     parent = parent.getParent();
-
                 } while (parent instanceof CtBinaryOperator &&
                         ((CtBinaryOperator) parent).getKind().equals(BinaryOperatorKind.PLUS));
 
-                if (numberString >= 4)
+                if (numberString >= 4) {
                     return true;
+                }
             }
         }
 
         return false;
     }
 
-    private int getNumberOfStringInBinary(CtBinaryOperator binarytostudy) {
+    private int getNumberOfStringInBinary(CtBinaryOperator binaryToStudy) {
         int stringnumber = 0;
 
-        if (binarytostudy.getKind().equals(BinaryOperatorKind.PLUS)) {
-
-            if (binarytostudy.getLeftHandOperand() instanceof CtLiteral && binarytostudy.getLeftHandOperand().toString().trim().startsWith("\"")) {
+        if (binaryToStudy.getKind().equals(BinaryOperatorKind.PLUS)) {
+            if (binaryToStudy.getLeftHandOperand() instanceof CtLiteral && binaryToStudy.getLeftHandOperand().toString().trim().startsWith("\"")) {
                 stringnumber++;
             }
-            if (binarytostudy.getRightHandOperand() instanceof CtLiteral && binarytostudy.getRightHandOperand().toString().trim().startsWith("\"")) {
+            if (binaryToStudy.getRightHandOperand() instanceof CtLiteral && binaryToStudy.getRightHandOperand().toString().trim().startsWith("\"")) {
                 stringnumber++;
             }
         }
@@ -461,9 +454,7 @@ public class DiffContextAnalyzer {
         return (element);
     }
 
-
     private List<PatternInstance> merge(List<PatternInstance> patternInstancesOriginal) {
-
         List<PatternInstance> patternInstancesMerged = new ArrayList<>();
         Map<CtElement, PatternInstance> cacheFaultyLines = new HashMap<>();
 
