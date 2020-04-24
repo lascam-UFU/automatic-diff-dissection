@@ -401,7 +401,7 @@ public class RepairPatternUtils {
 
     public static boolean isThereOnlyNewCatch(List<CtCatch> catchList) {
         for (CtCatch ctCatch : catchList) {
-            if (!(ctCatch.getMetadata("new") != null)) {
+            if (ctCatch.getMetadata("new") == null) {
                 return false;
             }
         }

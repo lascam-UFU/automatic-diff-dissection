@@ -20,11 +20,11 @@ import java.util.List;
 /**
  *
  */
-public class AssigmentDetector extends AbstractPatternDetector {
+public class AssignmentDetector extends AbstractPatternDetector {
 
-    private static final String ADD_ASSIGNMENT = "addassignment";
+    private static final String ADD_ASSIGNMENT = "addAssignment";
 
-    public AssigmentDetector(List<Operation> operations) {
+    public AssignmentDetector(List<Operation> operations) {
         super(operations);
     }
 

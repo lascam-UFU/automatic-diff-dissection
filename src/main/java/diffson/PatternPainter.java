@@ -1,6 +1,5 @@
 package diffson;
 
-import add.main.MapList;
 import com.github.gumtreediff.tree.ITree;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

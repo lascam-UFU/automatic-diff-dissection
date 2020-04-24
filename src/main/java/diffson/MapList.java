@@ -1,4 +1,4 @@
-package add.main;
+package diffson;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class MapList<K, V> extends LinkedHashMap<K, List<V>> {
 
     public void add(K key, V value) {
-        List<V> listV = null;
+        List<V> listV;
         if (!this.containsKey(key)) {
             listV = new ArrayList<V>();
             this.put(key, listV);
@@ -24,10 +24,8 @@ public class MapList<K, V> extends LinkedHashMap<K, List<V>> {
 
     public MapList<K, V> getSorted() {
         return this.entrySet().stream()
-                .sorted(Map.Entry.<K, List<V>>comparingByValue((l1, l2) -> Integer.compare(l1.size(), l2.size()))
-                        .reversed())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue,
-                        MapList::new));
+                .sorted(Map.Entry.<K, List<V>>comparingByValue(Comparator.comparingInt(List::size)).reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, MapList::new));
 
     }
 }

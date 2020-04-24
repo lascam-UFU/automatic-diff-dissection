@@ -1,6 +1,6 @@
 package add.entities;
 
-import add.main.MapList;
+import diffson.MapList;
 import gumtree.spoon.diff.operations.Operation;
 
 /**
@@ -100,11 +100,11 @@ public class RepairPatterns extends Feature {
     @FeatureAnnotation(key = "notClassified", name = "undefined")
     private int notClassified = 0;
 
-    @FeatureAnnotation(key = "binOperatorModif", name = "Modify binary operator")
-    private int binOperatorModif = 0;
+    @FeatureAnnotation(key = "binOperatorMod", name = "Modify binary operator")
+    private int binOperatorMod = 0;
 
-    @FeatureAnnotation(key = "addassignment", name = "Add assignment")
-    private int addassignment = 0;
+    @FeatureAnnotation(key = "addAssignment", name = "Add assignment")
+    private int addAssignment = 0;
 
     public MapList<String, PatternInstance> getPatternInstances() {
         return patternInstances;

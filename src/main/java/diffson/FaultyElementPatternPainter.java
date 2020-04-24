@@ -2,7 +2,6 @@ package diffson;
 
 import add.entities.PatternInstance;
 import add.entities.PropertyPair;
-import add.main.MapList;
 import com.github.gumtreediff.tree.ITree;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -16,38 +15,28 @@ import java.util.stream.Collectors;
 
 public class FaultyElementPatternPainter implements NodePainter {
 
-    MapList<String, String> nodesAffectedByPattern = new MapList<>();
-    MapList<String, PatternInstance> nodesAffectedByPatternInstances = new MapList<>();
-    String label = "susp";
+    private MapList<String, String> nodesAffectedByPattern = new MapList<>();
+    private MapList<String, PatternInstance> nodesAffectedByPatternInstances = new MapList<>();
+    private String label = "susp";
 
     public FaultyElementPatternPainter(List<PatternInstance> instances) {
-        // Collect all nodes and get the operator
-        //    Boolean includeMetadata = PDDConfigurationProperties.getPropertyBoolean("include_pattern_metadata");
-
-        Boolean includeMetadata = true;
-
         for (PatternInstance patternInstance : instances) {
             for (CtElement susp : patternInstance.getFaulty()) {
-                String patternLabel = createPatternLabel(includeMetadata, patternInstance);
+                String patternLabel = createPatternLabel(patternInstance);
                 String key = getKey(susp);
-                if (!nodesAffectedByPattern.keySet().contains(key)
-                        || !nodesAffectedByPattern.get(key).contains(patternLabel)) {
+                if (!nodesAffectedByPattern.containsKey(key) || !nodesAffectedByPattern.get(key).contains(patternLabel)) {
                     nodesAffectedByPattern.add(key, patternLabel);
                     nodesAffectedByPatternInstances.add(key, patternInstance);
-
                 }
-
             }
         }
     }
 
-    public String createPatternLabel(Boolean includeMetadata, PatternInstance patternInstance) {
-
+    public String createPatternLabel(PatternInstance patternInstance) {
         try {
-            return "susp_" + patternInstance.getPatternName()
+            return label + "_" + patternInstance.getPatternName()
                     // if include instance metadata (i.e., sub-category of patterns)
-                    + ((// includeMetadata &&
-                    !patternInstance.getMetadata().isEmpty()) ? ("_" + patternInstance.getMetadata().stream()
+                    + ((!patternInstance.getMetadata().isEmpty()) ? ("_" + patternInstance.getMetadata().stream()
                     .map(PropertyPair::getValue).collect(Collectors.joining("_"))) : "");
         } catch (Exception e) {
             return "";
@@ -65,38 +54,34 @@ public class FaultyElementPatternPainter implements NodePainter {
     }
 
     @Override
-    public void paint(ITree tree, JsonObject jsontree) {
-
+    public void paint(ITree tree, JsonObject jsonTree) {
         CtElement ctelement = (CtElement) tree.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
-
         // Workaround
-        if (jsontree.get("type").getAsString().equals("Modifiers") || jsontree.get("type").getAsString().equals("Modifier"))
+        if (jsonTree.get("type").getAsString().equals("Modifiers") || jsonTree.get("type").getAsString().equals("Modifier")) {
             return;
+        }
 
-        boolean found = paint(jsontree, ctelement);
-
+        boolean found = paint(jsonTree, ctelement);
         if (!found) {
-            CtElement ctelementdsr = (CtElement) tree.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT_DEST);
-            if (ctelementdsr != null)
-                paint(jsontree, ctelementdsr);
+            CtElement ctElementDsr = (CtElement) tree.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT_DEST);
+            if (ctElementDsr != null) {
+                paint(jsonTree, ctElementDsr);
+            }
         }
     }
 
-    private boolean paint(JsonObject jsontree, CtElement ctelement) {
+    private boolean paint(JsonObject jsonTree, CtElement ctelement) {
         boolean found = false;
         if (nodesAffectedByPattern.containsKey(getKey(ctelement))) {
-
             JsonArray labels = new JsonArray();
             List<String> patternsOfElement = nodesAffectedByPattern.get(getKey(ctelement));
             for (String pattern : patternsOfElement) {
                 JsonPrimitive prim = new JsonPrimitive(pattern);
                 labels.add(prim);
-
             }
-            jsontree.add(this.label, labels);
+            jsonTree.add(this.label, labels);
             found = true;
         }
         return found;
     }
-
 }

@@ -1,6 +1,6 @@
 package add.entities;
 
-import add.main.MapList;
+import diffson.MapList;
 import spoon.reflect.declaration.CtElement;
 
 /**
