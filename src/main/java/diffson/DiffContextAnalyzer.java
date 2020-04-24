@@ -6,13 +6,11 @@ import add.features.detector.EditScriptBasedDetector;
 import add.features.detector.repairpatterns.RepairPatternDetector;
 import add.features.detector.spoon.MappingAnalysis;
 import add.main.Config;
-import add.main.MapList;
 import add.main.TimeChrono;
 import com.github.gumtreediff.tree.ITree;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import gumtree.spoon.AstComparator;
 import gumtree.spoon.builder.Json4SpoonGenerator;
@@ -53,41 +51,37 @@ import java.util.stream.Collectors;
  * @author Matias Martinez
  */
 public class DiffContextAnalyzer {
-    File out = null;
+    private Logger log = Logger.getLogger(this.getClass());
+    private File out;
+    private int error;
+    private int zero;
+    private int withActions;
 
     public DiffContextAnalyzer() {
-        super();
-        PDDConfigurationProperties.properties.setProperty("maxdifftoanalyze", "5");
-
-        out = new File("/tmp/");
-        out.mkdirs();
+        this("/tmp/");
     }
 
     public DiffContextAnalyzer(String outfile) {
         super();
-
+        PDDConfigurationProperties.properties.setProperty("maxdifftoanalyze", "5");
         out = new File(outfile);
-        out.mkdirs();
+        if (!out.exists()) {
+            out.mkdirs();
+        }
+        error = 0;
+        zero = 0;
+        withActions = 0;
     }
-
-    private Logger log = Logger.getLogger(this.getClass());
-    int error = 0;
-    int zero = 0;
-    int withactions = 0;
 
     @SuppressWarnings("unchecked")
     public void run(String path) throws Exception {
-
         error = 0;
         zero = 0;
-        withactions = 0;
-
+        withActions = 0;
         File dir = new File(path);
-
         beforeStart();
 
         for (File difffile : dir.listFiles()) {
-
             TimeChrono cr = new TimeChrono();
             cr.start();
             Map<String, Diff> diffOfcommit = new HashMap();
@@ -98,17 +92,15 @@ public class DiffContextAnalyzer {
             if (!acceptFile(difffile)) {
                 continue;
             }
-
             processDiff(difffile, diffOfcommit);
 
             // here, at the end, we compute the Context
             atEndCommit(difffile, diffOfcommit);
-
         }
 
         log.info("Final Results: ");
         log.info("----");
-        log.info("Withactions " + withactions);
+        log.info("Withactions " + withActions);
         log.info("Zero " + zero);
         log.info("Error " + error);
 
@@ -120,15 +112,13 @@ public class DiffContextAnalyzer {
         for (File fileModif : difffile.listFiles()) {
             int i_hunk = 0;
 
-            if (".DS_Store".equals(fileModif.getName()))
+            if (".DS_Store".equals(fileModif.getName())) {
                 continue;
+            }
 
-//            if (PDDConfigurationProperties.getPropertyBoolean("excludetests")
-//                    && (fileModif.getName().toLowerCase().indexOf("test")!=-1))
-//                continue;
-
-            if (fileModif.getName().toLowerCase().indexOf("test") != -1)
+            if (PDDConfigurationProperties.getPropertyBoolean("excludetests") && (fileModif.getName().toLowerCase().contains("test"))) {
                 continue;
+            }
 
             String pathname = fileModif.getAbsolutePath() + File.separator + difffile.getName() + "_"
                     + fileModif.getName();
@@ -137,27 +127,24 @@ public class DiffContextAnalyzer {
             if (!previousVersion.exists()) {
                 pathname = pathname + "_" + i_hunk;
                 previousVersion = new File(pathname + "_s.java");
-                if (!previousVersion.exists())
-                    // break;
+                if (!previousVersion.exists()) {
                     continue;
+                }
             }
 
             File postVersion = new File(pathname + "_t.java");
             i_hunk++;
             try {
-                Diff diff = getdiffFuture(previousVersion, postVersion);
+                Diff diff = getDiffFuture(previousVersion, postVersion);
 
                 String key = fileModif.getParentFile().getName() + "_" + fileModif.getName();
                 diffOfcommit.put(key, diff);
 
                 if (diff.getAllOperations().size() > 0) {
-
-                    withactions++;
-
+                    withActions++;
                 } else {
                     zero++;
                 }
-
             } catch (Throwable e) {
                 e.printStackTrace();
                 error++;
@@ -174,7 +161,7 @@ public class DiffContextAnalyzer {
         // Do nothing
     }
 
-    private Future<Diff> getfutureResult(ExecutorService executorService, File left, File right) {
+    private Future<Diff> getFutureResult(ExecutorService executorService, File left, File right) {
 
         Future<Diff> future = executorService.submit(() -> {
 
@@ -185,13 +172,13 @@ public class DiffContextAnalyzer {
         return future;
     }
 
-    public Diff getdiffFuture(File left, File right) throws Exception {
+    public Diff getDiffFuture(File left, File right) throws Exception {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
-        Future<Diff> future = getfutureResult(executorService, left, right);
+        Future<Diff> future = getFutureResult(executorService, left, right);
 
-        Diff resukltDiff = null;
+        Diff resultDiff = null;
         try {
-            resukltDiff = future.get(60, TimeUnit.SECONDS);
+            resultDiff = future.get(60, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             log.error("job was interrupted");
         } catch (ExecutionException e) {
@@ -210,7 +197,7 @@ public class DiffContextAnalyzer {
             executorService.shutdownNow();
         }
 
-        return resukltDiff;
+        return resultDiff;
 
     }
 
@@ -222,37 +209,13 @@ public class DiffContextAnalyzer {
     @SuppressWarnings("unchecked")
     public JsonObject atEndCommit(File difffile, Map<String, Diff> diffOfcommit) {
         try {
-
             JsonObject statsjsonRoot = getContextFuture(difffile.getName(), diffOfcommit);
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-            boolean savePerFile = false;// testing
-            if (savePerFile) {
-
-                JsonArray filesa = statsjsonRoot.getAsJsonArray("affected_files");
-                for (JsonElement jsonElement : filesa) {
-
-                    String name = jsonElement.getAsJsonObject().getAsJsonPrimitive("file").getAsString();
-
-                    FileWriter fw = new FileWriter(out.getAbsolutePath() + File.separator + name + ".json");
-
-                    String prettyJsonString = gson.toJson(jsonElement);
-                    fw.write(prettyJsonString);
-
-                    fw.flush();
-                    fw.close();
-                }
-
-            } else {
-                FileWriter fw = new FileWriter(out.getAbsolutePath() + File.separator + difffile.getName() + ".json");
-
-                // Gson gson = new GsonBuilder().setPrettyPrinting().create();
-                String prettyJsonString = gson.toJson(statsjsonRoot);
-                fw.write(prettyJsonString);
-                // System.out.println(prettyJsonString);
-                fw.flush();
-                fw.close();
-            }
+            FileWriter fw = new FileWriter(out.getAbsolutePath() + File.separator + difffile.getName() + ".json");
+            String prettyJsonString = gson.toJson(statsjsonRoot);
+            fw.write(prettyJsonString);
+            fw.flush();
+            fw.close();
             return statsjsonRoot;
         } catch (Exception e) {
             e.printStackTrace();
@@ -260,17 +223,12 @@ public class DiffContextAnalyzer {
         }
     }
 
-    private Future<JsonObject> getContextInFeature(ExecutorService executorService, String id,
-                                                   Map<String, Diff> diffOfcommit) {
+    private Future<JsonObject> getContextInFeature(ExecutorService executorService, String id, Map<String, Diff> diffOfCommit) {
 
-        Future<JsonObject> future = executorService.submit(() -> {
-            JsonObject statsjsonRoot = calculateCntxJSON(id, diffOfcommit);
-            return statsjsonRoot;
-        });
-        return future;
+        return executorService.submit(() -> calculateConntexJSON(id, diffOfCommit));
     }
 
-    public JsonObject getContextFuture(String id, Map<String, Diff> operations) throws Exception {
+    public JsonObject getContextFuture(String id, Map<String, Diff> operations) {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         Future<JsonObject> future = getContextInFeature(executorService, id, operations);
 
@@ -298,10 +256,8 @@ public class DiffContextAnalyzer {
         return resukltDiff;
     }
 
-    /////// ---------=-=-=-=--=-=-=-
-
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public JsonObject calculateCntxJSON(String id, Map<String, Diff> operations) {
+    public JsonObject calculateConntexJSON(String id, Map<String, Diff> operations) {
 
         JsonObject statsjsonRoot = new JsonObject();
         statsjsonRoot.addProperty("diffid", id);
@@ -309,8 +265,6 @@ public class DiffContextAnalyzer {
         statsjsonRoot.add("affected_files", filesArray);
 
         for (String modifiedFile : operations.keySet()) {
-            MapList<Operation, String> patternsPerOp = new MapList<>();
-            MapList<Operation, String> repairactionPerOp = new MapList<>();
             List<PatternInstance> patternInstances = new ArrayList<>();
 
             Diff diff = operations.get(modifiedFile);
@@ -318,7 +272,6 @@ public class DiffContextAnalyzer {
 
             log.info("Diff file " + modifiedFile + " " + operationsFromFile.size());
             // Patterns:
-            //  System.out.println(diff.getRootOperations().size());
             if (diff.getRootOperations().size() <= 10) {
                 JsonObject fileModified = new JsonObject();
 
@@ -338,9 +291,7 @@ public class DiffContextAnalyzer {
                 }
                 cr.start();
 
-                JsonArray ast_arrays = calculateJSONAffectedStatementList(diff, operationsFromFile, patternsPerOp,
-                        repairactionPerOp, patternInstances);
-                // fileModified.add("faulty_stmts_ast", ast_arrays);
+                JsonArray ast_arrays = calculateJSONAffectedStatementList(diff, patternInstances);
                 fileModified.add("pattern_instances", ast_arrays);
 
                 includeAstChangeInfoInJSon(diff, operationsFromFile, fileModified);
@@ -369,14 +320,10 @@ public class DiffContextAnalyzer {
 
     /**
      * @param diff
-     * @param operations
-     * @param patternsPerOp
-     * @param repairactionPerOp
+     * @param patternInstancesOriginal
      * @return
      */
-    public JsonArray calculateJSONAffectedStatementList(Diff diff, List<Operation> operations,
-                                                        MapList<Operation, String> patternsPerOp, MapList<Operation, String> repairactionPerOp,
-                                                        List<PatternInstance> patternInstancesOriginal) {
+    public JsonArray calculateJSONAffectedStatementList(Diff diff, List<PatternInstance> patternInstancesOriginal) {
 
         Json4SpoonGenerator jsongen = new Json4SpoonGenerator();
 
@@ -385,33 +332,31 @@ public class DiffContextAnalyzer {
         List<PatternInstance> patternInstancesMerged = merge(patternInstancesOriginal);
 
         for (PatternInstance patternInstance : patternInstancesMerged) {
-            Set<ITree> allTreeparents = new HashSet<>();
+            Set<ITree> allTreeParents = new HashSet<>();
             Operation opi = patternInstance.getOp();
 
             List<CtElement> faulties = null;
 
             CtElement getAffectedCtElement = patternInstance.getFaultyLine();
 
-            if (whetherDiscardElement(getAffectedCtElement))
+            if (whetherDiscardElement(getAffectedCtElement)) {
                 continue;
+            }
 
             ITree faultyTree = patternInstance.getFaultyTree();
             if (faultyTree != null) {
 
-                faultyTree = MappingAnalysis.getFormatedTreeFromControlFlow(faultyTree,
-                        (CtElement) faultyTree.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT));
+                faultyTree = MappingAnalysis.getFormatedTreeFromControlFlow(faultyTree, (CtElement) faultyTree.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT));
 
-                allTreeparents.add(faultyTree);
+                allTreeParents.add(faultyTree);
             } else {
 
                 if (getAffectedCtElement != null) {
                     faulties = new ArrayList<>();
                     faulties.add(getAffectedCtElement);
                 } else {
-                    if (patternInstance.getFaulty() != null)
+                    if (patternInstance.getFaulty() != null) {
                         faulties = patternInstance.getFaulty();
-                    else {
-
                     }
                 }
 
@@ -419,12 +364,10 @@ public class DiffContextAnalyzer {
                     ITree nodeFaulty = (ITree) faulty.getMetadata("gtnode");
 
                     if (nodeFaulty != null) {
-
                         ITree transformedTree = MappingAnalysis.getFormatedTreeFromControlFlow(nodeFaulty,
                                 (CtElement) faulty.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT));
 
-                        allTreeparents.add(transformedTree);
-                    } else {
+                        allTreeParents.add(transformedTree);
                     }
                 }
             }
@@ -437,7 +380,7 @@ public class DiffContextAnalyzer {
 
             JsonObject jsonInstance = new JsonObject();
             JsonArray affected = new JsonArray();
-            for (ITree iTree : allTreeparents) {
+            for (ITree iTree : allTreeParents) {
                 JsonObject jsonT = jsongen.getJSONwithCustorLabels(((DiffImpl) diff).getContext(), iTree, painters);
                 affected.add(jsonT);
             }
@@ -450,9 +393,8 @@ public class DiffContextAnalyzer {
         return ast_affected;
     }
 
-    private boolean whetherDiscardElement(CtElement orginalelement) {
-
-        CtElement tostudy = retrieveElementToStudy(orginalelement);
+    private boolean whetherDiscardElement(CtElement orginalElement) {
+        CtElement tostudy = retrieveElementToStudy(orginalElement);
 
         List<CtBinaryOperator> allbinaporators = tostudy.getElements(e -> (e instanceof CtBinaryOperator)).stream()
                 .map(CtBinaryOperator.class::cast).collect(Collectors.toList());
@@ -481,59 +423,42 @@ public class DiffContextAnalyzer {
     }
 
     private int getNumberOfStringInBinary(CtBinaryOperator binarytostudy) {
-
         int stringnumber = 0;
 
         if (binarytostudy.getKind().equals(BinaryOperatorKind.PLUS)) {
 
-            if (binarytostudy.getLeftHandOperand() instanceof CtLiteral &&
-                    ((CtLiteral) binarytostudy.getLeftHandOperand()).toString().trim().startsWith("\""))
+            if (binarytostudy.getLeftHandOperand() instanceof CtLiteral && binarytostudy.getLeftHandOperand().toString().trim().startsWith("\"")) {
                 stringnumber++;
-
-            if (binarytostudy.getRightHandOperand() instanceof CtLiteral &&
-                    ((CtLiteral) binarytostudy.getRightHandOperand()).toString().trim().startsWith("\""))
+            }
+            if (binarytostudy.getRightHandOperand() instanceof CtLiteral && binarytostudy.getRightHandOperand().toString().trim().startsWith("\"")) {
                 stringnumber++;
-
+            }
         }
 
         return stringnumber;
     }
 
-//    private boolean wheterBinaryofString (CtBinaryOperator binarytostudy) {
-//        
-//        if(binarytostudy.getKind().equals(BinaryOperatorKind.PLUS)) {
-//            
-//            if(binarytostudy.getLeftHandOperand().toString().trim().startsWith("\"") 
-//                    || ((binarytostudy.getLeftHandOperand() instanceof CtBinaryOperator) && 
-//                ((CtBinaryOperator) binarytostudy.getLeftHandOperand()).getKind().equals(BinaryOperatorKind.PLUS))) {
-//                
-//                if(binarytostudy.getRightHandOperand().toString().trim().startsWith("\"") 
-//                        || ((binarytostudy.getRightHandOperand() instanceof CtBinaryOperator) && 
-//                    ((CtBinaryOperator) binarytostudy.getRightHandOperand()).getKind().equals(BinaryOperatorKind.PLUS)))
-//                    
-//                    return true;
-//            }
-//        }
-//        
-//        return false;
-//    }
-
     private CtElement retrieveElementToStudy(CtElement element) {
 
         if (element instanceof CtIf) {
             return (((CtIf) element).getCondition());
-        } else if (element instanceof CtWhile) {
+        }
+        if (element instanceof CtWhile) {
             return (((CtWhile) element).getLoopingExpression());
-        } else if (element instanceof CtFor) {
+        }
+        if (element instanceof CtFor) {
             return (((CtFor) element).getExpression());
-        } else if (element instanceof CtDo) {
+        }
+        if (element instanceof CtDo) {
             return (((CtDo) element).getLoopingExpression());
-        } else if (element instanceof CtForEach) {
+        }
+        if (element instanceof CtForEach) {
             return (((CtForEach) element).getExpression());
-        } else if (element instanceof CtSwitch) {
+        }
+        if (element instanceof CtSwitch) {
             return (((CtSwitch) element).getSelector());
-        } else
-            return (element);
+        }
+        return (element);
     }
 
 
