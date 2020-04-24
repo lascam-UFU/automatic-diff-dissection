@@ -41,9 +41,4 @@ public class PDDConfigurationProperties {
     public static Double getPropertyDouble(String key) {
         return Double.valueOf(properties.getProperty(key));
     }
-
-    public static void main(String[] s) {
-        String ss = PDDConfigurationProperties.properties.getProperty("test");
-        System.out.println("-->" + ss);
-    }
 }

@@ -16,20 +16,18 @@ import java.util.List;
  */
 public class ReturnTypePainter implements NodePainter {
 
-    List<CtExpression> allrootlogicalexpers;
-
-    List<CtExpression> allExpressions;
-
-    List<CtBinaryOperator> allBinOperators;
+    private List<CtExpression> allRootLogicalExpressions;
+    private List<CtExpression> allExpressions;
+    private List<CtBinaryOperator> allBinOperators;
 
     public ReturnTypePainter(CtElement faultyLine) {
-        allrootlogicalexpers = LogicalExpressionAnalyzer.getAllRootLogicalExpressions(faultyLine);
+        allRootLogicalExpressions = LogicalExpressionAnalyzer.getAllRootLogicalExpressions(faultyLine);
         allExpressions = LogicalExpressionAnalyzer.getAllExpressions(faultyLine);
         allBinOperators = LogicalExpressionAnalyzer.getAllBinaryOperators(faultyLine);
     }
 
     public List<CtExpression> getRootLogicalExpressions() {
-        return this.allrootlogicalexpers;
+        return this.allRootLogicalExpressions;
     }
 
     public List<CtExpression> getAllExpressions() {
@@ -44,13 +42,14 @@ public class ReturnTypePainter implements NodePainter {
     public void paint(ITree tree, JsonObject jsontree) {
 
         CtElement ctelement = (CtElement) tree.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
-        if (ctelement != null && ctelement instanceof CtExpression) {
-            String type = "java.lang.Object";
+        if (ctelement instanceof CtExpression) {
+            String type = Object.class.getCanonicalName();
             CtExpression exp = (CtExpression) ctelement;
             if (LogicalExpressionAnalyzer.isBooleanExpression(exp)) {
                 type = Boolean.class.getCanonicalName();
-            } else if (exp.getType() != null)
+            } else if (exp.getType() != null) {
                 type = exp.getType().getQualifiedName();
+            }
 
             jsontree.addProperty("return_type", type);
 
@@ -71,10 +70,9 @@ public class ReturnTypePainter implements NodePainter {
             }
 
             if (type.toLowerCase().equals("boolean") || type.toLowerCase().equals("java.lang.boolean")) {
-
-                for (int index = 0; index < allrootlogicalexpers.size(); index++) {
-                    CtExpression specificlogicalexper = allrootlogicalexpers.get(index);
-                    if (specificlogicalexper.equals(exp)) {
+                for (int index = 0; index < allRootLogicalExpressions.size(); index++) {
+                    CtExpression specificLogicalexpression = allRootLogicalExpressions.get(index);
+                    if (specificLogicalexpression.equals(exp)) {
                         jsontree.addProperty("index_of_logical_exper", "logical_expression_" + Integer.toString(index));
                         break;
                     }
