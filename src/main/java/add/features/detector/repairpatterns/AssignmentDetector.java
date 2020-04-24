@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class AssignmentDetector extends AbstractPatternDetector {
 
-    private static final String ADD_ASSIGNMENT = "addAssignment";
+    public static final String ADD_ASSIGNMENT = "addAssignment";
 
     public AssignmentDetector(List<Operation> operations) {
         super(operations);
