@@ -1,151 +1,89 @@
 package add.features.detector.spoon;
 
 import spoon.reflect.code.BinaryOperatorKind;
-import spoon.reflect.code.CtArrayRead;
 import spoon.reflect.code.CtBinaryOperator;
 import spoon.reflect.code.CtConditional;
-import spoon.reflect.code.CtConstructorCall;
 import spoon.reflect.code.CtDo;
 import spoon.reflect.code.CtExpression;
 import spoon.reflect.code.CtFor;
 import spoon.reflect.code.CtForEach;
 import spoon.reflect.code.CtIf;
-import spoon.reflect.code.CtInvocation;
-import spoon.reflect.code.CtLiteral;
 import spoon.reflect.code.CtSwitch;
-import spoon.reflect.code.CtVariableAccess;
 import spoon.reflect.code.CtWhile;
 import spoon.reflect.declaration.CtElement;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class LogicalExpressionAnalyzer {
 
-    public static List<CtExpression> getAllRootLogicalExpressions(CtElement parentline) {
-
+    public static List<CtExpression> getAllRootLogicalExpressions(CtElement parentLine) {
         List<CtExpression> logicalExpressions = new ArrayList();
 
-        CtElement elementToStudy = retrieveElementToStudy(parentline);
+        CtElement elementToStudy = retrieveElementToStudy(parentLine);
 
-        List<CtExpression> expressionssFromFaultyLine = elementToStudy.getElements(e -> (e instanceof CtExpression)).stream()
+        List<CtExpression> expressionsFromFaultyLine = elementToStudy.getElements(e -> (e instanceof CtExpression)).stream()
                 .map(CtExpression.class::cast).collect(Collectors.toList());
 
-        for (int index = 0; index < expressionssFromFaultyLine.size(); index++) {
-
-            if (isBooleanExpression(expressionssFromFaultyLine.get(index)) &&
-                    !whetherparentboolean(expressionssFromFaultyLine.get(index)) &&
-                    !logicalExpressions.contains(expressionssFromFaultyLine.get(index))) {
-                logicalExpressions.add(expressionssFromFaultyLine.get(index));
+        for (int index = 0; index < expressionsFromFaultyLine.size(); index++) {
+            if (isBooleanExpression(expressionsFromFaultyLine.get(index)) &&
+                    !whetherParentBoolean(expressionsFromFaultyLine.get(index)) &&
+                    !logicalExpressions.contains(expressionsFromFaultyLine.get(index))) {
+                logicalExpressions.add(expressionsFromFaultyLine.get(index));
             }
         }
 
         return logicalExpressions;
     }
 
-    public static List<CtBinaryOperator> getAllBinaryOperators(CtElement parentline) {
-
-        CtElement elementToStudy = retrieveElementToStudy(parentline);
-
-        List<CtBinaryOperator> binaryOperatorsFromFaultyLine = elementToStudy.getElements(e -> (e instanceof CtBinaryOperator)).stream()
-                .map(CtBinaryOperator.class::cast).collect(Collectors.toList());
-
-        return binaryOperatorsFromFaultyLine;
-    }
-
-    public static List<CtExpression> getAllExpressions(CtElement parentline) {
-
-        CtElement elementToStudy = retrieveElementToStudy(parentline);
-
-        List<CtExpression> expressionssFromFaultyLine = elementToStudy.getElements(e -> (e instanceof CtExpression)).stream()
-                .map(CtExpression.class::cast).collect(Collectors.toList());
-
-        LinkedHashSet<CtExpression> hashSetExpressions = new LinkedHashSet<>(expressionssFromFaultyLine);
-        ArrayList<CtExpression> listExpressionWithoutDuplicates = new ArrayList<>(hashSetExpressions);
-
-        ArrayList<CtExpression> removeUndesirable = new ArrayList<>();
-
-        for (int index = 0; index < listExpressionWithoutDuplicates.size(); index++) {
-
-            CtExpression certainExpression = listExpressionWithoutDuplicates.get(index);
-
-            if (certainExpression instanceof CtVariableAccess || certainExpression instanceof CtLiteral ||
-                    certainExpression instanceof CtInvocation || certainExpression instanceof CtConstructorCall ||
-                    certainExpression instanceof CtArrayRead || analyzeWhetherAE(certainExpression))
-                removeUndesirable.add(certainExpression);
-        }
-
-        return removeUndesirable;
-    }
-
-    private static boolean analyzeWhetherAE(CtExpression expression) {
-
-        try {
-            List<BinaryOperatorKind> opKinds = new ArrayList<>();
-            opKinds.add(BinaryOperatorKind.DIV);
-            opKinds.add(BinaryOperatorKind.PLUS);
-            opKinds.add(BinaryOperatorKind.MINUS);
-            opKinds.add(BinaryOperatorKind.MUL);
-            opKinds.add(BinaryOperatorKind.MOD);
-
-            if (expression instanceof CtBinaryOperator && opKinds.contains(((CtBinaryOperator) expression).getKind()))
-                return true;
-
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
     public static CtElement retrieveElementToStudy(CtElement element) {
 
         if (element instanceof CtIf) {
             return (((CtIf) element).getCondition());
-        } else if (element instanceof CtWhile) {
+        }
+        if (element instanceof CtWhile) {
             return (((CtWhile) element).getLoopingExpression());
-        } else if (element instanceof CtFor) {
+        }
+        if (element instanceof CtFor) {
             return (((CtFor) element).getExpression());
-        } else if (element instanceof CtDo) {
+        }
+        if (element instanceof CtDo) {
             return (((CtDo) element).getLoopingExpression());
-        } else if (element instanceof CtForEach) {
+        }
+        if (element instanceof CtForEach) {
             return (((CtForEach) element).getExpression());
-        } else if (element instanceof CtSwitch) {
+        }
+        if (element instanceof CtSwitch) {
             return (((CtSwitch) element).getSelector());
-        } else
-            return (element);
+        }
+        return (element);
     }
 
-    public static boolean whetherparentboolean(CtExpression tostudy) {
-
-        CtElement parent = tostudy;
+    public static boolean whetherParentBoolean(CtExpression expression) {
+        CtElement parent = expression;
         while (parent != null) {
             parent = parent.getParent();
-
-            if (isBooleanExpression(parent))
+            if (isBooleanExpression(parent)) {
                 return true;
+            }
         }
-
         return false;
     }
 
-    public static boolean isBooleanExpression(CtElement currentexpression) {
-
-        if (currentexpression == null)
+    public static boolean isBooleanExpression(CtElement currentExpression) {
+        if (currentExpression == null) {
             return false;
+        }
 
-        if (isLogicalExpression(currentexpression)) {
+        if (isLogicalExpression(currentExpression)) {
             return true;
         }
 
-        if (currentexpression instanceof CtExpression) {
-
-            CtExpression exper = (CtExpression) currentexpression;
+        if (currentExpression instanceof CtExpression) {
+            CtExpression exper = (CtExpression) currentExpression;
             try {
-                if (exper.getType() != null
-                        && exper.getType().unbox().toString().equals("boolean")) {
+                if (exper.getType() != null && exper.getType().unbox().toString().equals("boolean")) {
                     return true;
                 }
             } catch (Exception e) {
@@ -157,12 +95,11 @@ public class LogicalExpressionAnalyzer {
     }
 
     public static boolean isLogicalExpression(CtElement currentElement) {
-
-        if (currentElement == null)
+        if (currentElement == null) {
             return false;
+        }
 
         if ((currentElement instanceof CtBinaryOperator)) {
-
             CtBinaryOperator binOp = (CtBinaryOperator) currentElement;
 
             if (binOp.getKind().equals(BinaryOperatorKind.AND) || binOp.getKind().equals(BinaryOperatorKind.OR)
@@ -174,38 +111,42 @@ public class LogicalExpressionAnalyzer {
                     || binOp.getKind().equals(BinaryOperatorKind.LT)
                     || binOp.getKind().equals(BinaryOperatorKind.NE)
                     || (binOp.getType() != null &&
-                    binOp.getType().unbox().getSimpleName().equals("boolean")))
-
+                    binOp.getType().unbox().getSimpleName().equals("boolean"))) {
                 return true;
+            }
         }
 
         if (currentElement.getParent() instanceof CtConditional) {
             CtConditional cond = (CtConditional) currentElement.getParent();
-            if (currentElement.equals(cond.getCondition()))
+            if (currentElement.equals(cond.getCondition())) {
                 return true;
+            }
         }
 
         if (currentElement.getParent() instanceof CtIf) {
-            CtIf ifcond = (CtIf) currentElement.getParent();
-            if (currentElement.equals(ifcond.getCondition()))
+            CtIf ifCond = (CtIf) currentElement.getParent();
+            if (currentElement.equals(ifCond.getCondition())) {
                 return true;
+            }
         }
 
         if (currentElement.getParent() instanceof CtWhile) {
-            CtWhile whilecond = (CtWhile) currentElement.getParent();
-            if (currentElement.equals(whilecond.getLoopingExpression()))
+            CtWhile whileCond = (CtWhile) currentElement.getParent();
+            if (currentElement.equals(whileCond.getLoopingExpression())) {
                 return true;
+            }
         }
 
         if (currentElement.getParent() instanceof CtDo) {
-            CtDo docond = (CtDo) currentElement.getParent();
-            if (currentElement.equals(docond.getLoopingExpression()))
+            CtDo doCond = (CtDo) currentElement.getParent();
+            if (currentElement.equals(doCond.getLoopingExpression())) {
                 return true;
+            }
         }
 
         if (currentElement.getParent() instanceof CtFor) {
-            CtFor forcond = (CtFor) currentElement.getParent();
-            return currentElement.equals(forcond.getExpression());
+            CtFor forCond = (CtFor) currentElement.getParent();
+            return currentElement.equals(forCond.getExpression());
         }
 
         return false;
