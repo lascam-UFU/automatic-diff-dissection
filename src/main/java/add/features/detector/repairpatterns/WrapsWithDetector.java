@@ -410,7 +410,7 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                             if (ctExpression.getMetadata("isMoved") != null
                                     && ctExpression.getMetadata("movingSrc") != null) {
 
-                                if (RepairPatternUtils.getIsMovedExpressionInStatemnt(diff, statementParent, ctExpression) &&
+                                if (RepairPatternUtils.getIsMovedExpressionInStatement(diff, statementParent, ctExpression) &&
                                         whetherconsinderthemethodunrap(ctExpression, ctInvocation)) {
                                     CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(),
                                             operation.getSrcNode());
@@ -502,7 +502,7 @@ public class WrapsWithDetector extends AbstractPatternDetector {
                                     && ctExpression.getMetadata("movingSrc") != null) {
 
                                 if (whetherconsindertheconstructorunrap(ctExpression, ctConstructor) &&
-                                        RepairPatternUtils.getIsMovedExpressionInStatemnt(diff, statementParent, ctExpression)) {
+                                        RepairPatternUtils.getIsMovedExpressionInStatement(diff, statementParent, ctExpression)) {
                                     CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(),
                                             operation.getSrcNode());
                                     ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);

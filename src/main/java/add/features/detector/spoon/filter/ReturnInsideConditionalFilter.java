@@ -24,7 +24,10 @@ public class ReturnInsideConditionalFilter implements Filter<CtReturn> {
         while (!(ctElementParent instanceof CtIf) && !(ctElementParent instanceof CtCase) && !(ctElementParent instanceof CtBlock)) {
             ctElementParent = ctElementParent.getParent();
         }
-        return ctElementParent == this.ctElement;
+        if (ctElementParent == this.ctElement) {
+            return true;
+        }
+        return false;
     }
 
 }

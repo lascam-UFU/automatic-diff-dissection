@@ -872,7 +872,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                 if (ctExpression.getMetadata("isMoved") != null
                                         && ctExpression.getMetadata("movingSrc") != null) {
 
-                                    if (RepairPatternUtils.getIsMovedExpressionInStatemnt(diff, statementParent, ctExpression) &&
+                                    if (RepairPatternUtils.getIsMovedExpressionInStatement(diff, statementParent, ctExpression) &&
                                             whetherconsinderthemethodunrap(ctExpression, ctInvocation) &&
                                             invocationArgumentsnew.contains(ctExpression) && ctExpression.getParent() == destination) {
                                         CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(),
@@ -953,7 +953,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                 if (ctExpression.getMetadata("isMoved") != null
                                         && ctExpression.getMetadata("movingSrc") != null) {
 
-                                    if (RepairPatternUtils.getIsMovedExpressionInStatemnt(diff, statementParent, ctExpression) &&
+                                    if (RepairPatternUtils.getIsMovedExpressionInStatement(diff, statementParent, ctExpression) &&
                                             whetherConsinderTheConstructorUnwrap(ctExpression, ctInvocation) &&
                                             invocationArgumentsnew.contains(ctExpression) &&
                                             ctExpression.getParent() == destination) {

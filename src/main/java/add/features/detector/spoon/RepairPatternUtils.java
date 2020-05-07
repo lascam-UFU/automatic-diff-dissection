@@ -42,23 +42,38 @@ import java.util.Set;
 public class RepairPatternUtils {
 
     public static boolean isNewVariable(CtVariable variable) {
-        return variable.getMetadata("new") != null;
+        if (variable.getMetadata("new") != null) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isNewBinaryOperator(CtBinaryOperator binaryOperator) {
-        return binaryOperator.getMetadata("new") != null && (Boolean) binaryOperator.getMetadata("new");
+        if (binaryOperator.getMetadata("new") != null && (Boolean) binaryOperator.getMetadata("new")) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isDeletedBinaryOperator(CtBinaryOperator binaryOperator) {
-        return binaryOperator.getMetadata("delete") != null && (Boolean) binaryOperator.getMetadata("delete");
+        if (binaryOperator.getMetadata("delete") != null && (Boolean) binaryOperator.getMetadata("delete")) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isNewUnaryOperator(CtUnaryOperator unaryOperator) {
-        return unaryOperator.getMetadata("new") != null && (Boolean) unaryOperator.getMetadata("new");
+        if (unaryOperator.getMetadata("new") != null && (Boolean) unaryOperator.getMetadata("new")) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isDeletedUnaryOperator(CtUnaryOperator unaryOperator) {
-        return unaryOperator.getMetadata("delete") != null && (Boolean) unaryOperator.getMetadata("delete");
+        if (unaryOperator.getMetadata("delete") != null && (Boolean) unaryOperator.getMetadata("delete")) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isMovedCondition(CtElement binaryOperator) {
@@ -70,35 +85,56 @@ public class RepairPatternUtils {
     }
 
     public static boolean isNewConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
-        return binaryOperator.getRightHandOperand().getMetadata("isMoved") == null
-                || binaryOperator.getLeftHandOperand().getMetadata("isMoved") == null;
+        if (binaryOperator.getRightHandOperand().getMetadata("isMoved") == null ||
+                binaryOperator.getLeftHandOperand().getMetadata("isMoved") == null) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isDeletedConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
-        return binaryOperator.getRightHandOperand().getMetadata("delete") != null
-                || binaryOperator.getLeftHandOperand().getMetadata("delete") != null;
+        if (binaryOperator.getRightHandOperand().getMetadata("delete") != null ||
+                binaryOperator.getLeftHandOperand().getMetadata("delete") != null) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isUpdatedConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
-        return binaryOperator.getRightHandOperand().getMetadata("update") != null
-                || binaryOperator.getLeftHandOperand().getMetadata("update") != null;
+        if (binaryOperator.getRightHandOperand().getMetadata("update") != null ||
+                binaryOperator.getLeftHandOperand().getMetadata("update") != null) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isNewConditionInUnaryOperator(CtUnaryOperator unaryOperator) {
-        return unaryOperator.getOperand().getMetadata("isMoved") == null;
+        if (unaryOperator.getOperand().getMetadata("isMoved") == null) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isUpdatedConditionInUnaryOperator(CtUnaryOperator unaryOperator) {
-        return unaryOperator.getOperand().getMetadata("update") != null;
+        if (unaryOperator.getOperand().getMetadata("update") != null) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isExistingConditionInBinaryOperator(CtBinaryOperator binaryOperator) {
-        return binaryOperator.getRightHandOperand().getMetadata("isMoved") != null
-                || binaryOperator.getLeftHandOperand().getMetadata("isMoved") != null;
+        if (binaryOperator.getRightHandOperand().getMetadata("isMoved") != null ||
+                binaryOperator.getLeftHandOperand().getMetadata("isMoved") != null) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isExistingConditionInUnaryOperator(CtUnaryOperator unaryOperator) {
-        return unaryOperator.getOperand().getMetadataKeys().size() == 0;
+        if (unaryOperator.getOperand().getMetadataKeys().size() == 0) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isStringInvolvedInBinaryOperator(CtBinaryOperator binaryOperator) {
@@ -114,15 +150,13 @@ public class RepairPatternUtils {
 
     public static boolean wasConditionChangedInIf(CtIf ctIf) {
         boolean wasConditionChanged = false;
-        List<CtBinaryOperator> binaryOperatorList = ctIf.getCondition()
-                .getElements(new TypeFilter<>(CtBinaryOperator.class));
+        List<CtBinaryOperator> binaryOperatorList = ctIf.getCondition().getElements(new TypeFilter<>(CtBinaryOperator.class));
         for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
             if (RepairPatternUtils.isNewBinaryOperator(ctBinaryOperator)) {
                 wasConditionChanged = true;
             }
         }
-        List<CtUnaryOperator> unaryOperatorList = ctIf.getCondition()
-                .getElements(new TypeFilter<>(CtUnaryOperator.class));
+        List<CtUnaryOperator> unaryOperatorList = ctIf.getCondition().getElements(new TypeFilter<>(CtUnaryOperator.class));
         for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
             if (RepairPatternUtils.isNewUnaryOperator(ctUnaryOperator)) {
                 wasConditionChanged = true;
@@ -132,32 +166,35 @@ public class RepairPatternUtils {
     }
 
     public static boolean isNewStatement(CtStatement statement) {
-        return statement.getMetadata("new") != null;
+        if (statement.getMetadata("new") != null) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isMovedStatement(CtStatement statement) {
-        return statement.getMetadata("isMoved") != null;
+        if (statement.getMetadata("isMoved") != null) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isMovingSrcStatement(CtStatement statement) {
-        return isMovedStatement(statement) && statement.getMetadata("movingSrc") != null;
-    }
-
-    public static boolean isMovingDstStatement(CtStatement statement) {
-        return isMovedStatement(statement) && statement.getMetadata("movingDst") != null;
+        if (isMovedStatement(statement) && statement.getMetadata("movingSrc") != null) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isNewIf(CtIf ctIf) {
         if (ctIf.getMetadata("new") != null) {
-            List<CtBinaryOperator> binaryOperatorList = ctIf.getCondition()
-                    .getElements(new TypeFilter<>(CtBinaryOperator.class));
+            List<CtBinaryOperator> binaryOperatorList = ctIf.getCondition().getElements(new TypeFilter<>(CtBinaryOperator.class));
             for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
                 if (!isNewBinaryOperator(ctBinaryOperator)) {
                     return false;
                 }
             }
-            List<CtUnaryOperator> unaryOperatorList = ctIf.getCondition()
-                    .getElements(new TypeFilter<>(CtUnaryOperator.class));
+            List<CtUnaryOperator> unaryOperatorList = ctIf.getCondition().getElements(new TypeFilter<>(CtUnaryOperator.class));
             for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
                 if (!isNewUnaryOperator(ctUnaryOperator)) {
                     return false;
@@ -170,15 +207,13 @@ public class RepairPatternUtils {
 
     public static boolean isNewWhile(CtWhile ctWhile) {
         if (ctWhile.getMetadata("new") != null) {
-            List<CtBinaryOperator> binaryOperatorList = ctWhile.getLoopingExpression()
-                    .getElements(new TypeFilter<>(CtBinaryOperator.class));
+            List<CtBinaryOperator> binaryOperatorList = ctWhile.getLoopingExpression().getElements(new TypeFilter<>(CtBinaryOperator.class));
             for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
                 if (!isNewBinaryOperator(ctBinaryOperator)) {
                     return false;
                 }
             }
-            List<CtUnaryOperator> unaryOperatorList = ctWhile.getLoopingExpression()
-                    .getElements(new TypeFilter<>(CtUnaryOperator.class));
+            List<CtUnaryOperator> unaryOperatorList = ctWhile.getLoopingExpression().getElements(new TypeFilter<>(CtUnaryOperator.class));
             for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
                 if (!isNewUnaryOperator(ctUnaryOperator)) {
                     return false;
@@ -191,24 +226,28 @@ public class RepairPatternUtils {
 
     public static boolean isNewFor(CtFor ctFor) {
         if (ctFor.getMetadata("new") != null) {
-            List<CtBinaryOperator> binaryOperatorList = ctFor.getExpression()
-                    .getElements(new TypeFilter<>(CtBinaryOperator.class));
-            for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
-                if (!isNewBinaryOperator(ctBinaryOperator)) {
-                    return false;
+            CtExpression<Boolean> expression = ctFor.getExpression();
+            if (expression != null) {
+                List<CtBinaryOperator> binaryOperatorList = expression.getElements(new TypeFilter<>(CtBinaryOperator.class));
+                for (CtBinaryOperator ctBinaryOperator : binaryOperatorList) {
+                    if (!isNewBinaryOperator(ctBinaryOperator)) {
+                        return false;
+                    }
                 }
-            }
-            List<CtUnaryOperator> unaryOperatorList = ctFor.getExpression()
-                    .getElements(new TypeFilter<>(CtUnaryOperator.class));
-            for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
-                if (!isNewUnaryOperator(ctUnaryOperator)) {
-                    return false;
+                List<CtUnaryOperator> unaryOperatorList = expression.getElements(new TypeFilter<>(CtUnaryOperator.class));
+                for (CtUnaryOperator ctUnaryOperator : unaryOperatorList) {
+                    if (!isNewUnaryOperator(ctUnaryOperator)) {
+                        return false;
+                    }
                 }
             }
             if (!isThereOnlyNewStatementsInStatementList(ctFor.getForInit())) {
                 return false;
             }
-            return isThereOnlyNewStatementsInStatementList(ctFor.getForUpdate());
+            if (!isThereOnlyNewStatementsInStatementList(ctFor.getForUpdate())) {
+                return false;
+            }
+            return true;
         }
         return false;
     }
@@ -218,7 +257,10 @@ public class RepairPatternUtils {
             if (ctForEach.getVariable().getMetadata("new") == null) {
                 return false;
             }
-            return ctForEach.getExpression().getMetadata("new") != null;
+            if (ctForEach.getExpression().getMetadata("new") == null) {
+                return false;
+            }
+            return true;
         }
         return false;
     }
@@ -253,9 +295,6 @@ public class RepairPatternUtils {
                         statementsNotNew.add((CtStatement) susp);
                     }
                 }
-
-                // statementsNotNew.add(statement);
-
             }
         }
         return statementsNotNew;
@@ -264,52 +303,39 @@ public class RepairPatternUtils {
     public static CtElement getElementInOld(Diff diff, CtElement elementInNew) {
         ITree leftTree = MappingAnalysis.getLeftFromRightNodeMapped(diff, elementInNew);
         CtElement oldElement = null;
-        if (leftTree != null)
+        if (leftTree != null) {
             oldElement = (CtElement) leftTree.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
+        }
 
         return oldElement;
     }
 
-    public static boolean getIsInvocationInStatemnt(Diff diff, CtElement oldline, CtElement newinvocationorconstructor) {
+    public static boolean getIsInvocationInStatemnt(Diff diff, CtElement oldLine, CtElement newInvocationOrConstructor) {
+        CtElement newline = MappingAnalysis.getParentLine(new LineFilter(), newInvocationOrConstructor);
+        ITree treeOldLine = MappingAnalysis.getRightFromLeftNodeMapped(diff, oldLine);
 
-        CtElement newline = MappingAnalysis.getParentLine(new LineFilter(), newinvocationorconstructor);
-
-        ITree treeoldline = MappingAnalysis.getRightFromLeftNodeMapped(diff, oldline);
-
-        if (treeoldline == null)
+        if (treeOldLine == null) {
             return false;
+        }
+        CtElement newOldLine = (CtElement) treeOldLine.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
 
-        CtElement newoldline = (CtElement) treeoldline.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
-
-        return newline == newoldline;
+        return newline == newOldLine;
     }
 
-    public static boolean getIsMovedExpressionInStatemnt(Diff diff, CtStatement oldstat, CtExpression oldexpression) {
+    public static boolean getIsMovedExpressionInStatement(Diff diff, CtStatement oldStat, CtExpression oldExpression) {
 
-        ITree rightTreeStat = MappingAnalysis.getRightFromLeftNodeMapped(diff, oldstat);
-        ITree rightTreeExper = MappingAnalysis.getRightFromLeftNodeMapped(diff, oldexpression);
+        ITree rightTreeStat = MappingAnalysis.getRightFromLeftNodeMapped(diff, oldStat);
+        ITree rightTreeExper = MappingAnalysis.getRightFromLeftNodeMapped(diff, oldExpression);
 
         if (rightTreeStat == null || rightTreeExper == null)
             return true;
 
-        CtElement newstatement = (CtElement) rightTreeStat.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
-        CtElement newexper = (CtElement) rightTreeExper.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
+        CtElement newStatement = (CtElement) rightTreeStat.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
+        CtElement newExper = (CtElement) rightTreeExper.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
 
-        CtStatement statementParent = newexper.getParent(new TypeFilter<>(CtStatement.class));
+        CtStatement statementParent = newExper.getParent(new TypeFilter<>(CtStatement.class));
 
-        return newstatement == statementParent;
-    }
-
-    public static List<CtStatement> getIsThereOldStatementInStatementList_old(List<CtStatement> statements) {
-        List<CtStatement> statementsNotNew = new ArrayList<>();
-        for (CtStatement statement : statements) {
-            if (!RepairPatternUtils.isNewStatement(statement)) {
-
-                statementsNotNew.add(statement);
-                // return true;
-            }
-        }
-        return statementsNotNew;
+        return newStatement == statementParent;
     }
 
     public static boolean isThereOnlyNewAndMovedStatementsInStatementList(List<CtStatement> statements) {
@@ -375,6 +401,9 @@ public class RepairPatternUtils {
     }
 
     public static boolean areAllOperationsAtTheSamePosition(List<Operation> operations) {
+        if (operations.isEmpty()) {
+            return false;
+        }
         if (operations.get(0).getSrcNode().getPosition() instanceof NoSourcePosition) {
             return false;
         }
@@ -391,17 +420,17 @@ public class RepairPatternUtils {
 
     public static boolean isThereReturnInIfOrCase(CtElement ctElement) {
         List<CtReturn> returnList = ctElement.getElements(new ReturnInsideConditionalFilter(ctElement));
-        return returnList.size() > 0;
+        return (returnList.size() > 0) ? true : false;
     }
 
     public static boolean isThereThrowInIfOrCase(CtElement ctElement) {
         List<CtThrow> throwList = ctElement.getElements(new ThrowInsideConditionalFilter(ctElement));
-        return throwList.size() > 0;
+        return (throwList.size() > 0) ? true : false;
     }
 
     public static boolean isThereOnlyNewCatch(List<CtCatch> catchList) {
         for (CtCatch ctCatch : catchList) {
-            if (ctCatch.getMetadata("new") == null) {
+            if (!(ctCatch.getMetadata("new") != null)) {
                 return false;
             }
         }
@@ -417,16 +446,6 @@ public class RepairPatternUtils {
             }
         }
         return isThereChanges;
-    }
-
-    public static boolean isConstantVariableAccess(CtVariableAccess ctVariableAccess) {
-        Set<ModifierKind> modifiers = ctVariableAccess.getVariable().getModifiers();
-        if (modifiers.contains(ModifierKind.FINAL)) {
-            return true;
-        } else {
-            String simpleName = ctVariableAccess.getVariable().getSimpleName();
-            return simpleName.toUpperCase().equals(simpleName);
-        }
     }
 
     public static boolean isConstantTypeAccess(CtTypeAccess ctTypeAccess) {
@@ -447,14 +466,22 @@ public class RepairPatternUtils {
     public static boolean isThisAccess(CtTypeAccess ctTypeAccess) {
         // Ignore CtThisAccess
         CtClass classname = ctTypeAccess.getParent(CtClass.class);
-        return classname.getSimpleName().equals(ctTypeAccess.getAccessedType().getSimpleName());
+        if (classname.getSimpleName().equals(ctTypeAccess.getAccessedType().getSimpleName())) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isOldStatementInLoop(CtElement oldStatement) {
         if ((oldStatement.getParent() instanceof CtFor) || (oldStatement.getParent() instanceof CtForEach) ||
-                (oldStatement.getParent() instanceof CtWhile))
+                (oldStatement.getParent() instanceof CtWhile)) {
             return true;
-        return (oldStatement.getParent().getParent() instanceof CtFor) || (oldStatement.getParent().getParent() instanceof CtForEach) ||
-                (oldStatement.getParent().getParent() instanceof CtWhile);
+        }
+        if ((oldStatement.getParent().getParent() instanceof CtFor) || (oldStatement.getParent().getParent() instanceof CtForEach)
+                || (oldStatement.getParent().getParent() instanceof CtWhile)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
