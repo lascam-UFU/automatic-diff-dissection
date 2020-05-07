@@ -42,7 +42,7 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
                     continue;
                 }
                 CtElement parent = MappingAnalysis.getParentLine(new LineFilter(), srcNode);
-                ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parent);
+                ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parent);
 
                 if (srcNode instanceof CtLiteral) {
                     repairPatterns.incrementFeatureCounterInstance(CONST_CHANGE,
@@ -115,7 +115,7 @@ public class ConstantChangeDetector extends AbstractPatternDetector {
                             }
                             if (((InsertOperation) operation2Insert).getParent() == ctLiteral.getParent() && isConstantVariable) {
                                 CtElement parent = MappingAnalysis.getParentLine(new LineFilter(), ctLiteral);
-                                ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parent);
+                                ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parent);
 
                                 repairPatterns.incrementFeatureCounterInstance(CONST_CHANGE,
                                         new PatternInstance(CONST_CHANGE, operation2Insert,

@@ -68,7 +68,7 @@ public class AssignmentDetector extends AbstractPatternDetector {
                     .getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
 
             // Let's format the node in case that it's a control flow
-            suspiciousTree = MappingAnalysis.getFormatedTreeFromControlFlow(associatedLeftCtElement);
+            suspiciousTree = MappingAnalysis.getFormattedTreeFromControlFlow(associatedLeftCtElement);
 
             followCtElementsInLeft.add(associatedLeftCtElement);
 

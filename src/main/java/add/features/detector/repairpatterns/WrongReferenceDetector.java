@@ -146,7 +146,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                 }
 
                                 CtElement parentLine = MappingAnalysis.getParentLine(new LineFilter(), susp);
-                                ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
+                                ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parentLine);
 
                                 PropertyPair[] metadata = null;
 
@@ -351,7 +351,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                         CtElement patch = null;
 
                         CtElement parentLine = MappingAnalysis.getParentLine(new LineFilter(), susp);
-                        ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
+                        ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parentLine);
 
                         ITree parentRight = MappingAnalysis.getParentInRight(diff, operation.getAction());
                         if (parentRight != null) {
@@ -426,7 +426,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                         }
 
                         CtElement parentLine = MappingAnalysis.getParentLine(new LineFilter(), srcInvocation);
-                        ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
+                        ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parentLine);
 
                         if (!srcCallMethodName.equals(dstCallMethodName)) {
                             repairPatterns.incrementFeatureCounterInstance(WRONG_METHOD_REF,
@@ -546,7 +546,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                         }
 
                         CtElement parentLine = MappingAnalysis.getParentLine(new LineFilter(), susp);
-                        ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
+                        ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parentLine);
 
                         PropertyPair[] metadata = null;
                         PropertyPair propertyOldElemet = new PropertyPair("Old", "Removed_"
@@ -698,7 +698,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                         CtElement patch = null;
 
                         CtElement parentLine = MappingAnalysis.getParentLine(new LineFilter(), susp);
-                        ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
+                        ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parentLine);
 
                         ITree parentRight = MappingAnalysis.getParentInRight(diff, operation.getAction());
                         if (parentRight != null) {
@@ -754,7 +754,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                         }
 
                         CtElement parentLine = MappingAnalysis.getParentLine(new LineFilter(), srcInvocation);
-                        ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
+                        ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parentLine);
 
                         if (!srcCallMethodName.equals(dstCallMethodName)) {
                             repairPatterns.incrementFeatureCounterInstance(WRONG_METHOD_REF,
@@ -823,7 +823,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                                 if (invocationArguments.contains(elementRemoved)) {
                                     CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(), elementRemoved);
-                                    ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+                                    ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);
                                     repairPatterns.incrementFeatureCounterInstance(WRAPS_METHOD,
                                             new PatternInstance(WRAPS_METHOD, operation, ctInvocation, elementRemoved,
                                                     lineP, lineTree, new PropertyPair("Old", "VarRead"),
@@ -841,7 +841,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                 return;
 
                             CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(), suspLeft.get(0));
-                            ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+                            ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);
 
                             if (RepairPatternUtils.getIsInvocationInStatemnt(diff, lineP, ctInvocation) &&
                                     invocationArgumentsold.contains(ctExpression) && ctExpression.getParent() == source) {
@@ -877,7 +877,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                             invocationArgumentsnew.contains(ctExpression) && ctExpression.getParent() == destination) {
                                         CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(),
                                                 operation.getSrcNode());
-                                        ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+                                        ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);
 
                                         repairPatterns.incrementFeatureCounterInstance(UNWRAP_METHOD, new PatternInstance(
                                                 UNWRAP_METHOD, operation, statementParent, ctInvocation, lineP, lineTree));
@@ -903,7 +903,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                                 if (invocationArguments.contains(elementRemoved)) {
                                     CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(), elementRemoved);
-                                    ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+                                    ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);
                                     repairPatterns.incrementFeatureCounterInstance(WRAPS_METHOD,
                                             new PatternInstance(WRAPS_METHOD, operation, ctInvocation, elementRemoved,
                                                     lineP, lineTree, new PropertyPair("Old", "VarRead"),
@@ -921,7 +921,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                 return;
 
                             CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(), suspLeft.get(0));
-                            ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+                            ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);
 
                             if (RepairPatternUtils.getIsInvocationInStatemnt(diff, lineP, ctInvocation) &&
                                     invocationArgumentsold.contains(ctExpression) && ctExpression.getParent() == source) {
@@ -959,7 +959,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                             ctExpression.getParent() == destination) {
                                         CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(),
                                                 operation.getSrcNode());
-                                        ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+                                        ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);
 
                                         repairPatterns.incrementFeatureCounterInstance(UNWRAP_METHOD, new PatternInstance(
                                                 UNWRAP_METHOD, operation, statementParent, ctInvocation, lineP, lineTree));
@@ -1014,7 +1014,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                 CtElement srcNode = operation.getSrcNode();
 
                 CtElement parent = MappingAnalysis.getParentLine(new LineFilter(), srcNode);
-                ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parent);
+                ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parent);
 
                 if (srcNode instanceof CtLiteral) {
                     repairPatterns.incrementFeatureCounterInstance(CONST_CHANGE,
@@ -1041,7 +1041,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                         if (isConstantVariable && !alreadyConsidered.contains(ctElement)) {
                             alreadyConsidered.add(ctElement);
                             CtElement parent = MappingAnalysis.getParentLine(new LineFilter(), ctLiteral);
-                            ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parent);
+                            ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parent);
 
                             repairPatterns.incrementFeatureCounterInstance(CONST_CHANGE,
                                     new PatternInstance(CONST_CHANGE, operation2Insert,
@@ -1086,7 +1086,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                 CtElement susp = (CtElement) leftMoved.getMetadata(SpoonGumTreeBuilder.SPOON_OBJECT);
 
                                 CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(), susp);
-                                ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+                                ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);
 
                                 if (invocationArgumentsNew.contains(ctConditional) && ctConditional.getParent() == destination
                                         && invocationArgumentsOld.contains(susp) && susp.getParent() == source)
@@ -1110,7 +1110,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                 }
                                 CtElement lineP = MappingAnalysis.getParentLine(new LineFilter(),
                                         (CtElement) susps.get(0));
-                                ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+                                ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);
 
                                 ITree rightMoved = MappingAnalysis.getRightFromLeftNodeMapped(diff,
                                         (ITree) patch.getMetadata("gtnode"));
@@ -1201,7 +1201,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
                                 if (!susp.isEmpty()) {
 
                                     lineP = MappingAnalysis.getParentLine(new LineFilter(), susp.get(0));
-                                    lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+                                    lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);
 
                                 } else {
 
@@ -1222,7 +1222,7 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
 
                                     lineP = susp.get(0);
                                     //    lineTree = treeInLeft.get(0);
-                                    lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(lineP);
+                                    lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(lineP);
                                 }
 
                                 if (binaryOperator.getKind().equals(BinaryOperatorKind.EQ)) {

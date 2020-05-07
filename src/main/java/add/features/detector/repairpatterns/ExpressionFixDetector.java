@@ -73,7 +73,7 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
 
                         CtElement parentLine = MappingAnalysis.getParentLine(filter, buggybinaryOperator);
 
-                        ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
+                        ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parentLine);
 
                         repairPatterns.incrementFeatureCounterInstance(BIN_OPERATOR_MODIF,
                                 new PatternInstance(BIN_OPERATOR_MODIF, operation, dstNode, buggybinaryOperator,
@@ -194,7 +194,7 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
                         }
 
                         CtElement parentLine = MappingAnalysis.getParentLine(filter, suspLeft.get(0));
-                        ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
+                        ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parentLine);
 
                         CtElement susplogical = suspLeft.get(0);
 
@@ -230,7 +230,7 @@ public class ExpressionFixDetector extends AbstractPatternDetector {
 
                         CtElement parentLine = MappingAnalysis.getParentLine(filter, binary);
 
-                        ITree lineTree = MappingAnalysis.getFormatedTreeFromControlFlow(parentLine);
+                        ITree lineTree = MappingAnalysis.getFormattedTreeFromControlFlow(parentLine);
 
                         CtElement susplogical = removedNode;
 
