@@ -19,8 +19,9 @@ import java.util.Map;
  */
 public class Server extends NanoHTTPD {
 
+    public static int PORT = 9888;
     public Server() throws IOException {
-        super(9888);
+        super(PORT);
         start(NanoHTTPD.SOCKET_READ_TIMEOUT, false);
         System.out.println("\nRunning! Point your browsers to http://localhost:9888/ \n");
     }
@@ -37,8 +38,6 @@ public class Server extends NanoHTTPD {
     @Override
     public Response serve(IHTTPSession session) {
         if (session.getMethod() == Method.POST) {
-
-
             try {
                 Map<String, String> parms = session.getParms();
                 session.parseBody(parms);

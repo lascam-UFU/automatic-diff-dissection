@@ -1,6 +1,6 @@
 package add.entities;
 
-import diffson.MapList;
+import utils.MapList;
 import gumtree.spoon.diff.operations.Operation;
 
 /**
