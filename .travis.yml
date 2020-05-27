@@ -1,12 +1,15 @@
 language: java
-
 jdk: openjdk8
-
 jobs:
   include:
-    - stage: Test
-      script: mvn test -Dtest=!ppd.PPDTest
-      after_success:
-       - mvn clean test jacoco:report coveralls:report
-    - stage: Test
-      script: mvn test -Dtest=ppd.PPDTest
+  - stage: Test
+    script: mvn test -Dtest=!ppd.PPDTest
+    after_success:
+    - mvn clean test jacoco:report coveralls:report
+    - '[[ $TRAVIS_BRANCH == "master" ]] && [[ $TRAVIS_JDK_VERSION == "openjdk8" ]] &&
+        { mvn deploy --settings .travis-settings.xml -DskipTests=true -B; };'
+  - stage: Test
+    script: mvn test -Dtest=ppd.PPDTest
+env:
+  global:
+    secure: d1Urex229Jf81JHTliFAEGT1kXjm2+T7/tgutAbsxUsZZFIh5OpsElLcpy9wVL0PgBqXEqQGbtlSHyp7Etusu90RXhcfECvb1fPsf1DOzJOi+xjO5tf+FcpvZcTU1qbStkzIEigx6Qe7uR+gZr+1kntKc9q8ByMKm3Faf4XWsA6W/e5bncfzCs8bB+eiKkhGJ1M9QH05Gok9UibkU1mls6dMhTnaSrTwOKywTxYh3vBlzukXM7AH+1tjwc9ISkMYwPrG+Ra0smhHYKW8QMejGmKV9XaQRFMaDphayCtUdC8Ld7e7k9BrThAD4NakFwr+qrIVJyviQSUA5FGGxueL4jThTddG2kViV89n0V7qTwhC2026vGppokl8f+pqLZLFxlXoCjYLsKUg/ZbMSvq/E1m26aBjNTaUmvz8zTv5TD6cS8AR4OoNyjijbBJG0Wqb6BMhQpzwCnGvO72ju4zPixLvu8u01KvIKPP4l6X8K0Ex1eKu/uB+GKroQxvDF2swkxuJcH4ZRWmAbRdQw6DACyXHme9meIW9lJzW2wfRXSo8VtbIL/9YCATEaGacVHCYxGYXUbDtUlVvjCqEOs+kuqpIGMIuMfeFjH7H8Fc9iPYqVAZjaYZ2eX6eS3a/0Qapy0MqZpFprNp2Nh7U/leUkcM3TsNThm087Gh9I6Y4Eis=
