@@ -16,7 +16,11 @@ jobs:
         with:
           distribution: zulu
           java-version: "8"
-      - run: mvn clean test -Dtest=!ppd.PPDTest jacoco:report coveralls:report
+      - name: 📦 Build with Maven
+        run: mvn --batch-mode --update-snapshots test -Dtest=!ppd.PPDTest jacoco:report
+      # Disable Coveralls for now
+      # - name: 🚀 Coveralls Coverage Report Submission
+      #   run: mvn coveralls:report
   PPD:
     runs-on: ubuntu-latest
     steps:
