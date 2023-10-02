@@ -36,7 +36,6 @@ public class ConstantChangeDetectorTest {
     }
 
     @Test
-    @Ignore
     public void math15() {
         Config config = TestUtils.setupConfig("math_15");
 

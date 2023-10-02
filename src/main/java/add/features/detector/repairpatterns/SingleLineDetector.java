@@ -30,7 +30,9 @@ public class SingleLineDetector extends AbstractPatternDetector {
     @Override
     public void detect(RepairPatterns repairPatterns) {
         boolean wasPatternFound = false;
-
+        if (this.config.getDiffPath() == null) {
+            return;
+        }
         MetricExtractor extractor = new MetricExtractor(this.config);
         Metrics metrics = extractor.analyze();
         if (metrics.getFeatureCounter("patchSizeCodeOnly") == 1) {

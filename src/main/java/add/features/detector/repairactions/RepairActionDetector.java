@@ -5,10 +5,7 @@ import add.features.detector.EditScriptBasedDetector;
 import add.features.detector.spoon.SpoonHelper;
 import add.main.Config;
 import gumtree.spoon.diff.Diff;
-import gumtree.spoon.diff.operations.DeleteOperation;
-import gumtree.spoon.diff.operations.InsertOperation;
-import gumtree.spoon.diff.operations.Operation;
-import gumtree.spoon.diff.operations.UpdateOperation;
+import gumtree.spoon.diff.operations.*;
 import spoon.reflect.code.CtConstructorCall;
 import spoon.reflect.code.CtInvocation;
 import spoon.reflect.code.CtStatement;
@@ -37,6 +34,31 @@ public class RepairActionDetector extends EditScriptBasedDetector {
 
     @Override
     public RepairActions analyze() {
+        for (int i = 0; i < editScript.getAllOperations().size(); i++) {
+            Operation operation = editScript.getAllOperations().get(i);
+            if (operation instanceof MoveOperation) {
+                CtElement srcNode = operation.getSrcNode();
+                CtElement dstNode = operation.getDstNode();
+                if (!srcNode.getRoleInParent().equals(dstNode.getRoleInParent())) {
+                    continue;
+                }
+
+                for (int j = 0; j < editScript.getRootOperations().size(); j++) {
+                    Operation operation2 = editScript.getRootOperations().get(j);
+                    if (operation.equals(operation2)) {
+                        continue;
+                    }
+                    CtElement srcNode2 = operation2.getSrcNode();
+                    if (srcNode.getClass() != srcNode2.getClass()) {
+                        continue;
+                    }
+                    if (srcNode.getRoleInParent().equals(srcNode2.getRoleInParent()) && srcNode.getPosition().getColumn() == srcNode2.getPosition().getColumn()) {
+                        // it is a hidden update
+                        new CtElementAnalyzer(srcNode, srcNode2).analyze(repairActions, CtElementAnalyzer.ACTION_TYPE.UPDATE);
+                    }
+                }
+            }
+        }
         for (int i = 0; i < editScript.getRootOperations().size(); i++) {
             Operation operation = editScript.getRootOperations().get(i);
             CtElement srcNode = operation.getSrcNode();

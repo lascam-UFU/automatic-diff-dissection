@@ -34,7 +34,10 @@ public class PPDTest {
         File file = new File(Constants.class.getResource("/vem_2018_results").getPath());
         JSONArray dissectionResults = null;
         try {
-            dissectionResults = new JSONArray(new String(Files.readAllBytes(Paths.get(Constants.class.getResource("/" + file.getName() + "/defects4j-bugs.json").getPath())), java.nio.charset.StandardCharsets.UTF_8));
+            dissectionResults = new JSONArray(new String(
+                    Files.readAllBytes(Paths
+                            .get(Constants.class.getResource("/" + file.getName() + "/defects4j-bugs.json").getPath())),
+                    java.nio.charset.StandardCharsets.UTF_8));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,9 +70,11 @@ public class PPDTest {
                 }
             }
 
-
             try {
-                String vemResult = new String(Files.readAllBytes(Paths.get(Constants.class.getResource("/" + file.getName() + "/" + vemResultFile).getPath())), java.nio.charset.StandardCharsets.UTF_8);
+                String vemResult = new String(
+                        Files.readAllBytes(Paths.get(
+                                Constants.class.getResource("/" + file.getName() + "/" + vemResultFile).getPath())),
+                        java.nio.charset.StandardCharsets.UTF_8);
 
                 JSONObject vemPatterns = new JSONObject(vemResult).getJSONObject("repairPatterns");
                 for (String pattern : vemPatterns.keySet()) {
@@ -152,7 +157,7 @@ public class PPDTest {
                 } else {
                     if (VEM.contains(bug)) {
                         falseNegativeIncreased++;
-                        System.out.println("[" + pattern + "] not found in " + bug);
+                        System.out.println("[" + pattern + "] not found in " + bug + " but was found before");
                     }
                 }
             }

@@ -1,17 +1,11 @@
 package add.features.detector.repairpatterns;
 
 import add.entities.RepairPatterns;
-import add.main.Config;
 import gumtree.spoon.diff.operations.DeleteOperation;
 import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
-import spoon.reflect.code.CtConstructorCall;
-import spoon.reflect.code.CtExpression;
-import spoon.reflect.code.CtInvocation;
-import spoon.reflect.code.CtStatement;
-import spoon.reflect.code.CtTypeAccess;
-import spoon.reflect.code.CtVariableAccess;
+import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtParameter;
@@ -26,19 +20,14 @@ import java.util.List;
  */
 public class WrongReferenceDetector extends AbstractPatternDetector {
 
-
-    private Config config;
-
-    public WrongReferenceDetector(Config config, List<Operation> operations) {
+    public WrongReferenceDetector(List<Operation> operations) {
         super(operations);
-        this.config = config;
     }
 
     @Override
     public void detect(RepairPatterns repairPatterns) {
         for (int i = 0; i < operations.size(); i++) {
             Operation operation = operations.get(i);
-
             if (operation instanceof DeleteOperation) {
                 CtElement srcNode = operation.getSrcNode();
                 if (srcNode instanceof CtVariableAccess || srcNode instanceof CtTypeAccess) {
