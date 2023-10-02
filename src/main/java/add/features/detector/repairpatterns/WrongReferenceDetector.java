@@ -3,36 +3,21 @@ package add.features.detector.repairpatterns;
 import add.entities.PatternInstance;
 import add.entities.PropertyPair;
 import add.entities.RepairPatterns;
+
 import add.features.detector.spoon.MappingAnalysis;
 import add.features.detector.spoon.RepairPatternUtils;
 import add.features.detector.spoon.SpoonHelper;
 import add.features.detector.spoon.filter.NullCheckFilter;
-import add.main.Config;
 import com.github.gumtreediff.tree.ITree;
 import gumtree.spoon.builder.SpoonGumTreeBuilder;
+
 import gumtree.spoon.diff.operations.DeleteOperation;
 import gumtree.spoon.diff.operations.InsertOperation;
 import gumtree.spoon.diff.operations.Operation;
 import gumtree.spoon.diff.operations.UpdateOperation;
-import spoon.reflect.code.BinaryOperatorKind;
-import spoon.reflect.code.CtAbstractInvocation;
-import spoon.reflect.code.CtArrayAccess;
-import spoon.reflect.code.CtAssignment;
-import spoon.reflect.code.CtBinaryOperator;
-import spoon.reflect.code.CtConditional;
-import spoon.reflect.code.CtConstructorCall;
-import spoon.reflect.code.CtExpression;
-import spoon.reflect.code.CtFieldRead;
-import spoon.reflect.code.CtFieldWrite;
-import spoon.reflect.code.CtInvocation;
-import spoon.reflect.code.CtLiteral;
-import spoon.reflect.code.CtLocalVariable;
-import spoon.reflect.code.CtStatement;
-import spoon.reflect.code.CtTargetedExpression;
-import spoon.reflect.code.CtTypeAccess;
-import spoon.reflect.code.CtVariableAccess;
-import spoon.reflect.code.CtVariableRead;
-import spoon.reflect.code.CtVariableWrite;
+
+import spoon.reflect.code.*;
+
 import spoon.reflect.declaration.CtConstructor;
 import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtField;
@@ -61,11 +46,8 @@ public class WrongReferenceDetector extends AbstractPatternDetector {
     public static final String MISS_NULL_CHECK_N = "missNullCheckN";
     public static final String MISS_NULL_CHECK_P = "missNullCheckP";
 
-    private Config config;
-
-    public WrongReferenceDetector(Config config, List<Operation> operations) {
+    public WrongReferenceDetector(List<Operation> operations) {
         super(operations);
-        this.config = config;
     }
 
     @Override
