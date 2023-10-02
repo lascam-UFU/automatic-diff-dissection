@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>br.ufu.lascam</groupId>
     <artifactId>automatic-diff-dissection</artifactId>
-    <version>1.1</version>
+    <version>1.2-SNAPSHOT</version>
     <name>automatic-diff-dissection</name>
     <description>Automatic Diff Dissection</description>
 
